@@ -15,7 +15,7 @@ command -> subshell redirect_list
 
 subshell -> LPAREN and_or RPAREN
 
-name -> NAME
+<!-- name -> NAME -->
 
 <!-- simple_command -> cmd_prefix cmd_word cmd_suffix
 simple_command -> cmd_prefix cmd_word
@@ -23,12 +23,12 @@ simple_command -> cmd_prefix -->
 simple_command -> redirect_list cmd_word cmd_suffix
 simple_command -> redirect_list cmd_word
 simple_command -> redirect_list
-simple_command -> cmd_name cmd_suffix
-simple_command -> cmd_name
+simple_command -> cmd_word cmd_suffix
+simple_command -> cmd_word
 
 <!-- cmd_name -> WORD -->
 
-cmd_word -> WORD
+<!-- cmd_word -> WORD -->
 
 <!-- cmd_prefix -> io_redirect
 cmd_prefix -> cmd_prefix io_redirect -->
