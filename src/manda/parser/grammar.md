@@ -8,29 +8,32 @@ pipeline -> command
 pipeline -> pipeline PIPE command
 
 command -> simple_command
-command -> compound_command
-command -> compound_command redirect_list
+command -> subshell
+command -> subshell redirect_list
 
-compound_command -> subshell
+<!-- compound_command -> subshell -->
 
 subshell -> LPAREN and_or RPAREN
 
 name -> NAME
 
-simple_command -> cmd_prefix cmd_word cmd_suffix
+<!-- simple_command -> cmd_prefix cmd_word cmd_suffix
 simple_command -> cmd_prefix cmd_word
-simple_command -> cmd_prefix
+simple_command -> cmd_prefix -->
+simple_command -> redirect_list cmd_word cmd_suffix
+simple_command -> redirect_list cmd_word
+simple_command -> redirect_list
 simple_command -> cmd_name cmd_suffix
 simple_command -> cmd_name
 
-cmd_name -> WORD
+<!-- cmd_name -> WORD -->
 
 cmd_word -> WORD
 
-cmd_prefix -> io_redirect
-cmd_prefix -> cmd_prefix io_redirect
-cmd_prefix -> ASSIGNMENT_WORD
-cmd_prefix -> cmd_prefix ASSIGNMENT_WORD
+<!-- cmd_prefix -> io_redirect
+cmd_prefix -> cmd_prefix io_redirect -->
+<!-- cmd_prefix -> ASSIGNMENT_WORD
+cmd_prefix -> cmd_prefix ASSIGNMENT_WORD -->
 
 cmd_suffix -> io_redirect
 cmd_suffix -> cmd_suffix io_redirect

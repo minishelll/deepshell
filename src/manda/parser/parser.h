@@ -35,14 +35,14 @@ enum e_terminal
 	pipe,
 	lparen,
 	rparen,
-	name,
+	// name,
 	word,
-	assignment_word,
+	// assignment_word,
 	less,
 	great,
 	dgreat,
-	dless,
-	dollar_sign
+	dless
+	// dollar_sign
 };
 
 enum e_non_terminal
@@ -51,13 +51,13 @@ enum e_non_terminal
 	and_or,
 	pipeline,
 	command,
-	compound_command,
+	// compound_command,
 	subshell,
-	name,
+	// name,
 	simple_command,
-	cmd_name,
+	// cmd_name,
 	cmd_word,
-	cmd_prefix,
+	// cmd_prefix,
 	cmd_suffix,
 	redirect_list,
 	io_redirect,
