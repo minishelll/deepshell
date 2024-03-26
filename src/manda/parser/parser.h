@@ -12,6 +12,7 @@
 
 #ifndef PARSER_H
 # define PARSER_H
+# include <stdbool.h>
 
 /* ******************************** LITERAL ********************************* */
 # define S_PIPE "|"
