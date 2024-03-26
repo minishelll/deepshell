@@ -6,19 +6,11 @@ ifndef SRCDIR
 endif
 
 NAME := parser.a
-HEAD := parser.h \
-		insert_data.h \
-		syntax_analyzer.h \
-
-SRCS := insert_lr_table.c \
-		insert_grammar.c \
-		insert_util.c \
-		tokenizer.c\
-		quote_parser.c\
-		op_parser.c\
-		syntax_analyzer.c \
-		action.c \
-		lr_stack.c \
+HEAD := parser.h
+SRCS := tokenizer.c\
+		tokenizer_quote_parser.c\
+		tokenizer_op_parser.c\
+		tokenizer_utils.c\
 
 LDLIBS := -lft
 
