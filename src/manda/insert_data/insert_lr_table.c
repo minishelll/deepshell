@@ -6,27 +6,13 @@
 /*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/26 14:33:09 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/03/26 14:59:59 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "insert_data.h"
 #include "lr_table.h"
 #include "libft.h"
-#include <stdlib.h>
-
-void	free_data(char **dst, int col)
-{
-	int	i;
-
-	i = 0;
-	while (i < col)
-	{
-		free(dst[i]);
-		i++;
-	}
-	free(dst);
-}
 
 void	parse_data(t_action *table, char **data, int col)
 {
@@ -58,7 +44,7 @@ void	insert_goto_table(t_action **table)
 {
 	int			i;
 	char		**data;
-	const char	*go_to[40] = {GOTO_0, GOTO_1, GOTO_2, GOTO_3, GOTO_4 \
+	const char	*go_to[ROW_STATE] = {GOTO_0, GOTO_1, GOTO_2, GOTO_3, GOTO_4 \
 								, GOTO_5, GOTO_6, GOTO_7, GOTO_8, GOTO_9 \
 								, GOTO_10, GOTO_11, GOTO_12, GOTO_13, GOTO_14 \
 								, GOTO_15, GOTO_16, GOTO_17, GOTO_18, GOTO_19 \
@@ -72,7 +58,7 @@ void	insert_goto_table(t_action **table)
 	{
 		data = ft_split(go_to[i], '|');
 		parse_data(table[i], data, COL_GOTO);
-		free_data(data, COL_GOTO);
+		free_words(data);
 		i++;
 	}
 }
@@ -81,7 +67,7 @@ void	insert_action_table(t_action **table)
 {
 	int			i;
 	char		**data;
-	const char	*action[40] = {ACT_0, ACT_1, ACT_2, ACT_3, ACT_4 \
+	const char	*action[ROW_STATE] = {ACT_0, ACT_1, ACT_2, ACT_3, ACT_4 \
 								, ACT_5, ACT_6, ACT_7, ACT_8, ACT_9 \
 								, ACT_10, ACT_11, ACT_12, ACT_13, ACT_14 \
 								, ACT_15, ACT_16, ACT_17, ACT_18, ACT_19 \
@@ -95,7 +81,7 @@ void	insert_action_table(t_action **table)
 	{
 		data = ft_split(action[i], '|');
 		parse_data(table[i], data, COL_ACT);
-		free_data(data, COL_ACT);
+		free_words(data);
 		i++;
 	}
 }
@@ -118,52 +104,4 @@ t_lr_table	*insert_lr_table(void)
 	insert_action_table(new->action);
 	insert_goto_table(new->go_to);
 	return (new);
-}
-
-/* ******************************* TEST PRINT ******************************* */
-#include <stdio.h>
-
-void	print_one_t_action(t_action dst)
-{
-	if (dst.act == shift)
-		printf("S, ");
-	else if (dst.act == reduce)
-		printf("R, ");
-	else if (dst.act == grammar)
-		printf("(G), ");
-	if (dst.act == init)
-		return ;
-	printf("%d", dst.num);
-}
-
-int main()
-{
-	t_lr_table *lr_table;
-
-	lr_table = insert_lr_table();
-	for (int i = 0; i < ROW_STATE; i++)
-	{
-		for (int k = 0; k < COL_ACT; k++)
-		{
-			print_one_t_action(lr_table->action[i][k]);
-			printf(" | ");
-		}
-		free(lr_table->action[i]);
-		printf("\n");
-	}
-	free(lr_table->action);
-	for (int i = 0; i < ROW_STATE; i++)
-	{
-		for (int k = 0; k < COL_GOTO; k++)
-		{
-			print_one_t_action(lr_table->go_to[i][k]);
-			printf(" | ");
-		}
-		free(lr_table->go_to[i]);
-		printf("\n");
-	}
-	free(lr_table->go_to);
-	free(lr_table);
-	system("leaks minishell");
-	return (-1);
 }

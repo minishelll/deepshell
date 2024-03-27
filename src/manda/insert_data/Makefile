@@ -8,6 +8,8 @@ endif
 NAME := insert_data.a
 HEAD := insert_data.h
 SRCS := insert_lr_table.c \
+		insert_grammar.c \
+		insert_util.c \
 
 LDLIBS := -lft
 
