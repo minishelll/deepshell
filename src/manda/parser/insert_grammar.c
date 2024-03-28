@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/28 14:37:57 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:19:34 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static void	parse_data(t_grammar *grammar, char **data)
 	}
 }
 
-#include <stdio.h>
 t_grammar	*insert_grammar(void)
 {
 	const char	*grammar[GRAMMAR] = {GRAMMAR_0, GRAMMAR_1, GRAMMAR_2 \

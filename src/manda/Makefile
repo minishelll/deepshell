@@ -9,7 +9,7 @@ NAME := minishell
 SRCS := \
 
 # SRCS(in SRCDIR) ------
-DIRS := insert_data \
+DIRS := parser \
 
 SUBS := $(addsuffix .a,$(DIRS))
 

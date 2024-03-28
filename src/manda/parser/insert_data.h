@@ -6,12 +6,18 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:22:54 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/28 15:13:59 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:20:14 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INSERT_DATA_H
 # define INSERT_DATA_H
+
+# include "parser.h"
+
+t_lr_table	*insert_lr_table(void);
+t_grammar	*insert_grammar(void);
+void		free_words(char **dst);
 
 /* ******************************** LR_TABLE ******************************** */
 # define ROW_STATE 40
@@ -45,23 +51,10 @@ typedef struct s_lr_table
 # define KIND 0
 # define TYPE 1
 
-typedef enum e_kind
-{
-	none = -1,
-	terminal,
-	non_terminal
-}	t_kind;
-# include "../parser/parser.h"
-
 typedef struct s_grammar
 {
 	t_ntermi	before;
 	int			after[3][2];
 }				t_grammar;
-
-/* ******************************* FUNCTIONS ******************************** */
-t_lr_table	*insert_lr_table(void);
-t_grammar	*insert_grammar(void);
-void		free_words(char **dst);
 
 #endif
