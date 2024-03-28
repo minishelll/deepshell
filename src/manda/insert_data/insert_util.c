@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_util.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:57:49 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/27 13:04:08 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/03/28 15:14:03 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,13 @@ int main()
 
 	for (int i = 0; i < GRAMMAR; i++)
 	{
+		printf("BEFORE: ");
+		print_one_t_grammar(non_terminal, grammar[i].before);
+		printf("\n");
 		for (int k = 0; k < 3; k++)
 		{
-			print_one_t_grammar(grammar[i].kind[k], grammar[i].type[k]);
+			printf("AFTER: ");
+			print_one_t_grammar(grammar[i].after[k][KIND], grammar[i].after[k][TYPE]);
 		}
 		printf("\n");
 	}

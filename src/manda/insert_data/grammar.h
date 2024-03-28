@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   grammar.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:22:54 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/26 14:38:22 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/03/28 13:26:29 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LR_TABLE_H
-# define LR_TABLE_H
+#ifndef GRAMMAR_H
+# define GRAMMAR_H
 
 # define GRAMMAR_0  "complete_command -> and_or"
 # define GRAMMAR_1  "and_or -> pipeline"

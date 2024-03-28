@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_lr_table.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/26 14:59:59 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/03/28 13:25:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "lr_table.h"
 #include "libft.h"
 
-void	parse_data(t_action *table, char **data, int col)
+static void	parse_data(t_action *table, char **data, int col)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ void	parse_data(t_action *table, char **data, int col)
 	}
 }
 
-void	insert_goto_table(t_action **table)
+static void	insert_goto_table(t_action **table)
 {
 	int			i;
 	char		**data;
@@ -63,7 +63,7 @@ void	insert_goto_table(t_action **table)
 	}
 }
 
-void	insert_action_table(t_action **table)
+static void	insert_action_table(t_action **table)
 {
 	int			i;
 	char		**data;

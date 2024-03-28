@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_data.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:22:54 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/27 13:05:01 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/03/28 15:13:59 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,26 @@ typedef struct s_lr_table
 /* ******************************** GRAMMAR ********************************* */
 # define GRAMMAR 30
 
+# define KIND 0
+# define TYPE 1
+
 typedef enum e_kind
 {
 	none = -1,
 	terminal,
 	non_terminal
 }	t_kind;
+# include "../parser/parser.h"
 
 typedef struct s_grammar
 {
-	t_kind	kind[3];
-	int		type[3];
-}			t_grammar;
+	t_ntermi	before;
+	int			after[3][2];
+}				t_grammar;
 
 /* ******************************* FUNCTIONS ******************************** */
 t_lr_table	*insert_lr_table(void);
 t_grammar	*insert_grammar(void);
-void	free_words(char **dst);
+void		free_words(char **dst);
 
 #endif

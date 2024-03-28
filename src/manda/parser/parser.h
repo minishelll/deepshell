@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/25 13:33:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:29:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# include <stdbool.h>
 /* ******************************** LITERAL ********************************* */
 # define S_PIPE "|"
 # define S_AND_IF "&&"
