@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/25 13:33:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/03/29 12:15:15 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 # include <stdbool.h>
+# include "libft.h"
+# include <stdio.h>
+# include <stdlib.h>
 
 /* ******************************** LITERAL ********************************* */
 # define S_PIPE "|"
@@ -42,8 +45,9 @@ enum e_terminal
 	less,
 	great,
 	dgreat,
-	dless
+	dless,
 	// dollar_sign
+	undefined
 };
 
 enum e_non_terminal
@@ -89,4 +93,9 @@ typedef struct s_parse_tree
 	void		*child[3];
 }				t_parse_tree;
 
+/* ******************************** FUNCTION ******************************** */
+
+t_list	*parse_quote(char *command);
+t_list	*parse_paren(t_list *quote_parsed_list);
+void	free_token(t_token *token);
 #endif

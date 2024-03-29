@@ -3,66 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwanii <sehwanii@student.42.fr>          #+#  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-03-25 10:10:43 by sehwanii          #+#    #+#             */
-/*   Updated: 2024-03-25 10:10:43 by sehwanii         ###   ########.fr       */
+/*   Created: 2024/03/25 10:10:43 by sehwanii          #+#    #+#             */
+/*   Updated: 2024/03/29 17:43:53 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
-#include <stdio.h>
 
-static char	**parse_quote(t_list **list, char *command);
+t_list	*parse_quote(char *command);
+t_list	*parse_space(t_list *quote_parsed_list);
+
+void	foo(){
+	system("leaks minishell");
+}
 
 t_list  **tokenizer(char *command)
 {
-	// char    **words;
-	// int     idx;
-	t_list	*head;
+	t_list	*quote_parsed_list;
+	t_list	*paren_parsed_list;
 
-	head = NULL;
-	parse_quote(&head, command);
-	while (head != NULL){
-		printf("%s$\n",(char *)head->content);
-		head = head -> next;
-	}
-	// idx = 0;
-	// words = ft_split(command, '"');
-	// while (words[idx] != NULL)
-	// {
-
-	// }
-	return NULL;
-}
-static char	**parse_quote(t_list **list, char *command)
-{
-	char	state;
-	int		idx;
-	int		prev_idx;
-
-	idx = -1;
-	prev_idx = 0;
-	while (command[++idx])
-	{
-		if (command[idx] == '\"' || command[idx] == '\'')
-		{
-			ft_lstadd_back(list, ft_lstnew(ft_strtrim(ft_substr(command, prev_idx, idx - prev_idx), " ")));
-			state = command[idx];
-			prev_idx = idx++;
-			while (command[idx] != state && command[idx] != '\0')
-				idx++;
-			ft_lstadd_back(list, ft_lstnew(ft_strtrim(ft_substr(command, prev_idx, idx - prev_idx + 1), " ")));
-			prev_idx = ++idx;
-		}
-	}
-	return NULL;
+	atexit(foo);
+	quote_parsed_list = parse_quote(command);
+	paren_parsed_list = parse_paren(quote_parsed_list);
+	ft_lstclear(&(quote_parsed_list -> next), (void *)free_token);
+	free(quote_parsed_list);
+	ft_lstclear(&(paren_parsed_list), (void *)free_token);
+	return (NULL);
 }
 
-int main(void)
+int	main(void)
 {
-	char *str = "echo \"asdf\" -e \"\' zxcv    \'   \" ";
+	char	*str = "echo&&echo -e \"a\"\"b\" | cat           \"a\"\'c\'";
+
 	printf("%s\n", str);
 	tokenizer(str);
+}
+
+void	free_token(t_token *token)
+{
+	free(token->word);
+	free(token);
 }
