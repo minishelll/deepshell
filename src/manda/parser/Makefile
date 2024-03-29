@@ -7,7 +7,9 @@ endif
 
 NAME := parser.a
 HEAD := parser.h
-SRCS := \
+SRCS := insert_lr_parser.c \
+		insert_grammar.c \
+		insert_util.c \
 
 LDLIBS :=
 
