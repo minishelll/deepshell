@@ -7,9 +7,11 @@ endif
 
 NAME := parser.a
 HEAD := parser.h
-SRCS := \
+SRCS := tokenizer.c\
+		quote_parser.c\
+		op_parser.c\
 
-LDLIBS :=
+LDLIBS := -lft
 
 include $(TOPDIR)/include_make/Variable.mk
 include $(TOPDIR)/include_make/Link.mk
