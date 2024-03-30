@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/03/29 17:44:03 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/03/30 15:50:05 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ t_list	*parse_paren(t_list *quote_parsed_list)
 			ft_free_split(temp_tmp);
 			free_token((prev->next)->content);
 			free(prev->next);
-			// leak
 			prev->next = temp_list;
 			prev = ft_lstlast(temp_list);
 			ft_lstadd_back(&temp_list, cur->next);
@@ -62,7 +61,12 @@ t_list	*parse_paren(t_list *quote_parsed_list)
 			prev = cur;
 		cur = cur->next;
 	}
-	return (NULL);
+	t_token	*end_token;
+	end_token = (t_token *)malloc(sizeof(t_token));
+	end_token -> word = "$";
+	end_token -> type = dollar_sign;
+	ft_lstadd_back(&quote_parsed_list, ft_lstnew(end_token));
+	return (quote_parsed_list->next);
 }
 
 void	parse_token(t_list **temp, char *str)
@@ -70,7 +74,7 @@ void	parse_token(t_list **temp, char *str)
 	int			i;
 	int			prev_i;
 
-	printf("%s$\n",str);
+	//printf("%s$\n",str);
 	i = -1;
 	prev_i = 0;
 	while (str[++i])
@@ -127,7 +131,7 @@ static void	token_add_back(t_list **token_list, char *str)
 	}
 	else
 		token->type = undefined;
-	token->word = ft_strtrim(str, " ");
+	token->word = ft_strtrim(str, " "); 
 	ft_lstadd_back(token_list, ft_lstnew(token));
 	free(str);
 }
