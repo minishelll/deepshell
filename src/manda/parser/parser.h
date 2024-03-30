@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/28 15:20:37 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/03/30 16:09:27 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ typedef enum e_kind
 {
 	none = -1,
 	terminal,
-	non_terminal
+	non_terminal,
+	state
 }	t_kind;
 
 typedef enum e_terminal
@@ -59,7 +60,7 @@ typedef enum e_non_terminal
 /* ********************************* STRUCT ********************************* */
 # define LEFT 0
 # define MID 1
-# define RIGTH 2
+# define RIGHT 2
 
 typedef struct s_token
 {

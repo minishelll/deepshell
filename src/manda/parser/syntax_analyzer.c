@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_analyzer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/29 11:56:34 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/03/30 16:09:34 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_parse_tree	*lexer(t_list *input)
 			parse_tree = create_parse_tree(lr_stack, grammar[0]);
 			break ;
 		}
-		else if (key.act == init)
+		// else if (key.act == init)
 		//	ft_error(SYNTAX_ERROR, input->word);
 	}
 	return (parse_tree);
