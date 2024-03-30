@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/03/29 13:38:34 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/03/30 17:27:42 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	token_add_back(t_list **token_list, char *str)
 		free(str);
 		return ;
 	}
-	token = (t_token *)malloc(sizeof(t_token));
+	token = (t_token *)ft_malloc(sizeof(t_token));
 	if (*str == '\'' || *str == '\"')
 		token->type = word;
 	else
@@ -86,7 +86,7 @@ void	join_token(t_list **node)
 
 	cur_token = (*node)->content;
 	next_token = ((*node)->next)->content;
-	new_token = (t_token *)malloc(sizeof(t_token));
+	new_token = (t_token *)ft_malloc(sizeof(t_token));
 	new_token->word = ft_strjoin(cur_token->word, next_token->word);
 	new_token->type = word;
 	(*node)->content = new_token;

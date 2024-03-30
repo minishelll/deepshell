@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/30 16:18:03 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/03/30 17:33:01 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PARSER_H
 # include <stdbool.h>
 # include "libft.h"
-# include <stdio.h>
 # include <stdlib.h>
 
 /* ******************************** LITERAL ********************************* */
@@ -39,9 +38,7 @@ enum e_terminal
 	pipe,
 	lparen,
 	rparen,
-	// name,
 	word,
-	// assignment_word,
 	less,
 	great,
 	dgreat,
@@ -56,13 +53,9 @@ enum e_non_terminal
 	and_or,
 	pipeline,
 	command,
-	// compound_command,
 	subshell,
-	// name,
 	simple_command,
-	// cmd_name,
 	cmd_word,
-	// cmd_prefix,
 	cmd_suffix,
 	redirect_list,
 	io_redirect,
@@ -95,6 +88,7 @@ typedef struct s_parse_tree
 
 /* ******************************** FUNCTION ******************************** */
 
+t_list	*tokenizer(char *command);
 t_list	*parse_quote(char *command);
 t_list	*parse_op(t_list *quote_parsed_list);
 void	free_token(t_token *token);
