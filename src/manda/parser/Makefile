@@ -9,7 +9,7 @@ NAME := parser.a
 HEAD := parser.h
 SRCS := tokenizer.c\
 		quote_parser.c\
-		paren_parser.c\
+		op_parser.c\
 
 LDLIBS := -lft
 

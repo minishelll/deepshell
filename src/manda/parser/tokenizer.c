@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:10:43 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/03/30 15:50:39 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/03/30 17:11:39 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,22 @@
 
 t_list	*parse_quote(char *command);
 t_list	*parse_space(t_list *quote_parsed_list);
+void	add_end_token(t_list *parsed_list);
 
-void	foo(){
-	system("leaks minishell");
-}
-
-t_list  *tokenizer(char *command)
+t_list	*tokenizer(char *command)
 {
 	t_list	*quote_parsed_list;
-	t_list	*paren_parsed_list;
+	t_list	*op_parsed_list;
 
-	atexit(foo);
 	quote_parsed_list = parse_quote(command);
-	paren_parsed_list = parse_paren(quote_parsed_list);
-
-	//ft_lstclear(&(quote_parsed_list -> next), (void *)free_token);
+	op_parsed_list = parse_op(quote_parsed_list);
+	add_end_token(op_parsed_list);
 	free(quote_parsed_list);
-	//ft_lstclear(&(paren_parsed_list), (void *)free_token);
-	return (paren_parsed_list);
+	// while (op_parsed_list){
+	// 	printf("%s$\n",((t_token *)op_parsed_list->content)->word);
+	// 	op_parsed_list = op_parsed_list->next;
+	// }
+	return (op_parsed_list);
 }
 
 int	main(void)
@@ -46,4 +44,15 @@ void	free_token(t_token *token)
 {
 	free(token->word);
 	free(token);
+}
+
+void	add_end_token(t_list *parsed_list)
+{
+	t_token	*end_token;
+
+	end_token = (t_token *)malloc(sizeof(t_token));
+	end_token -> word = "$";
+	end_token -> type = dollar_sign;
+	ft_lstadd_back(&parsed_list, ft_lstnew(end_token));
+	return ;
 }

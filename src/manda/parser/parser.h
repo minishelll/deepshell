@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/30 15:48:41 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/03/30 16:18:03 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,6 @@ typedef struct s_parse_tree
 /* ******************************** FUNCTION ******************************** */
 
 t_list	*parse_quote(char *command);
-t_list	*parse_paren(t_list *quote_parsed_list);
+t_list	*parse_op(t_list *quote_parsed_list);
 void	free_token(t_token *token);
 #endif
