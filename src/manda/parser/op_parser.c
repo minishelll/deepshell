@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/01 15:24:22 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:25:10 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,10 @@ void	parse_token(t_list **temp, char *str)
 	prev_i = 0;
 	while (str[++i])
 	{
-		if (str[i] == '&' || str[i] == '<' || str[i] == '>' || str[i] == '|')
+		if (str[i] == '&' || str[i] == '<' || str[i] == '>' \
+		|| str[i] == '|' || str[i] == '(' || str[i] == ')')
 		{
-			if (str[i + 1] == str[i])
+			if ((str[i] != '(' && str[i] != ')') && str[i + 1] == str[i])
 			{
 				token_add_back(temp, ft_substr(str, prev_i, i - prev_i));
 				token_add_back(temp, ft_substr(str, i++, 2));
