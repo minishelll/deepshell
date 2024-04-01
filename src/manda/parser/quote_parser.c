@@ -6,14 +6,14 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/03/30 17:27:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:01:45 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 static void	split_quote(t_list **list, char *cmd);
-static void	merge_quote_nodes(t_list **list);
+//void	merge_quote_nodes(t_list **list);
 static void	join_token(t_list **node);
 static void	token_add_back(t_list **token_list, char *str);
 
@@ -32,7 +32,9 @@ t_list	*parse_quote(char *cmd)
 static void	token_add_back(t_list **token_list, char *str)
 {
 	t_token	*token;
+	t_token	*dummy_token;
 
+	dummy_token = NULL;
 	if (*str == '\0')
 	{
 		free(str);
@@ -43,8 +45,15 @@ static void	token_add_back(t_list **token_list, char *str)
 		token->type = word;
 	else
 		token->type = undefined;
+	if (str[ft_strlen(str) - 1] == ' ')
+	{
+		dummy_token = (t_token *)ft_malloc(sizeof(t_token));
+		dummy_token -> word = " ";
+	}
 	token->word = ft_strtrim(str, " ");
 	ft_lstadd_back(token_list, ft_lstnew(token));
+	if (dummy_token)
+		ft_lstadd_back(token_list, ft_lstnew(dummy_token));
 	free(str);
 }
 
@@ -63,7 +72,7 @@ void	merge_quote_nodes(t_list **list)
 	{
 		cur_token = cur->content;
 		next_token = (cur->next)->content;
-		if (cur_token->type == word && next_token->type == word)
+		if (*(next_token->word) != '\0')
 		{
 			join_token(&cur);
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/30 17:33:01 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:32:42 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,5 @@ t_list	*tokenizer(char *command);
 t_list	*parse_quote(char *command);
 t_list	*parse_op(t_list *quote_parsed_list);
 void	free_token(t_token *token);
+void	merge_quote_nodes(t_list **list);
 #endif
