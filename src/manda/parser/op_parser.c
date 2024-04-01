@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/03/30 17:27:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/01 15:24:22 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void					parse_token(t_list **list, char *str);
 static void				token_add_back(t_list **token_list, char *str);
-static enum e_terminal	get_token_type(char *str);
+static enum e_terminal	get_token_type(char *str, int len);
 
 //토큰을 공백 기준으로 나누어 파싱하는 함수
 static void	split_token(t_list **list, char *str)
@@ -105,17 +105,15 @@ static void	token_add_back(t_list **token_list, char *str)
 		return ;
 	}
 	token = (t_token *)ft_malloc(sizeof(t_token));
-	token->type = get_token_type(str);
+	token->type = get_token_type(str, ft_strlen(str));
 	token->word = ft_strtrim(str, " ");
 	ft_lstadd_back(token_list, ft_lstnew(token));
 	free(str);
 }
 
 //문자를 비교해서 해당되는 토큰 타입이 있다면 반환하는 함수
-enum e_terminal	get_token_type(char *str)
+enum e_terminal	get_token_type(char *str, int len)
 {
-	const int	len = ft_strlen(str);
-
 	if (len == 2)
 	{
 		if (*str == '<')
@@ -135,6 +133,10 @@ enum e_terminal	get_token_type(char *str)
 			return (great);
 		else if (*str == '|')
 			return (pipe);
+		else if (*str == '(')
+			return (lparen);
+		else if (*str == ')')
+			return (rparen);
 	}
-	return (undefined);
+	return (word);
 }
