@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:10:43 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/04/01 17:25:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:28:09 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_list	*parse_quote(char *command);
 t_list	*parse_space(t_list *quote_parsed_list);
 void	add_end_token(t_list *parsed_list);
 
+//tokenize를 하는 main 함수
 t_list	*tokenizer(char *command)
 {
 	t_list	*quote_parsed_list;
@@ -28,12 +29,14 @@ t_list	*tokenizer(char *command)
 	return (op_parsed_list);
 }
 
+//t_token을 free합니다.
 void	free_token(t_token *token)
 {
 	free(token->word);
 	free(token);
 }
 
+//Tokenize가 완료된 리스트 끝에 end_token을 추가합니다.
 void	add_end_token(t_list *parsed_list)
 {
 	t_token	*end_token;
