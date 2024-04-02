@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_lr_table.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/28 13:25:42 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/01 21:16:32 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,14 @@
 #include "lr_table.h"
 #include "libft.h"
 
-static void	parse_data(t_action *table, char **data, int col)
+static void	parse_goto_data(t_action *table, char **data)
 {
 	int	i;
 
 	i = 0;
-	while (i < col)
+	while (i < COL_GOTO)
 	{
-		if (data[i][0] == 'r')
-		{
-			table[i].act = reduce;
-			table[i].num = ft_atoi(&data[i][1]);
-		}
-		else if (data[i][0] == 's')
-		{
-			table[i].act = shift;
-			table[i].num = ft_atoi(&data[i][1]);
-		}
-		else if (data[i][0] != ' ')
+		if (data[i][0] != ' ')
 		{
 			table[i].act = grammar;
 			table[i].num = ft_atoi(data[i]);
@@ -57,8 +47,31 @@ static void	insert_goto_table(t_action **table)
 	while (i < ROW_STATE)
 	{
 		data = ft_split(go_to[i], '|');
-		parse_data(table[i], data, COL_GOTO);
+		parse_goto_data(table[i], data);
 		free_words(data);
+		i++;
+	}
+}
+
+static void	parse_act_data(t_action *table, char **data)
+{
+	int	i;
+
+	i = 0;
+	while (i < COL_ACT)
+	{
+		if (data[i][0] == 'r')
+		{
+			table[i].act = reduce;
+			table[i].num = ft_atoi(&data[i][1]);
+		}
+		else if (data[i][0] == 's')
+		{
+			table[i].act = shift;
+			table[i].num = ft_atoi(&data[i][1]);
+		}
+		else if (data[i][0] == 'a')
+			table[i].act = accept;
 		i++;
 	}
 }
@@ -80,7 +93,7 @@ static void	insert_action_table(t_action **table)
 	while (i < ROW_STATE)
 	{
 		data = ft_split(action[i], '|');
-		parse_data(table[i], data, COL_ACT);
+		parse_act_data(table[i], data);
 		free_words(data);
 		i++;
 	}

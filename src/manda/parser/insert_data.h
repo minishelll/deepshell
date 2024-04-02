@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_data.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:22:54 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/28 15:20:14 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/01 21:14:48 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 # define INSERT_DATA_H
 
 # include "parser.h"
-
-t_lr_table	*insert_lr_table(void);
-t_grammar	*insert_grammar(void);
-void		free_words(char **dst);
 
 /* ******************************** LR_TABLE ******************************** */
 # define ROW_STATE 40
@@ -56,5 +52,10 @@ typedef struct s_grammar
 	t_ntermi	before;
 	int			after[3][2];
 }				t_grammar;
+
+/* ******************************** FUNCTION ******************************** */
+t_lr_table	*insert_lr_table(void);
+t_grammar	*insert_grammar(void);
+void		free_words(char **dst);
 
 #endif
