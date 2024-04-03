@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote_parser.c                                     :+:      :+:    :+:   */
+/*   tokenizer_quote_parser.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/03/30 17:27:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:04:44 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 static void	split_quote(t_list **list, char *cmd);
-static void	merge_quote_nodes(t_list **list);
 static void	join_token(t_list **node);
 static void	token_add_back(t_list **token_list, char *str);
 
@@ -24,7 +23,6 @@ t_list	*parse_quote(char *cmd)
 
 	list = NULL;
 	split_quote(&list, cmd);
-	merge_quote_nodes(&list);
 	return (list);
 }
 
@@ -32,7 +30,9 @@ t_list	*parse_quote(char *cmd)
 static void	token_add_back(t_list **token_list, char *str)
 {
 	t_token	*token;
+	t_token	*dummy_token;
 
+	dummy_token = NULL;
 	if (*str == '\0')
 	{
 		free(str);
@@ -41,37 +41,43 @@ static void	token_add_back(t_list **token_list, char *str)
 	token = (t_token *)ft_malloc(sizeof(t_token));
 	if (*str == '\'' || *str == '\"')
 		token->type = word;
-	else
-		token->type = undefined;
+	if (str[ft_strlen(str) - 1] == ' ')
+		dummy_token = new_token(ft_strdup(" "), undefined);
 	token->word = ft_strtrim(str, " ");
-	ft_lstadd_back(token_list, ft_lstnew(token));
+	if (*(token->word) != '\0')
+		ft_lstadd_back(token_list, ft_lstnew(token));
+	else
+		free_token(token);
+	if (dummy_token)
+		ft_lstadd_back(token_list, ft_lstnew(dummy_token));
 	free(str);
 }
 
 //quote구문이 연속되어 있다면 t_token을 합치는 함수
-void	merge_quote_nodes(t_list **list)
+void	merge_word_nodes(t_list **list)
 {
 	t_token	*cur_token;
 	t_token	*next_token;
 	t_list	*cur;
+	t_list	*temp;
 
 	cur = *list;
 	if (cur == NULL)
 		return ;
-	cur = cur -> next;
 	while (cur->next)
 	{
 		cur_token = cur->content;
 		next_token = (cur->next)->content;
-		if (cur_token->type == word && next_token->type == word)
+		if ((cur_token->type == word) && (next_token->type == word))
 		{
 			join_token(&cur);
 			continue ;
 		}
-		else if (*(next_token->word) == '\0')
+		else if (next_token->type == undefined)
 		{
-			free_token(next_token);
+			temp = cur -> next;
 			cur->next = cur->next->next;
+			ft_lstdelone(temp, (void *)free_token);
 		}
 		cur = cur->next;
 	}
