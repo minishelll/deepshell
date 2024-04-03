@@ -8,8 +8,9 @@ endif
 NAME := parser.a
 HEAD := parser.h
 SRCS := tokenizer.c\
-		quote_parser.c\
-		op_parser.c\
+		tokenizer_quote_parser.c\
+		tokenizer_op_parser.c\
+		tokenizer_utils.c\
 
 LDLIBS := -lft
 
