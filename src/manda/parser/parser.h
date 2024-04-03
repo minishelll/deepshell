@@ -15,7 +15,7 @@
 # include <stdbool.h>
 # include "libft.h"
 # include <stdlib.h>
-
+#include <stdio.h>
 /* ******************************** LITERAL ********************************* */
 # define S_PIPE "|"
 # define S_AND_IF "&&"

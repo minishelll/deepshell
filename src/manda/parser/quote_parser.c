@@ -24,7 +24,7 @@ t_list	*parse_quote(char *cmd)
 
 	list = NULL;
 	split_quote(&list, cmd);
-	merge_quote_nodes(&list);
+	//merge_quote_nodes(&list);
 	return (list);
 }
 
@@ -48,10 +48,11 @@ static void	token_add_back(t_list **token_list, char *str)
 	if (str[ft_strlen(str) - 1] == ' ')
 	{
 		dummy_token = (t_token *)ft_malloc(sizeof(t_token));
-		dummy_token -> word = " ";
+		dummy_token -> word = ft_strdup(" ");
 	}
 	token->word = ft_strtrim(str, " ");
-	ft_lstadd_back(token_list, ft_lstnew(token));
+	if (*(token->word) != '\0')
+		ft_lstadd_back(token_list, ft_lstnew(token));
 	if (dummy_token)
 		ft_lstadd_back(token_list, ft_lstnew(dummy_token));
 	free(str);
@@ -60,29 +61,32 @@ static void	token_add_back(t_list **token_list, char *str)
 //quote구문이 연속되어 있다면 t_token을 합치는 함수
 void	merge_quote_nodes(t_list **list)
 {
-	t_token	*cur_token;
+	//t_token	*cur_token;
 	t_token	*next_token;
 	t_list	*cur;
-
 	cur = *list;
 	if (cur == NULL)
 		return ;
 	cur = cur -> next;
 	while (cur->next)
 	{
-		cur_token = cur->content;
+		printf("%s$\n",(((t_token *)(cur)->content)->word));
+		//cur_token = cur->content;
 		next_token = (cur->next)->content;
-		if (*(next_token->word) != '\0')
+		if (*(next_token->word) != ' ')
 		{
 			join_token(&cur);
 			continue ;
 		}
-		else if (*(next_token->word) == '\0')
-		{
-			free_token(next_token);
-			cur->next = cur->next->next;
-		}
-		cur = cur->next;
+		// else
+		// {
+		// 	//free_token(next_token);
+		// // if (cur == NULL ||cur->next == NULL || cur -> next -> next == NULL)
+		// // 	break;
+		// // else
+		// 	//cur->next = cur->next->next;
+		// }
+		cur = cur->next->next;
 	}
 }
 

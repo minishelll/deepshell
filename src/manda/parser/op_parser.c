@@ -31,7 +31,7 @@ static void	split_token(t_list **list, char *str)
 		parse_token(list, *(words));
 		words++;
 	}
-	while (temp[++idx] != NULL)
+	while (temp && temp[++idx] != NULL)
 		free(temp[idx]);
 	free(temp);
 }
@@ -48,11 +48,17 @@ t_list	*parse_op(t_list *quote_parsed_list)
 	cur = quote_parsed_list->next;
 	while (cur)
 	{
-		if (((t_token *)cur->content)->type == undefined)
+		if (((t_token *)cur->content)->type != word)
 		{
 			split_token(&temp_list, ((t_token *)cur->content)->word);
-			free_token((prev->next)->content);
-			free(prev->next);
+			if(temp_list == NULL)//이부분 찍어보고 
+			{
+				printf("!!!!!!!!!!!!!");
+				prev->next = prev->next->next;
+				continue;
+			}
+			// free_token((prev->next)->content);
+			// free(prev->next); //?
 			prev->next = temp_list;
 			prev = ft_lstlast(temp_list);
 			ft_lstadd_back(&temp_list, cur->next);

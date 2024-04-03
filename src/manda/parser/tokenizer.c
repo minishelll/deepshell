@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include <stdio.h>
+
 t_list	*parse_quote(char *command);
 t_list	*parse_space(t_list *quote_parsed_list);
 void	add_end_token(t_list *parsed_list);
@@ -20,19 +20,19 @@ void	add_end_token(t_list *parsed_list);
 t_list	*tokenizer(char *command)
 {
 	t_list	*quote_parsed_list;
-	//t_list	*op_parsed_list;
+	t_list	*op_parsed_list;
 
 	quote_parsed_list = parse_quote(command);
-	quote_parsed_list = quote_parsed_list->next;
-	while (quote_parsed_list){
-		printf("%s$   :   %10u?\n",((t_token *)quote_parsed_list->content)->word,((t_token *)quote_parsed_list->content)->type);
-		quote_parsed_list = quote_parsed_list->next;
-	}
-	// op_parsed_list = parse_op(quote_parsed_list);
-	// add_end_token(op_parsed_list);
-	// //merge_quote_nodes(&op_parsed_list);
-	// free(quote_parsed_list);
-	//return (op_parsed_list);
+	// quote_parsed_list = quote_parsed_list->next;
+	// while (quote_parsed_list){
+	// 	printf("%s$   :   %10u?\n",((t_token *)quote_parsed_list->content)->word,((t_token *)quote_parsed_list->content)->type);
+	// 	quote_parsed_list = quote_parsed_list->next;
+	// }
+	op_parsed_list = parse_op(quote_parsed_list);
+	add_end_token(op_parsed_list);
+	//merge_quote_nodes(&op_parsed_list);
+	free(quote_parsed_list);
+	return (op_parsed_list);
 
 
 	return (NULL);
@@ -41,7 +41,8 @@ t_list	*tokenizer(char *command)
 //t_token을 free합니다.
 void	free_token(t_token *token)
 {
-	free(token->word);
+	if (token->word)
+		free(token->word);
 	free(token);
 }
 
@@ -61,10 +62,11 @@ void	add_end_token(t_list *parsed_list)
 int main(){
 	t_list	*op_parsed_list;
 
-	char *str = "( hi\"wq\" \'a\' | by \'\") \'";
+	char *str = "( hi \"wq \"\'a\'| by \'\") \'";
 	op_parsed_list = tokenizer(str);
-	// while (op_parsed_list){
-	// 	printf("%-10s   :   %10u?\n",((t_token *)op_parsed_list->content)->word,((t_token *)op_parsed_list->content)->type);
-	// 	op_parsed_list = op_parsed_list->next;
-	// }
+	while (op_parsed_list){
+		printf("%-10s   :   %10u?\n",((t_token *)op_parsed_list->content)->word,((t_token *)op_parsed_list->content)->type);
+		op_parsed_list = op_parsed_list->next;
+	}
+	(void)op_parsed_list;
 }
