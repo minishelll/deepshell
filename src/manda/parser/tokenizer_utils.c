@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/03 17:09:17 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:19:47 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ void	add_end_token(t_list *parsed_list)
 {
 	t_token	*end_token;
 
-	end_token = (t_token *)ft_malloc(sizeof(t_token));
-	end_token -> word = NULL;
-	end_token -> type = dollar_sign;
+	end_token = new_token(NULL, dollar_sign);
 	ft_lstadd_back(&parsed_list, ft_lstnew(end_token));
 	return ;
 }
