@@ -6,28 +6,28 @@
 /*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 18:04:21 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/29 11:44:38 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/04/01 15:59:33 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax_analyzer.h"
 
-void	reduce(t_list **lr_stack, t_grammar *grammar \
-				, t_action act, t_lr_table *lr_table)
+void	act_reduce(t_list **lr_stack, t_action act, t_grammar *grammar
+													, t_lr_table *lr_table)
 {
 	t_parse_tree	*new;
 	int				go_to_state;
 
 	new = create_parse_tree(lr_stack, grammar[act.num]);
 	go_to_state = get_key_goto(lr_table->go_to \
-								, get_state(lr_stack), new->type);
+								, get_state(*lr_stack), new->type);
 	push(lr_stack, non_terminal, new);
 	push(lr_stack, state, create_state(go_to_state));
 }
 
-void	shift(t_list **lr_stack, t_list **input, t_action act)
+void	act_shift(t_list **lr_stack, t_list **input, t_action act)
 {
-	t_list	*move;
+	t_stack	*move;
 
 	move = pop(input);
 	push(lr_stack, terminal, move);

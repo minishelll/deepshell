@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lr_stack.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:43:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/28 18:11:43 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/01 15:10:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_stack	*pop(t_list **top)
 	t_list	*tmp;
 	t_stack	*stack;
 
+	if (*top == NULL)
+		return (NULL);
 	tmp = *top;
 	*top = (*top)->next;
 	stack = tmp->content;
@@ -35,7 +37,12 @@ void	push(t_list **top, t_kind kind, void *content)
 		new->state = -1;
 		new->ptr = content;
 	}
-	ft_lstadd_front(top, ft_lstnew(new));
+	else
+		new = content;
+	if (*top == NULL)
+		*top = ft_lstnew(new);
+	else
+		ft_lstadd_front(top, ft_lstnew(new));
 }
 
 t_stack	*create_state(int state_num)

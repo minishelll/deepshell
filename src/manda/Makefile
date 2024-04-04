@@ -6,7 +6,7 @@ ifndef SRCDIR
 endif
 
 NAME := minishell
-SRCS := \
+SRCS := main_syntax_analyzer_print.c \
 
 # SRCS(in SRCDIR) ------
 DIRS := parser \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/30 16:09:27 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:37:30 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PARSER_H
 
 # include <stdbool.h>
+# include <stdlib.h>
+# include "libft.h"
 
 /* ********************************** TYPE ********************************** */
 typedef enum e_kind
@@ -36,7 +38,8 @@ typedef enum e_terminal
 	great,
 	dgreat,
 	dless,
-	dollar_sign
+	dollar_sign,
+	undefined
 }	t_termi;
 
 typedef enum e_non_terminal
@@ -71,7 +74,7 @@ typedef struct s_token
 typedef struct s_parse_tree
 {
 	t_ntermi	type;
-	bool		child_type[3];
+	t_kind		child_type[3];
 	void		*child[3];
 }				t_parse_tree;
 
@@ -85,5 +88,11 @@ typedef struct s_parse_tree
 # define S_DGREAT ">>"
 # define S_LPAREN "("
 # define S_RPAREN ")"
+
+/* ******************************** FUNCTION ******************************** */
+t_list	*tokenizer(char *command);
+t_list	*parse_quote(char *command);
+t_list	*parse_op(t_list *quote_parsed_list);
+void	free_token(t_token *token);
 
 #endif

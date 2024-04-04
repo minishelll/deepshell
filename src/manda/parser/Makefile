@@ -6,12 +6,21 @@ ifndef SRCDIR
 endif
 
 NAME := parser.a
-HEAD := parser.h
-SRCS := insert_lr_parser.c \
+HEAD := parser.h \
+		insert_data.h \
+		syntax_analyzer.h \
+
+SRCS := insert_lr_table.c \
 		insert_grammar.c \
 		insert_util.c \
+		tokenizer.c\
+		quote_parser.c\
+		op_parser.c\
+		syntax_analyzer.c \
+		action.c \
+		lr_stack.c \
 
-LDLIBS :=
+LDLIBS := -lft
 
 include $(TOPDIR)/include_make/Variable.mk
 include $(TOPDIR)/include_make/Link.mk
