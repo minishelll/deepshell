@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/03/30 17:33:01 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:08:40 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,11 @@ typedef struct s_parse_tree
 t_list	*tokenizer(char *command);
 t_list	*parse_quote(char *command);
 t_list	*parse_op(t_list *quote_parsed_list);
+void	merge_word_nodes(t_list **list);
+
+//tokenizer_utils
+t_termi	get_token_type(char *str, int len);
+void	add_end_token(t_list *parsed_list);
 void	free_token(t_token *token);
+t_token	*new_token(char *word, t_termi type);
 #endif
