@@ -11,6 +11,12 @@ SRCS := tokenizer.c\
 		tokenizer_quote_parser.c\
 		tokenizer_op_parser.c\
 		tokenizer_utils.c\
+		insert_lr_table.c \
+		insert_grammar.c \
+		insert_util.c \
+		syntax_analyzer.c \
+		action.c \
+		lr_stack.c \
 
 LDLIBS := -lft
 
