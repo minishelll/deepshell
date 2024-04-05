@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   insert_data.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:22:54 by taerankim         #+#    #+#             */
-/*   Updated: 2024/04/02 14:32:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:38:23 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INSERT_DATA_H
 # define INSERT_DATA_H
 
-# include "parser.h"
+# include "input_type.h"
 
 /* ******************************** LR_TABLE ******************************** */
 # define ROW_STATE 40

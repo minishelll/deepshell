@@ -3,20 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_analyzer.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:08:31 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/01 15:19:22 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:41:13 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SYNTAX_ANALYZER_H
 # define SYNTAX_ANALYZER_H
 
-#include "parser.h"
+#include "tokenizer.h"
 #include "insert_data.h"
 #include "libft.h"
-#include<stdio.h>
+
+/* ********************************* STRUCT ********************************* */
+# define LEFT 0
+# define MID 1
+# define RIGHT 2
+
+typedef struct s_parse_tree
+{
+	t_ntermi	type;
+	t_kind		child_type[3];
+	void		*child[3];
+}				t_parse_tree;
 
 typedef struct s_stack
 {

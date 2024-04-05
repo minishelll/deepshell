@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_op_parser.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/03 20:21:19 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:37:50 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "tokenizer.h"
 
-static void				parse_token(t_list **list, char *str);
-static void				token_add_back(t_list **token_list, char *str);
-static void				split_token(t_list **list, char *str);
+static void	parse_token(t_list **list, char *str);
+static void	token_add_back(t_list **token_list, char *str);
+static void	split_token(t_list **list, char *str);
 
 //parsed_token_list를 기존 리스트에 붙여주는 함수
 void	link_list(t_list **prev, t_list **cur, t_list **parsed_token_list)
