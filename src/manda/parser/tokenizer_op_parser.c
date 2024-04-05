@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/03 17:09:02 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:21:19 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void	split_token(t_list **list, char *str)
 	char	**words;
 	char	**temp;
 	int		idx;
+	t_token	*dummy_token;
 
 	idx = -1;
 	words = ft_split(str, ' ');
@@ -73,6 +74,8 @@ static void	split_token(t_list **list, char *str)
 	while (words && *words)
 	{
 		parse_token(list, *(words));
+		dummy_token = new_token(ft_strdup(" "), undefined);
+		ft_lstadd_back(list, ft_lstnew(dummy_token));
 		words++;
 	}
 	while (temp && temp[++idx] != NULL)
@@ -107,7 +110,7 @@ static void	parse_token(t_list **temp, char *str)
 			}
 		}
 	}
-	token_add_back(temp, ft_substr(str, prev_i, i - prev_i));
+	token_add_back(temp, ft_substr(str, prev_i, i - prev_i + 1));
 }
 
 //토큰의 메모리를 할당하고, 타입과 문자열을 초기화하는 함수

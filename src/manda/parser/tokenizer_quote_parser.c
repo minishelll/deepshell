@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/03 17:04:44 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:19:40 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ t_list	*parse_quote(char *cmd)
 static void	token_add_back(t_list **token_list, char *str)
 {
 	t_token	*token;
-	t_token	*dummy_token;
 
-	dummy_token = NULL;
 	if (*str == '\0')
 	{
 		free(str);
@@ -41,15 +39,11 @@ static void	token_add_back(t_list **token_list, char *str)
 	token = (t_token *)ft_malloc(sizeof(t_token));
 	if (*str == '\'' || *str == '\"')
 		token->type = word;
-	if (str[ft_strlen(str) - 1] == ' ')
-		dummy_token = new_token(ft_strdup(" "), undefined);
 	token->word = ft_strtrim(str, " ");
 	if (*(token->word) != '\0')
 		ft_lstadd_back(token_list, ft_lstnew(token));
 	else
 		free_token(token);
-	if (dummy_token)
-		ft_lstadd_back(token_list, ft_lstnew(dummy_token));
 	free(str);
 }
 
