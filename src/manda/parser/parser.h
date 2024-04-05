@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
 /*   Updated: 2024/04/05 13:27:11 by taerakim         ###   ########.fr       */
@@ -14,8 +14,8 @@
 # define PARSER_H
 
 # include <stdbool.h>
-# include "libft.h"
 # include <stdlib.h>
+# include "libft.h"
 
 /* ******************************** LITERAL ********************************* */
 # define S_PIPE "|"
