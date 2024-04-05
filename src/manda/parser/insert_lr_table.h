@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lr_table.h                                         :+:      :+:    :+:   */
+/*   insert_lr_table.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:22:54 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/26 14:24:35 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/04/05 13:47:14 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LR_TABLE_H
-# define LR_TABLE_H
+#ifndef INSERT_LR_TABLE_H
+# define INSERT_LR_TABLE_H
 
 /* ****************************** ACTION TABLE ****************************** */
 # define ACT_0   "|   |   |   |s8 |   |s10|s13|s14|s15|s16|   |"

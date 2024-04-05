@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include "parser.h"
-#include "syntax_analyzer.h"
+#include "parser/syntax_analyzer.h"
 #define RED      "\x1b[31m"
 #define RED      "\x1b[31m"
 #define GREEN    "\x1b[32m"
@@ -68,9 +68,6 @@ void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow)
 		if (parse_tree->child_type[RIGHT] == none)
 			print_parse_tree(parse_tree->child[MID], depth + 1, "└───");
 		else
-
-
-		
 			print_parse_tree(parse_tree->child[MID], depth + 1, "├───");
 	}
 	else if (parse_tree->child_type[MID] == terminal)
@@ -100,20 +97,20 @@ int main()
 	lr_table = insert_lr_table();
 	token = tokenizer(INPUT);
 
-	// char *terminal_str[12] = {"and_if", "or_if", "pipe", "lparen", "rparen", "word", "less", "great", "dgreat", "dless", "dollar_sign", "undefined"};
-	for(t_list *curr = token; curr != NULL; curr = curr->next)
-	{
-		if (((t_token *)curr->content)->word[0] == '(')
-			((t_token *)curr->content)->type = lparen;
-		else if (((t_token *)curr->content)->word[0] == ')')
-			((t_token *)curr->content)->type = rparen;
-		else if (((t_token *)curr->content)->type == undefined)
-			((t_token *)curr->content)->type = word;
-		// printf("%s| ", terminal_str[((t_token *)curr->content)->type]);
-		// printf("%s\n", ((t_token *)curr->content)->word);
-		if (curr->next == NULL)
-			((t_token *)curr->content)->type = dollar_sign;
-	}
+	//// char *terminal_str[12] = {"and_if", "or_if", "pipe", "lparen", "rparen", "word", "less", "great", "dgreat", "dless", "dollar_sign", "undefined"};
+	//for(t_list *curr = token; curr != NULL; curr = curr->next)
+	//{
+	//	if (((t_token *)curr->content)->word[0] == '(')
+	//		((t_token *)curr->content)->type = lparen;
+	//	else if (((t_token *)curr->content)->word[0] == ')')
+	//		((t_token *)curr->content)->type = rparen;
+	//	else if (((t_token *)curr->content)->type == undefined)
+	//		((t_token *)curr->content)->type = word;
+	//	// printf("%s| ", terminal_str[((t_token *)curr->content)->type]);
+	//	// printf("%s\n", ((t_token *)curr->content)->word);
+	//	if (curr->next == NULL)
+	//		((t_token *)curr->content)->type = dollar_sign;
+	//}
 
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
 
