@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:10:43 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/04/03 20:20:00 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:40:31 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "tokenizer.h"
 
 //tokenize를 하는 main 함수
 t_list	*tokenizer(char *command)

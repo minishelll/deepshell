@@ -1,8 +1,9 @@
 #define INPUT "cat | ( echo A | cat -e ) | sleep 5 && ls -l /bin/."
 
 #include <stdio.h>
-#include "parser.h"
+#include "parser/tokenizer.h"
 #include "parser/syntax_analyzer.h"
+
 #define RED      "\x1b[31m"
 #define RED      "\x1b[31m"
 #define GREEN    "\x1b[32m"

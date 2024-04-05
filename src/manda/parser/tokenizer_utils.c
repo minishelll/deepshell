@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/03 20:19:47 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:37:56 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "tokenizer.h"
 
 //문자를 비교해서 해당되는 토큰 타입이 있다면 반환하는 함수
 t_termi	get_token_type(char *str, int len)

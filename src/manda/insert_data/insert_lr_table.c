@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   insert_lr_table.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/04/02 14:32:48 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:31:20 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "insert_data.h"
-#include "lr_table.h"
+#include "insert_lr_table.h"
 #include "libft.h"
 
 static void	parse_goto_data(t_action *table, char **data)

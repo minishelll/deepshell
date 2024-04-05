@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_quote_parser.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/03 20:19:40 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:37:36 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "tokenizer.h"
 
 static void	split_quote(t_list **list, char *cmd);
 static void	join_token(t_list **node);

@@ -6,13 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/28 15:19:34 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:42:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../parser/parser.h"
 #include "insert_data.h"
-#include "grammar.h"
+#include "insert_grammar.h"
 #include "libft.h"
 
 static t_ntermi	get_nontermi_type(char *data)
