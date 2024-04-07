@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 15:00:34 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:42:57 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	handle_subshell(t_syntax_tree *curr, int *left_pipe, int *right_pipe)
 	int	result;
 	int	redi[2];
 
-	if (curr->child[RIGHT] != NULL)
-		open_file(curr->child[RIGHT], redi);
+	if (curr->child[R] != NULL)
+		open_file(curr->child[R], redi);
 	if (left_pipe != NULL)
 	{
 		close(left_pipe[1]);
@@ -35,28 +35,33 @@ int	handle_subshell(t_syntax_tree *curr, int *left_pipe, int *right_pipe)
 		close(right_pipe[0]);
 		dup2(right_pipe[1], STDOUT_FILENO);
 	}
-	//close는 여기서는 해야겠다. 밖에서는 close안했을테니
-	result = execute(curr->child[LEFT]);
+	result = execute(curr->child[L]);
+	if (left_pipe != NULL)
+		close(left_pipe[0]);
+	if (right_pipe != NULL)
+		close(right_pipe[1]);
 	dup2(STDIN_FILENO, STDIN_FILENO);
 	dup2(STDOUT_FILENO, STDOUT_FILENO);
 	return (result);
 }
 
-int	execute(t_syntax_tree *root)//결국 기존에는 좌우를 시키는 애였는데,.. 논리연산자만 그런 동작을 하고... 
+int	execute(t_syntax_tree *root)
 {
 	int	result;
 	int	*pipe_fd;
 
 	pipe_fd = NULL;
 	if (root->type == sym_command)
-		result = execute_cmd(root->child[LEFT], NULL, 0);
+		result = execute_cmd(root->child[L], NULL, 0);
 	else if (root->type == sym_pipe)
 		result = execute_pipe(root, &pipe_fd, 1);
+	else if (root->type == sym_subshell)
+		result = handle_subshell(root->child[L], NULL, NULL);
 	else
 	{
-		result = execute(root->child[LEFT]);
+ 		result = execute(root->child[L]);
 		if (root->type + result == 1)
-			result = execute(root->child[RIGHT]);
+			result = execute(root->child[R]);
 	}
 	return (result);
 }
@@ -69,29 +74,22 @@ int	execute_pipe(t_syntax_tree *curr, int **pipe_fd, int pipe_cnt)
 	if (pipe(curr_pipe) == -1)
 		exit(EXIT_FAILURE);
 	*pipe_fd = pipe_join(*pipe_fd, curr_pipe, pipe_cnt);
-	if (((t_syntax_tree *)curr->child[LEFT])->type == sym_command)
-		result = execute_cmd(curr->child[LEFT], pipe_cnt);
-	else if (((t_syntax_tree *)curr->child[LEFT])->type == sym_pipe)
-		result = execute_pipe(curr->child[LEFT], pipe_fd, pipe_cnt + 1);
-	else if (((t_syntax_tree *)curr->child[LEFT])->type == sym_subshell)
-	{
-		result = handle_subshell(curr->child[LEFT], NULL, curr_pipe);
-		close(curr_pipe[1]);
-	}
-	if (((t_syntax_tree *)curr->child[RIGHT])->type == sym_command)
-		result = execute_cmd(curr->child[RIGHT], pipe_cnt - 1);
-	else if (((t_syntax_tree *)curr->child[RIGHT])->type == sym_pipe)
-		result = execute_pipe(curr->child[RIGHT], pipe_fd, pipe_cnt + 1);
-	else if (((t_syntax_tree *)curr->child[RIGHT])->type == sym_subshell)
-	{
-		result = handle_subshell(curr->child[RIGHT], curr_pipe, NULL);
-		close(curr_pipe[0]);//양쪽이 서브쉘이라면?
-	}
-	//if (depth == 0)
-	//	return (wait_process());
-
+	if (((t_syntax_tree *)curr->child[L])->type == sym_command)
+		execute_start_cmd(curr->child[L], pipe_cnt);
+	else if (((t_syntax_tree *)curr->child[L])->type == sym_pipe)
+		result = execute_pipe(curr->child[L], pipe_fd, pipe_cnt + 1);
+	else if (((t_syntax_tree *)curr->child[L])->type == sym_subshell)
+		result = handle_subshell(curr->child[L], NULL, curr_pipe);
+	if (((t_syntax_tree *)curr->child[R])->type == sym_command \
+		&& pipe_cnt == 1)
+		result = execute_end_cmd(curr->child[R], pipe_cnt - 1);
+	else if (((t_syntax_tree *)curr->child[R])->type == sym_command)
+		execute_mid_cmd(curr->child[R], pipe_cnt - 1);
+	else if (((t_syntax_tree *)curr->child[R])->type == sym_pipe)
+		result = execute_pipe(curr->child[R], pipe_fd, pipe_cnt + 1);
+	else if (((t_syntax_tree *)curr->child[R])->type == sym_subshell)
+		result = handle_subshell(curr->child[R], curr_pipe, NULL);
 	return (result);
-	//return (wait_process()); 보류보류
 }
 
 int	*pipe_join(int *org, int *new, int pipe_cnt)
@@ -99,7 +97,7 @@ int	*pipe_join(int *org, int *new, int pipe_cnt)
 	int	*res;
 	int	i;
 
-	res = (int *)ft_malloc(sizeof(char) * (pipe_cnt * 2));
+	res = (int *)ft_malloc(sizeof(char) * (pipe_cnt * 2 + 1));
 	i = 0;
 	while (i < (pipe_cnt - 1) * 2)
 	{
@@ -108,14 +106,16 @@ int	*pipe_join(int *org, int *new, int pipe_cnt)
 	}
 	res[i] = new[0];
 	res[i + 1] = new[1];
+	res[i + 2] = END;
 	free(org);
 	return (res);
 }
 
-void	wait_process(int last_child, int child_cnt)
+void	wait_process(int last_child, int *pipe_fd)
 {
 	int	statloc;
 	int	exit_code;
+	int	pipe_cnt;
 	int	i;
 
 	exit_code = 0;
@@ -125,7 +125,11 @@ void	wait_process(int last_child, int child_cnt)
 	else if (WIFSIGNALED(statloc))
 		exit_code = WTERMSIG(statloc);
 	i = 0;
-	while (i < child_cnt - 1)
+	while (pipe_fd[i] != END)
+		i++;
+	pipe_cnt = i / 2;
+	i = 0;
+	while (i < pipe_cnt - 1)
 	{
 		wait(0);
 		i++;

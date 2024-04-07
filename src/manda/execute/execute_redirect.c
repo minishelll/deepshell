@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 15:01:44 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/07 15:29:20 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	open_file(t_redi *redi_list, int *redi)
 			redi[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (prevfile != redi[OUTFILE])
 			close(prevfile);
+		//if (open 실ㅠㅐ)
 		curr = curr->next;
 	}
 }

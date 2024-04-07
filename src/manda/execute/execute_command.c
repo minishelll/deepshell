@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 15:24:39 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:50:22 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,19 @@
 //	return (NULL);
 //}
 
-void	close_before_pipe(int *pipe_fd, int end)
+void	close_rest_pipe(int *pipe_fd, int order)
 {
-	int	i;
+	const int	use_pipe = order * 2 - 3;
+	int			i;
 
 	i = 0;
-	while (i < end)
+	while (i < use_pipe)
+	{
+		close(pipe_fd[i]);
+		i++;
+	}
+	i += 2;
+	while (pipe_fd[i] != END)
 	{
 		close(pipe_fd[i]);
 		i++;
@@ -59,7 +66,7 @@ int	execute_only_cmd(t_syntax_tree *command)
 	{
 		redi[INFILE] = INIT;
 		redi[OUTFILE] = INIT;
-		open_file(command->child[RIGHT], redi);
+		open_file(command->child[R], redi);
 		if (redi[INFILE] != INIT)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
@@ -67,7 +74,7 @@ int	execute_only_cmd(t_syntax_tree *command)
 		//execve(program, cmds, env);
 		exit(2);
 	}
-	return (wait_process(pid, 1))
+	return (wait_process(pid, 1));
 }
 
 
@@ -75,7 +82,7 @@ int	execute_only_cmd(t_syntax_tree *command)
 void	execute_start_cmd(t_syntax_tree *command, int *pipe_fd, int order)
 {
 	int	pid;
-	//char	**cmds;
+	int	redi[2];
 	//char	*program;
 	int		*backpipe;
 
@@ -84,25 +91,27 @@ void	execute_start_cmd(t_syntax_tree *command, int *pipe_fd, int order)
 	//	ft_error(SYSTEMCALL_FAILURE, NULL);
 	if (pid == 0)
 	{
-		backpipe = pipe_fd[order * 2];
-		close_before_pipe(pipe_fd, (order - 1) * 2);
-		//cmds = parsing_cmds(orgcmd);
+		backpipe = pipe_fd[(order - 2) * 2];
+		close_rest_pipe(pipe_fd, order);
 		//program = matching_path(path, cmds[0]);
 		//if (program == NULL)
 		//	ft_error(ACCESS_ERROR, cmds[0]);
 		close(backpipe[0]);
-		dup2(file[IN], STDIN_FILENO);
-		dup2(backpipe[1], STDOUT_FILENO);
+		if (redi[INFILE] != INIT)
+			dup2(redi[INFILE], STDIN_FILENO);
+		if (redi[OUTFILE] != INIT)
+			dup2(redi[OUTFILE], STDOUT_FILENO);
+		else
+			dup2(backpipe[1], STDOUT_FILENO);
 		//execve(program, cmds, env);
 		exit(2);
 	}
-	
 }
 
 void	execute_middle_cmd(t_syntax_tree *command, int *pipe_fd, int order)
 {
 	int		pid;
-	//char	**cmds;
+	int		redi[2];
 	//char	*program;
 	int		*frontpipe;
 	int		*backpipe;
@@ -114,41 +123,53 @@ void	execute_middle_cmd(t_syntax_tree *command, int *pipe_fd, int order)
 	{
 		frontpipe = pipe_fd[(order - 1) * 2];
 		backpipe = pipe_fd[order * 2];
-		close_before_pipe(pipe_fd, (order - 1) * 2);
-		//cmds = parsing_cmds(orgcmd);
+		close_rest_pipe(pipe_fd, order);
 		//program = matching_path(path, cmds[0]);
 		//if (program == NULL)
 		//	ft_error(ACCESS_ERROR, cmds[0]);
 		close(frontpipe[1]);
 		close(backpipe[0]);
-		dup2(frontpipe[0], STDIN_FILENO);
-		dup2(backpipe[1], STDOUT_FILENO);
+		if (redi[INFILE] != INIT)
+			dup2(redi[INFILE], STDIN_FILENO);
+		else
+			dup2(frontpipe[0], STDIN_FILENO);
+		if (redi[OUTFILE] != INIT)
+			dup2(redi[OUTFILE], STDOUT_FILENO);
+		else
+			dup2(backpipe[1], STDOUT_FILENO);
 		//execve(program, cmds, env);
 		exit(2);
 	}
 }
 
-void	execute_end_cmd(t_syntax_tree *command, int *pipe_fd)
+int	execute_end_cmd(t_syntax_tree *command, int *pipe_fd)
 {
 	int		pid;
-	//char	**cmds;
+	int		redi[2];
 	//char	*program;
 	int		*frontpipe;
 
 	pid = fork();
-	c//if (pid == -1)
+	//if (pid == -1)
 	//	ft_error(SYSTEMCALL_FAILURE, NULL);
 	if (pid == 0)
 	{
 		frontpipe = pipe_fd[0];
-		//cmds = parsing_cmds(orgcmd);
+		close_rest_pipe(pipe_fd, 1);
 		//program = matching_path(path, cmds[0]);
 		//if (program == NULL)
 		//	ft_error(ACCESS_ERROR, cmds[0]);
 		close(frontpipe[1]);
-		dup2(frontpipe[0], STDIN_FILENO);
-		dup2(file[OUT], STDOUT_FILENO);
+		if (redi[INFILE] != INIT)
+			dup2(redi[INFILE], STDIN_FILENO);
+		if (redi[OUTFILE] != INIT)
+			dup2(redi[OUTFILE], STDOUT_FILENO);
+		else
+			dup2(frontpipe[0], STDIN_FILENO);
 		//execve(program, cmds, env);
 		exit(2);
 	}
+	return (wait_process(pid, pipe_fd));
 }
+
+//결국 pipe는 모두다 전체를 알게될 것이다.
