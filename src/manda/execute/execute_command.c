@@ -6,13 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 17:50:22 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:04:53 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-
-#include "syntax_tree.h"
+#include "execute.h"
 
 //static char	*matching_path(char **path, char *cmd)
 //{
@@ -41,32 +40,35 @@ void	close_rest_pipe(int *pipe_fd, int order)
 	int			i;
 
 	i = 0;
-	while (i < use_pipe)
+	if (order != PIPE_ALL)
+	{
+		while (i < use_pipe)
+		{
+			close(pipe_fd[i]);
+			i++;
+		}
+		i += 2;
+	}
+	while (pipe_fd[i] != PIPE_END)
 	{
 		close(pipe_fd[i]);
 		i++;
 	}
-	i += 2;
-	while (pipe_fd[i] != END)
-	{
-		close(pipe_fd[i]);
-		i++;
-	}
 }
 
-int	execute_only_cmd(t_syntax_tree *command)
+int	execute_only_command(t_syntax_tree *command)
 {
 	int	pid;
 	int	redi[2];
 
+	redi[INFILE] = INIT;
+	redi[OUTFILE] = INIT;
+	open_file(command->child[R], redi);
 	pid = fork();
 	//if (pid == -1)
 	//	ft_error(SYSTEMCALL_FAILURE, NULL);
 	if (pid == 0)
 	{
-		redi[INFILE] = INIT;
-		redi[OUTFILE] = INIT;
-		open_file(command->child[R], redi);
 		if (redi[INFILE] != INIT)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
@@ -74,102 +76,33 @@ int	execute_only_cmd(t_syntax_tree *command)
 		//execve(program, cmds, env);
 		exit(2);
 	}
-	return (wait_process(pid, 1));
+	return (wait_process(pid, NULL));
 }
 
-
-
-void	execute_start_cmd(t_syntax_tree *command, int *pipe_fd, int order)
+int	execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
+														, t_pipe_order order)
 {
 	int	pid;
 	int	redi[2];
-	//char	*program;
-	int		*backpipe;
+	int	result;
 
+	redi[INFILE] = INIT;
+	redi[OUTFILE] = INIT;
+	open_file(command->child[R], redi);
 	pid = fork();
 	//if (pid == -1)
-	//	ft_error(SYSTEMCALL_FAILURE, NULL);
-	if (pid == 0)
+		//ft_error
+	if (pid == 0 && order == start)
+		start_process(command, pipe_fd, cnt, redi);
+	else if (pid == 0 && order == middle)
+		middle_process(command, pipe_fd, cnt, redi);
+	else if (pid == 0 && order == end)
+		end_process(command, pipe_fd, redi);
+	if (order == end)
 	{
-		backpipe = pipe_fd[(order - 2) * 2];
-		close_rest_pipe(pipe_fd, order);
-		//program = matching_path(path, cmds[0]);
-		//if (program == NULL)
-		//	ft_error(ACCESS_ERROR, cmds[0]);
-		close(backpipe[0]);
-		if (redi[INFILE] != INIT)
-			dup2(redi[INFILE], STDIN_FILENO);
-		if (redi[OUTFILE] != INIT)
-			dup2(redi[OUTFILE], STDOUT_FILENO);
-		else
-			dup2(backpipe[1], STDOUT_FILENO);
-		//execve(program, cmds, env);
-		exit(2);
+		close_rest_pipe(pipe_fd, PIPE_ALL);
+		return (wait_process(pid, pipe_fd));
 	}
+	else
+		return (CONTINUE);
 }
-
-void	execute_middle_cmd(t_syntax_tree *command, int *pipe_fd, int order)
-{
-	int		pid;
-	int		redi[2];
-	//char	*program;
-	int		*frontpipe;
-	int		*backpipe;
-
-	pid = fork();
-	//if (pid == -1)
-	//	ft_error(SYSTEMCALL_FAILURE, NULL);
-	if (pid == 0)
-	{
-		frontpipe = pipe_fd[(order - 1) * 2];
-		backpipe = pipe_fd[order * 2];
-		close_rest_pipe(pipe_fd, order);
-		//program = matching_path(path, cmds[0]);
-		//if (program == NULL)
-		//	ft_error(ACCESS_ERROR, cmds[0]);
-		close(frontpipe[1]);
-		close(backpipe[0]);
-		if (redi[INFILE] != INIT)
-			dup2(redi[INFILE], STDIN_FILENO);
-		else
-			dup2(frontpipe[0], STDIN_FILENO);
-		if (redi[OUTFILE] != INIT)
-			dup2(redi[OUTFILE], STDOUT_FILENO);
-		else
-			dup2(backpipe[1], STDOUT_FILENO);
-		//execve(program, cmds, env);
-		exit(2);
-	}
-}
-
-int	execute_end_cmd(t_syntax_tree *command, int *pipe_fd)
-{
-	int		pid;
-	int		redi[2];
-	//char	*program;
-	int		*frontpipe;
-
-	pid = fork();
-	//if (pid == -1)
-	//	ft_error(SYSTEMCALL_FAILURE, NULL);
-	if (pid == 0)
-	{
-		frontpipe = pipe_fd[0];
-		close_rest_pipe(pipe_fd, 1);
-		//program = matching_path(path, cmds[0]);
-		//if (program == NULL)
-		//	ft_error(ACCESS_ERROR, cmds[0]);
-		close(frontpipe[1]);
-		if (redi[INFILE] != INIT)
-			dup2(redi[INFILE], STDIN_FILENO);
-		if (redi[OUTFILE] != INIT)
-			dup2(redi[OUTFILE], STDOUT_FILENO);
-		else
-			dup2(frontpipe[0], STDIN_FILENO);
-		//execve(program, cmds, env);
-		exit(2);
-	}
-	return (wait_process(pid, pipe_fd));
-}
-
-//결국 pipe는 모두다 전체를 알게될 것이다.

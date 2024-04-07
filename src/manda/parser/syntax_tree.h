@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:05:51 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 17:42:58 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:56:49 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_redi
 }				t_redi;
 
 /* ********************************* COMMAND ******************************** */
-# define END -1
 # define INIT -1
 # define INFILE 0
 # define OUTFILE 1
