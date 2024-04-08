@@ -1,1 +1,0 @@
-/Users/sehwjang/Desktop/42/deepshell/src/manda/insert_data/insert_data.h

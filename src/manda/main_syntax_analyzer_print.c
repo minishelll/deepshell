@@ -1,4 +1,4 @@
-#define INPUT "a | (B)"
+#define INPUT "(A | B && C) < infile"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
@@ -123,6 +123,26 @@ void print_syntax_tree(t_syntax_tree *node, int level) {
 	t_redi	*redi;
 	int		flag = 0;
     if (node == NULL) return;
+	if (*(get_syntax_type_name(node->type)) == 'U')
+	{
+		redi_list = (t_list *)node;
+		
+			for (int i = 0; i < level; ++i) printf("  "); // 레벨에 따른 들여쓰기
+			printf("redi  :");
+		while (redi_list)
+		{
+			redi = (t_redi *)redi_list->content;
+			// for (int i = 0; i < level+1; ++i) printf("  "); // 레벨에 따른 들여쓰기
+			printf("%s~",redi->file);
+			redi_list =redi_list->next;
+		}
+		printf("\n");
+		return ;
+	}
+	// if (node->type == sym_subshell)
+	// {
+	// 	print_syntax_tree((void *)node->child[0], level + 1);
+	// }
 	if (node->type == sym_command)
 	{
 		words = (char **)node->child[0];
@@ -131,7 +151,6 @@ void print_syntax_tree(t_syntax_tree *node, int level) {
 		for (int i = 0; i < level+1; ++i) printf("  "); // 레벨에 따른 들여쓰기
 		while (*words)
 		{
-			
 			printf("%s~",*words++);
 		}
 		redi_list = (t_list *)node->child[1];

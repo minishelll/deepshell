@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:07:09 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/08 17:39:22 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:51:10 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ static t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 	temp = (t_parse_tree *)parse_tree->child[LEFT];
 	if (temp->type == subshell)
 	{
-		if (parse_tree->child[RIGHT])//io redirect
+		if (parse_tree->child[MID])//io redirect
 		{
 			redi_list = NULL;
 			new_node = syntax_tree_new(lparen);
-			new_node->child[L] = make_syntax_tree(parse_tree->child[LEFT]);
-			make_redi_list(&redi_list, parse_tree->child[LEFT]);
+			new_node->child[L] = make_syntax_tree(temp->child[MID]);
+			make_redi_list(&redi_list, ((t_parse_tree *)parse_tree->child[MID])->child[0]);
 			new_node->child[R] = redi_list;
 		}
 		else
