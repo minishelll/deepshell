@@ -14,7 +14,8 @@ SRCS := tokenizer.c\
 		syntax_analyzer.c \
 		syntax_action.c \
 		syntax_lr_stack.c \
-
+		semantic_analyzer.c	\
+		
 LDLIBS := -lft
 
 include $(TOPDIR)/include_make/Variable.mk
