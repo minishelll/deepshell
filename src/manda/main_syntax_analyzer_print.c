@@ -1,8 +1,10 @@
-#define INPUT "cat | ( echo A | cat -e ) | sleep 5 && ls -l /bin/."
+#define INPUT "(A | B && C) < infile"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
 #include "parser/syntax_analyzer.h"
+#include "parser/syntax_tree.h"
+#include "parser/semantic_analyzer.h"
 
 #define RED      "\x1b[31m"
 #define RED      "\x1b[31m"
@@ -87,13 +89,109 @@ void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow)
 	return ;
 }
 
+// void print_syntax_tree(t_syntax_tree *node) {
+// 	if (node == NULL)
+// 		return;
+//     if (node->type == sym_command) {
+// 		printf("Node Type: word\n");
+// 		return; // 기저 조건: 노드가 NULL이면 종료
+// 	}
+//     // 현재 노드의 내용 출력
+//     printf("Node Type: %d\n", node->type);
+    
+//     // 자식 노드를 재귀적으로 방문
+//     for (int i = 0; i < 2; ++i) {
+//         print_syntax_tree((t_syntax_tree *)node->child[i]);
+//     }
+// }
+
+const char* get_syntax_type_name(t_symbol type) {
+    switch (type) {
+        case sym_and: return "AND";
+        case sym_or: return "OR";
+        case sym_pipe: return "PIPE";
+        case sym_subshell: return "SUBSHELL";
+        case sym_command: return "COMMAND";
+        default: return "UNKNOWN";
+    }
+}
+
+// t_syntax_tree를 출력하는 함수
+void print_syntax_tree(t_syntax_tree *node, int level) {
+	char **words;
+	t_list	*redi_list;
+	t_redi	*redi;
+	int		flag = 0;
+    if (node == NULL) return;
+	if (*(get_syntax_type_name(node->type)) == 'U')
+	{
+		redi_list = (t_list *)node;
+		
+			for (int i = 0; i < level; ++i) printf("  "); // 레벨에 따른 들여쓰기
+			printf("redi  :");
+		while (redi_list)
+		{
+			redi = (t_redi *)redi_list->content;
+			// for (int i = 0; i < level+1; ++i) printf("  "); // 레벨에 따른 들여쓰기
+			printf("%s~",redi->file);
+			redi_list =redi_list->next;
+		}
+		printf("\n");
+		return ;
+	}
+	// if (node->type == sym_subshell)
+	// {
+	// 	print_syntax_tree((void *)node->child[0], level + 1);
+	// }
+	if (node->type == sym_command)
+	{
+		words = (char **)node->child[0];
+		for (int i = 0; i < level; ++i) printf("  "); // 레벨에 따른 들여쓰기
+		printf("words :\n");
+		for (int i = 0; i < level+1; ++i) printf("  "); // 레벨에 따른 들여쓰기
+		while (*words)
+		{
+			printf("%s~",*words++);
+		}
+		redi_list = (t_list *)node->child[1];
+		printf("\n");
+		
+		if (redi_list)
+		{
+			flag = 1;
+			for (int i = 0; i < level + 1; ++i) printf("  "); // 레벨에 따른 들여쓰기
+			printf("redi  :");
+		}
+		while (redi_list)
+		{
+			redi = (t_redi *)redi_list->content;
+			// for (int i = 0; i < level+1; ++i) printf("  "); // 레벨에 따른 들여쓰기
+			printf("%s~",redi->file);
+			redi_list =redi_list->next;
+		}
+		if(flag)
+			printf("\n");
+		return ;
+	}
+
+    // 현재 노드의 정보 출력
+    for (int i = 0; i < level; ++i) printf("  "); // 레벨에 따른 들여쓰기
+    printf("%s\n", get_syntax_type_name(node->type));
+
+    // 자식 노드가 있다면 재귀적으로 출력
+    for (int i = 0; i < 2; ++i) {
+        if (node->child[i] != NULL) {
+            print_syntax_tree((void *)node->child[i], level + 1);
+        }
+    }
+}
 int main()
 {
 	t_grammar		*grammar;
 	t_lr_table		*lr_table;
 	t_list			*token;
 	t_parse_tree	*parse_tree;
-
+	t_syntax_tree	*syntax_tree;
 	grammar = insert_grammar();
 	lr_table = insert_lr_table();
 	token = tokenizer(INPUT);
@@ -114,8 +212,9 @@ int main()
 	//}
 
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
-
 	print_parse_tree(parse_tree, 0, "└───");
+	syntax_tree = semantic_analyzer(parse_tree);
+	print_syntax_tree(syntax_tree, 0);
 	printf(RED "FINISH" );
 	printf(RESET "\n" );
 }

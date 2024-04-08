@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:05:51 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 17:56:49 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:20:00 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ typedef struct s_redi
 
 typedef enum e_symbol
 {
-	sym_if,
+	sym_or,
 	sym_and,
 	sym_pipe,
-	//sym_only_cmd,//오직 본인타입
-	sym_command,//좌 cmds, 우 redi_list
+	//sym_only_cmd,//본인 타입
+	sym_command,//좌 char **cmds, 우 t_redi *redi_list
 	sym_subshell//좌 and_or, 우 redi_list
 }	t_symbol;
 

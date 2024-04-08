@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:00:54 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:16:24 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	execute_only_command(t_syntax_tree *command)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
 			dup2(redi[OUTFILE], STDOUT_FILENO);
-		execve(((char **)command->child[L])[0], command->child[L], env);
+		execve(((char **)command->child[L])[0], command->child[L], NULL);
 		exit(2);
 	}
 	return (wait_process(pid, NULL));
