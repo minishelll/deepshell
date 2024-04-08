@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:07:09 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/08 16:05:24 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:39:22 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 {
 	t_syntax_tree	*new_node;
 	t_list			*redi_list;
-
+	t_parse_tree	*temp;
+	
 	if (parse_tree->child_type[MID] == terminal)
 	{
 		new_node = syntax_tree_new(((t_token *)parse_tree->child[MID])->type);
@@ -43,11 +44,11 @@ static t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 		new_node->child[R] = make_syntax_tree(parse_tree->child[RIGHT]);
 		return (new_node);
 	}
-	else if (parse_tree->child_type[LEFT] == subshell)
+	temp = (t_parse_tree *)parse_tree->child[LEFT];
+	if (temp->type == subshell)
 	{
 		if (parse_tree->child[RIGHT])//io redirect
 		{
-
 			redi_list = NULL;
 			new_node = syntax_tree_new(lparen);
 			new_node->child[L] = make_syntax_tree(parse_tree->child[LEFT]);
@@ -57,8 +58,7 @@ static t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 		else
 		{
 			new_node = syntax_tree_new(lparen);
-			new_node->child[L] = make_syntax_tree(parse_tree->child[LEFT]);
-			new_node->child[R] = make_syntax_tree(parse_tree->child[MID]);
+			new_node->child[L] = make_syntax_tree(temp->child[MID]);
 		}
 		return (new_node);
 	}

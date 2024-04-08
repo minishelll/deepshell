@@ -1,4 +1,4 @@
-#define INPUT "cat  > out1 <in1 | ( echo A | cat -e ) >out2 | sleep 5 && ls -l /bin/."
+#define INPUT "a | (B)"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
