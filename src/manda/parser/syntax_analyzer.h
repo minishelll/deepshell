@@ -6,28 +6,16 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:08:31 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 15:40:33 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:24:01 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SYNTAX_ANALYZER_H
 # define SYNTAX_ANALYZER_H
 
-# include "tokenizer.h"
+# include "parser.h"
 # include "insert_data.h"
 # include "libft.h"
-
-/* ********************************* STRUCT ********************************* */
-# define LEFT 0
-# define MID 1
-# define RIGHT 2
-
-typedef struct s_parse_tree
-{
-	t_ntermi	type;
-	t_kind		child_type[3];
-	void		*child[3];
-}				t_parse_tree;
 
 typedef struct s_stack
 {

@@ -230,6 +230,7 @@ int main()
 	//exit(1);
 	printf(RED "FINISH" );
 	printf(RESET "\n" );
+	exit(0);
 }
 
 void	free_parse_tree(t_parse_tree *parse_tree)

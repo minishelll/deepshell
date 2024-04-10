@@ -6,26 +6,33 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 17:23:00 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:24:02 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax_analyzer.h"
 
-t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar)
+static int	_get_child_cnt(t_grammar grammar)
 {
-	t_parse_tree	*new;
-	t_stack			*tmp[3];
-	int				child_cnt;
-	int				i;
+	int	child_cnt;
 
 	child_cnt = 0;
 	while (child_cnt < 3 && grammar.after[child_cnt][KIND] != none)
 		child_cnt++;
+	return (child_cnt);
+}
+
+t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar)
+{
+	const int		child_cnt = _get_child_cnt(grammar);
+	t_parse_tree	*new;
+	t_stack			*tmp[3];
+	int				i;
+
 	new = (t_parse_tree *)ft_calloc(sizeof(t_parse_tree), 1);
 	new->type = grammar.before;
-	i = 0;
-	while (i < 3)
+	i = -1;
+	while (++i < 3)
 	{
 		if (i < child_cnt)
 		{
@@ -36,8 +43,10 @@ t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar)
 		}
 		else
 			new->child_type[i] = none;
-		i++;
 	}
+	i = -1;
+	while (++i < child_cnt)
+		free(tmp[i]);
 	return (new);
 }
 
@@ -71,11 +80,9 @@ t_parse_tree	*syntax_analyzer(t_list *input
 			break ;
 		}
 		else if (key.act == init)
-			exit(EXIT_FAILURE);
-		//	ft_error(SYNTAX_ERROR, input->word);
+			ft_error(error_syntax, input->word);
 	}
-	//ft_lstclear(&lr_stack, (void *)free_stack);
-	//free(lr_stack);
-	//exit(1);
+	ft_lstdelone(input, free);
+	ft_lstdelone(lr_stack, free);
 	return (parse_tree);
 }
