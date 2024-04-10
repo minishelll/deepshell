@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_analyzer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/01 20:03:04 by taerankim        ###   ########.fr       */
+/*   Updated: 2024/04/10 17:23:00 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar)
 	return (new);
 }
 
+void	free_stack(t_stack *stack)
+{
+	if (stack->ptr)
+		free_stack(stack->ptr);
+	free(stack);
+}
+
 t_parse_tree	*syntax_analyzer(t_list *input
 								, t_grammar *grammar, t_lr_table *lr_table)
 {
@@ -67,5 +74,8 @@ t_parse_tree	*syntax_analyzer(t_list *input
 			exit(EXIT_FAILURE);
 		//	ft_error(SYNTAX_ERROR, input->word);
 	}
+	//ft_lstclear(&lr_stack, (void *)free_stack);
+	//free(lr_stack);
+	//exit(1);
 	return (parse_tree);
 }

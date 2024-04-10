@@ -1,4 +1,4 @@
-#define INPUT "(echo A && echo B && echo C)"
+#define INPUT "echo a > out a a a a a "
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
@@ -172,6 +172,37 @@ void print_syntax_tree(t_syntax_tree *node, int level) {
     }
 }
 
+void	free_lr_table(t_lr_table *lr_table)
+{
+    int	i;
+
+    i = 0;
+    while (i < ROW_STATE)
+    {
+        free(lr_table->action[i]);
+        i++;
+    }
+    free(lr_table->action);
+    i = 0;
+    while (i < ROW_STATE)
+    {
+        free(lr_table->go_to[i]);
+        i++;
+    }
+    free(lr_table->go_to);
+    free(lr_table);
+}
+
+void	free_grammar(t_grammar *grammar)
+{
+	free(grammar);
+}
+
+void	free_tokens(t_list *token)
+{
+	ft_lstclear(&token, (void *)free_token);
+}
+
 void	leak(void)
 {
 	system("leaks minishell");
@@ -182,36 +213,20 @@ int main()
 	t_lr_table		*lr_table;
 	t_list			*token;
 	t_parse_tree	*parse_tree;
-	t_syntax_tree	*syntax_tree;
+	//t_syntax_tree	*syntax_tree;
 
-	//atexit(leak);
+	atexit(leak);
 	grammar = insert_grammar();
 	lr_table = insert_lr_table();
 	token = tokenizer(INPUT);
 
-	//// char *terminal_str[12] = {"and_if", "or_if", "pipe", "lparen", "rparen", "word", "less", "great", "dgreat", "dless", "dollar_sign", "undefined"};
-	//for(t_list *curr = token; curr != NULL; curr = curr->next)
-	//{
-	//	if (((t_token *)curr->content)->word[0] == '(')
-	//		((t_token *)curr->content)->type = lparen;
-	//	else if (((t_token *)curr->content)->word[0] == ')')
-	//		((t_token *)curr->content)->type = rparen;
-	//	else if (((t_token *)curr->content)->type == undefined)
-	//		((t_token *)curr->content)->type = word;
-	//	// printf("%s| ", terminal_str[((t_token *)curr->content)->type]);
-	//	// printf("%s\n", ((t_token *)curr->content)->word);
-	//	if (curr->next == NULL)
-	//		((t_token *)curr->content)->type = dollar_sign;
-	//}
-	
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
-	
-	print_parse_tree(parse_tree, 0, "└───");
-	//free_parse_tree(parse_tree);
-	//free_parse_tree(syntax_tree);
-	
-	syntax_tree = semantic_analyzer(parse_tree);
-	print_syntax_tree(syntax_tree, 0);
+	free_parse_tree(parse_tree);
+	free_lr_table(lr_table);
+	free_grammar(grammar);
+	//free_tokens(token);
+	//syntax_tree = semantic_analyzer(parse_tree);
+	//print_syntax_tree(syntax_tree, 0);
 	//exit(1);
 	printf(RED "FINISH" );
 	printf(RESET "\n" );
@@ -228,8 +243,6 @@ void	free_parse_tree(t_parse_tree *parse_tree)
 			free_token(parse_tree->child[idx]);
 		else if (parse_tree->child_type[idx] == non_terminal)
 			free_parse_tree(parse_tree->child[idx]);
-		else
-			return ;
 		idx ++;
 	}
 	free(parse_tree);
