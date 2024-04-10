@@ -1,4 +1,4 @@
-#define INPUT "cat | ( echo A | cat -e ) | sleep 5 && ls -l /bin/."
+#define INPUT "A | B"
 
 #include <stdio.h>
 #include "parser.h"
@@ -86,6 +86,11 @@ void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow)
 	return ;
 }
 
+void	foo()
+{
+	system("leaks minishell");
+}
+
 int main()
 {
 	t_grammar		*grammar;
@@ -93,6 +98,7 @@ int main()
 	t_list			*token;
 	t_parse_tree	*parse_tree;
 
+	atexit(foo);
 	grammar = insert_grammar();
 	lr_table = insert_lr_table();
 	token = tokenizer(INPUT);
@@ -117,4 +123,5 @@ int main()
 	print_parse_tree(parse_tree, 0, "└───");
 	printf(RED "FINISH" );
 	printf(RESET "\n" );
+	exit(0);
 }

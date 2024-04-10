@@ -15,8 +15,8 @@ SRCS := tokenizer.c\
 		insert_grammar.c \
 		insert_util.c \
 		syntax_analyzer.c \
-		action.c \
-		lr_stack.c \
+		syntax_action.c \
+		syntax_lr_stack.c \
 
 LDLIBS := -lft
 
