@@ -1,4 +1,4 @@
-#define INPUT "(A | B && C) < infile"
+#define INPUT "(echo A && echo B && echo C)"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
@@ -14,6 +14,8 @@
 #define MAGENTA  "\x1b[35m"
 #define CYAN     "\x1b[36m"
 #define RESET    "\x1b[0m"
+
+void	free_parse_tree(t_parse_tree *parse_tree);
 
 void	token_print(t_token *token, int depth, char *arrow)
 {
@@ -88,22 +90,6 @@ void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow)
 		token_print(parse_tree->child[RIGHT], depth, "└───");
 	return ;
 }
-
-// void print_syntax_tree(t_syntax_tree *node) {
-// 	if (node == NULL)
-// 		return;
-//     if (node->type == sym_command) {
-// 		printf("Node Type: word\n");
-// 		return; // 기저 조건: 노드가 NULL이면 종료
-// 	}
-//     // 현재 노드의 내용 출력
-//     printf("Node Type: %d\n", node->type);
-    
-//     // 자식 노드를 재귀적으로 방문
-//     for (int i = 0; i < 2; ++i) {
-//         print_syntax_tree((t_syntax_tree *)node->child[i]);
-//     }
-// }
 
 const char* get_syntax_type_name(t_symbol type) {
     switch (type) {
@@ -185,6 +171,11 @@ void print_syntax_tree(t_syntax_tree *node, int level) {
         }
     }
 }
+
+void	leak(void)
+{
+	system("leaks minishell");
+}
 int main()
 {
 	t_grammar		*grammar;
@@ -192,6 +183,8 @@ int main()
 	t_list			*token;
 	t_parse_tree	*parse_tree;
 	t_syntax_tree	*syntax_tree;
+
+	//atexit(leak);
 	grammar = insert_grammar();
 	lr_table = insert_lr_table();
 	token = tokenizer(INPUT);
@@ -210,11 +203,40 @@ int main()
 	//	if (curr->next == NULL)
 	//		((t_token *)curr->content)->type = dollar_sign;
 	//}
-
+	
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
+	
 	print_parse_tree(parse_tree, 0, "└───");
+	//free_parse_tree(parse_tree);
+	//free_parse_tree(syntax_tree);
+	
 	syntax_tree = semantic_analyzer(parse_tree);
 	print_syntax_tree(syntax_tree, 0);
+	//exit(1);
 	printf(RED "FINISH" );
 	printf(RESET "\n" );
 }
+
+void	free_parse_tree(t_parse_tree *parse_tree)
+{
+	int	idx;
+
+	idx = 0;
+	while (idx < 3)
+	{
+		if (parse_tree->child_type[idx] == terminal)
+			free_token(parse_tree->child[idx]);
+		else if (parse_tree->child_type[idx] == non_terminal)
+			free_parse_tree(parse_tree->child[idx]);
+		else
+			return ;
+		idx ++;
+	}
+	free(parse_tree);
+	return ;
+}
+
+// none = -1,
+// 	terminal,
+// 	non_terminal,
+// 	state

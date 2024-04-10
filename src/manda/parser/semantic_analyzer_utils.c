@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   semantic_analyzer_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwanii <sehwanii@student.42.fr>          #+#  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-09 06:38:39 by sehwanii          #+#    #+#             */
-/*   Updated: 2024-04-09 06:38:39 by sehwanii         ###   ########.fr       */
+/*   Created: 2024/04/09 06:38:39 by sehwanii          #+#    #+#             */
+/*   Updated: 2024/04/10 16:09:26 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "semantic_analyzer.h"
-#include "stdbool.h"
+
 t_syntax_tree	*syntax_tree_new(t_termi type)
 {
 	t_syntax_tree	*new_node;
@@ -39,7 +39,7 @@ void	make_cmd_node(t_syntax_tree *node, t_parse_tree *parse_tree)
 
 	cmd_list = NULL;
 	redi_list = NULL;
-	traversal_words(&cmd_list, &redi_list, parse_tree);
+	make_word_list(&cmd_list, &redi_list, parse_tree);
 	size = ft_lstsize(cmd_list);
 	cmds = (char **)ft_malloc(sizeof(char *) * (size + 1));
 	cmds[size] = NULL;
@@ -49,7 +49,6 @@ void	make_cmd_node(t_syntax_tree *node, t_parse_tree *parse_tree)
 		cmds[size++] = cmd_list->content;
 		cmd_list = cmd_list->next;
 	}
-
 	node->child[0] = (void *)cmds;
 	node->child[1] = redi_list;
 }
@@ -91,6 +90,7 @@ t_syntax_tree	*make_subshell_node(t_parse_tree *parse_tree)
 	t_syntax_tree	*new_node;
 	t_list			*redi_list;
 	t_parse_tree	*sub_shell_tree;
+	t_parse_tree	*redi_tree;
 
 	sub_shell_tree = (t_parse_tree *)parse_tree->child[LEFT];
 	if (parse_tree->child[MID])
@@ -98,13 +98,15 @@ t_syntax_tree	*make_subshell_node(t_parse_tree *parse_tree)
 		redi_list = NULL;
 		new_node = syntax_tree_new(lparen);
 		new_node->child[L] = make_syntax_tree(sub_shell_tree->child[MID]);
-		make_redi_list(&redi_list, ((t_parse_tree *)parse_tree->child[MID])->child[0]);
+		redi_tree = (t_parse_tree *)parse_tree->child[MID];
+		make_redi_list(&redi_list, redi_tree->child[0]);
 		new_node->child[R] = redi_list;
 	}
 	else
 	{
 		new_node = syntax_tree_new(lparen);
 		new_node->child[L] = make_syntax_tree(sub_shell_tree->child[MID]);
+		new_node->child[R] = NULL;
 	}
 	return (new_node);
 }
