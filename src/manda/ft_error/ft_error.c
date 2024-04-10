@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:24:58 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:07:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	_print_msg_to_stderr(t_error_type errcase, char *target)
 {
 	char	*message;
 
-	if (errcase == error_file)
+	if (errcase == error_infile \
+	|| errcase == error_outfile)
 		message = strerror(errno);
 	if (errcase == error_access)
 		message = "command not found";
@@ -39,10 +40,10 @@ void	ft_error(t_error_type errcase, char *target)
 		exit(EXIT_FAILURE);
 	}
 	_print_msg_to_stderr(errcase, target);
-	if (errcase == INPUT_REDIRECTION_ERROR)
+	if (errcase == error_infile)
 		return ;
-	if (errcase == OUTPUT_REDIRECTION_ERROR)
+	if (errcase == error_outfile)
 		exit(EXIT_FAILURE);
-	if (errcase == ACCESS_ERROR)
+	if (errcase == error_access)
 		exit(127);
 }

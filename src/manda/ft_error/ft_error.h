@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 10:01:56 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:06:31 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ typedef enum e_error_type
 	error_systemcall = -127,
 	error_syntax,
 	error_access,
-	error_file,
+	error_infile,
+	error_outfile,
 	error_built_in
 }	t_error_type;
 

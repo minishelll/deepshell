@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:36:34 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:47:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # define CONTINUE -1
 # define PIPE_END -1
 # define PIPE_ALL -1
+
+# define READ 0
+# define WRITE 0
+
 typedef enum e_pipe_order
 {
 	parent = -1,

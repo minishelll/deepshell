@@ -1,4 +1,4 @@
-#define INPUT "/bin/echo A"
+#define INPUT "( /bin/echo A && /bin/echo B ) >out | /bin/ls"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
@@ -215,7 +215,9 @@ int main()
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
 	//print_parse_tree(parse_tree, 0, "└───");
 	syntax_tree = semantic_analyzer(parse_tree);
+	//printf(BLUE "-----------print_syntax_tree\n" );
 	//print_syntax_tree(syntax_tree, 0);
-	printf(RED "exit: %d", execute(syntax_tree));
+	printf(RESET "-----------result\n" );
+	printf(RED "-----------exit: %d", execute(syntax_tree));
 	printf(RESET "\n" );
 }

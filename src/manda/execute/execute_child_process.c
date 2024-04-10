@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:32:15 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:17:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void	end_process(char **cmds, int *pipe_fd, int *redi)
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)
 	//	ft_error(ACCESS_ERROR, cmds[0]);
-	close(frontpipe[1]);
+	
+	//close(frontpipe[1]);
 	if (redi[INFILE] != INIT)
 		dup2(redi[INFILE], STDIN_FILENO);
 	if (redi[OUTFILE] != INIT)
