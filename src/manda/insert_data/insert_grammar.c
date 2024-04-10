@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_grammar.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 19:13:12 by taerankim         #+#    #+#             */
-/*   Updated: 2024/04/05 16:42:42 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:23:59 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
