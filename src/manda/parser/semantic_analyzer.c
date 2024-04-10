@@ -6,26 +6,12 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:07:09 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/10 16:02:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:42:56 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "semantic_analyzer.h"
-
-void	make_word_list(t_list **cmd, t_list **redi, t_parse_tree *parse_tree);
-
-t_syntax_tree	*semantic_analyzer(t_parse_tree *parse_tree)
-{
-	t_syntax_tree	*syntax_tree;
-	//int				idx;
-
-	//idx = 0;
-	syntax_tree = (t_syntax_tree *)ft_malloc(sizeof(t_syntax_tree));
-	syntax_tree = make_syntax_tree(parse_tree);
-	//exit(0);
-	return (syntax_tree);
-}
 
 t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 {
@@ -56,6 +42,18 @@ t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 	return (NULL);
 }
 
+void	make_redi_list(t_list **redi_list, t_parse_tree *parse_tree)
+{
+	if (parse_tree->type == io_redirect)
+	{
+		ft_lstadd_back(redi_list, ft_lstnew(make_redi_node(parse_tree)));
+		return ;
+	}
+	make_redi_list(redi_list, parse_tree->child[LEFT]);
+	if (parse_tree->child[MID] != NULL)
+		make_redi_list(redi_list, parse_tree->child[MID]);
+}
+
 void	make_word_list(t_list **cmd, t_list **redi, t_parse_tree *parse_tree)
 {
 	t_list	*new_node;
@@ -82,14 +80,28 @@ void	make_word_list(t_list **cmd, t_list **redi, t_parse_tree *parse_tree)
 		make_word_list(cmd, redi, parse_tree->child[1]);
 }
 
-void	make_redi_list(t_list **redi_list, t_parse_tree *parse_tree)
+void	free_parse_tree(t_parse_tree *parse_tree)
 {
-	if (parse_tree->type == io_redirect)
+	int	idx;
+
+	idx = 0;
+	while (idx < 3)
 	{
-		ft_lstadd_back(redi_list, ft_lstnew(make_redi_node(parse_tree)));
-		return ;
+		if (parse_tree->child_type[idx] == terminal)
+			free(parse_tree->child[idx]);
+		else if (parse_tree->child_type[idx] == non_terminal)
+			free_parse_tree(parse_tree->child[idx]);
+		idx ++;
 	}
-	make_redi_list(redi_list, parse_tree->child[LEFT]);
-	if (parse_tree->child[MID] != NULL)
-		make_redi_list(redi_list, parse_tree->child[MID]);
+	free(parse_tree);
+	return ;
+}
+
+t_syntax_tree	*semantic_analyzer(t_parse_tree *parse_tree)
+{
+	t_syntax_tree	*syntax_tree;
+
+	syntax_tree = make_syntax_tree(parse_tree);
+	free_parse_tree(parse_tree);
+	return (syntax_tree);
 }

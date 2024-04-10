@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 06:38:39 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/04/10 16:09:26 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:34:00 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	make_cmd_node(t_syntax_tree *node, t_parse_tree *parse_tree)
 {
 	char	**cmds;
 	t_list	*cmd_list;
+	t_list	*tmp;
 	t_list	*redi_list;
 	int		size;
 
@@ -44,10 +45,13 @@ void	make_cmd_node(t_syntax_tree *node, t_parse_tree *parse_tree)
 	cmds = (char **)ft_malloc(sizeof(char *) * (size + 1));
 	cmds[size] = NULL;
 	size = 0;
+	tmp = cmd_list;
 	while (cmd_list)
 	{
 		cmds[size++] = cmd_list->content;
+		tmp = cmd_list;
 		cmd_list = cmd_list->next;
+		free(tmp);
 	}
 	node->child[0] = (void *)cmds;
 	node->child[1] = redi_list;

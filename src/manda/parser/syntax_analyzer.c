@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 18:24:02 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:35:49 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ t_parse_tree	*syntax_analyzer(t_list *input
 			parse_tree = create_parse_tree(&lr_stack, grammar[0]);
 			break ;
 		}
-		else if (key.act == init)
-			ft_error(error_syntax, input->word);
+		// else if (key.act == init)
+		// 	ft_error(error_syntax, input->word);
 	}
 	ft_lstdelone(input, free);
 	ft_lstdelone(lr_stack, free);
