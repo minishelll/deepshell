@@ -9,7 +9,8 @@ NAME := minishell
 SRCS := main_syntax_analyzer_print.c \
 
 # SRCS(in SRCDIR) ------
-DIRS := insert_data \
+DIRS := ft_error \
+		insert_data \
 		parser \
 
 SUBS := $(addsuffix .a,$(DIRS))

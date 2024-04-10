@@ -6,14 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 18:37:26 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:55:55 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
-#include <errno.h>
 #include <stddef.h>
 #include "execute.h"
+#include "ft_error.h"
 
 static void	_here_doc(char *delimiter)
 {
@@ -22,14 +22,10 @@ static void	_here_doc(char *delimiter)
 	int			tmpfile;
 
 	tmpfile = open(TMPFILE_IN_HOMEDIR, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	//if (tmpfile == ERROR)
-	//	ft_error(SYSTEMCALL_FAILURE, NULL);
+	if (tmpfile == ERROR)
+		ft_error(error_file, TMPFILE_IN_HOMEDIR);
 	while (1)
 	{
-		//ft_putstr_fd("> ", 1);
-		//in = get_next_line(STDIN_FILENO);
-		//if (errno == ENOMEM)
-		//	ft_error(SYSTEMCALL_FAILURE, NULL);
 		in = readline("> ");
 		//if (in == NULL)
 		//	break ;
@@ -57,15 +53,17 @@ static void	_handle_file_open(t_redi *curr, int *redi)
 		redi[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (curr->type == append)
 		redi[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	//if (errno != 0)
-	//	ft_error();
+	if (errno != 0)
+		ft_error(error_file, curr->file);
 }
 
-void	open_file(t_redi *redi_list, int *redi)
+int	open_file(t_redi *redi_list, int *redi)
 {
 	t_redi	*curr;
 	int		prevfile;
 
+	redi[INFILE] = INIT;
+	redi[OUTFILE] = INIT;
 	curr = redi_list;
 	while (curr != NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 19:05:05 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:56:46 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include "syntax_tree.h"
 
 # define TMPFILE_IN_HOMEDIR "/Users/taerakim/tmp"
+//# define TMPFILE_IN_HOMEDIR "$(HOME)/tmp"
 # define CONTINUE -1
 # define PIPE_END -1
 # define PIPE_ALL -1
-
 typedef enum e_pipe_order
 {
 	parent = -1,

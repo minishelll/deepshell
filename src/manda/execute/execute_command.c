@@ -6,12 +6,13 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 19:04:53 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:00:54 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "execute.h"
+#include "ft_error.h"
 
 //static char	*matching_path(char **path, char *cmd)
 //{
@@ -61,19 +62,17 @@ int	execute_only_command(t_syntax_tree *command)
 	int	pid;
 	int	redi[2];
 
-	redi[INFILE] = INIT;
-	redi[OUTFILE] = INIT;
 	open_file(command->child[R], redi);
 	pid = fork();
-	//if (pid == -1)
-	//	ft_error(SYSTEMCALL_FAILURE, NULL);
+	if (pid == -1)
+		ft_error(error_systemcall, NULL);
 	if (pid == 0)
 	{
 		if (redi[INFILE] != INIT)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
 			dup2(redi[OUTFILE], STDOUT_FILENO);
-		//execve(program, cmds, env);
+		execve(((char **)command->child[L])[0], command->child[L], env);
 		exit(2);
 	}
 	return (wait_process(pid, NULL));
@@ -90,14 +89,14 @@ int	execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
 	redi[OUTFILE] = INIT;
 	open_file(command->child[R], redi);
 	pid = fork();
-	//if (pid == -1)
-		//ft_error
+	if (pid == -1)
+		ft_error(error_systemcall, NULL);
 	if (pid == 0 && order == start)
-		start_process(command, pipe_fd, cnt, redi);
+		start_process(command->child[L], pipe_fd, cnt, redi);
 	else if (pid == 0 && order == middle)
-		middle_process(command, pipe_fd, cnt, redi);
+		middle_process(command->child[L], pipe_fd, cnt, redi);
 	else if (pid == 0 && order == end)
-		end_process(command, pipe_fd, redi);
+		end_process(command->child[L], pipe_fd, redi);
 	if (order == end)
 	{
 		close_rest_pipe(pipe_fd, PIPE_ALL);

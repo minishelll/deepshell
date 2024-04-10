@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/07 19:03:57 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:23:49 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ int	execute_pipe(t_syntax_tree *curr, int **pipe_fd, int pipe_cnt)
 		exit(EXIT_FAILURE);
 	*pipe_fd = pipe_join(*pipe_fd, curr_pipe, pipe_cnt);
 	if (((t_syntax_tree *)curr->child[L])->type == sym_command)
-		execute_start_cmd(curr->child[L], pipe_cnt);
+		result = execute_command(curr->child[L], pipe_fd, pipe_cnt, start);
 	else if (((t_syntax_tree *)curr->child[L])->type == sym_pipe)
 		result = execute_pipe(curr->child[L], pipe_fd, pipe_cnt + 1);
 	else if (((t_syntax_tree *)curr->child[L])->type == sym_subshell)
 		result = _handle_subshell(curr->child[L], NULL, curr_pipe);
 	if (((t_syntax_tree *)curr->child[R])->type == sym_command \
 		&& pipe_cnt == 1)
-		result = execute_end_cmd(curr->child[R], pipe_cnt - 1);
+		result = execute_command(curr->child[R], pipe_fd, pipe_cnt - 1, end);
 	else if (((t_syntax_tree *)curr->child[R])->type == sym_command)
-		execute_mid_cmd(curr->child[R], pipe_cnt - 1);
+		result = execute_command(curr->child[R], pipe_fd, pipe_cnt - 1, middle);
 	else if (((t_syntax_tree *)curr->child[R])->type == sym_pipe)
 		result = execute_pipe(curr->child[R], pipe_fd, pipe_cnt + 1);
 	else if (((t_syntax_tree *)curr->child[R])->type == sym_subshell)
@@ -60,20 +60,22 @@ int	execute_pipe(t_syntax_tree *curr, int **pipe_fd, int pipe_cnt)
 	return (result);
 }
 
-
 static int	_handle_subshell(t_syntax_tree *curr, int *left_pipe, int *right_pipe)
 {
 	int	result;
 	int	redi[2];
 
-	if (curr->child[R] != NULL)
-		open_file(curr->child[R], redi);
-	if (left_pipe != NULL)
+	open_file(curr->child[R], redi);
+	if (redi[INFILE] != INIT)
+		dup2(redi[INFILE], STDIN_FILENO);
+	else if (left_pipe != NULL)
 	{
 		close(left_pipe[1]);
 		dup2(left_pipe[0], STDIN_FILENO);
 	}
-	if (right_pipe != NULL)
+	if (redi[OUTFILE] != INIT)
+		dup2(redi[OUTFILE], STDOUT_FILENO);
+	else if (right_pipe != NULL)
 	{
 		close(right_pipe[0]);
 		dup2(right_pipe[1], STDOUT_FILENO);
@@ -103,7 +105,8 @@ int	execute(t_syntax_tree *root)
 	else
 	{
  		result = execute(root->child[L]);
-		if (root->type + result == 1)
+		if (root->type == sym_and && result == 0 \
+		|| root->type == sym_if && result != 0)
 			result = execute(root->child[R]);
 	}
 	return (result);
