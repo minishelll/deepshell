@@ -6,11 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:16:24 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:33:12 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "execute.h"
 #include "ft_error.h"
 
@@ -83,10 +84,7 @@ int	execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
 {
 	int	pid;
 	int	redi[2];
-	int	result;
 
-	redi[INFILE] = INIT;
-	redi[OUTFILE] = INIT;
 	open_file(command->child[R], redi);
 	pid = fork();
 	if (pid == -1)
@@ -94,7 +92,7 @@ int	execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
 	if (pid == 0 && order == start)
 		start_process(command->child[L], pipe_fd, cnt, redi);
 	else if (pid == 0 && order == middle)
-		middle_process(command->child[L], pipe_fd, cnt, redi);
+		mid_process(command->child[L], pipe_fd, cnt, redi);
 	else if (pid == 0 && order == end)
 		end_process(command->child[L], pipe_fd, redi);
 	if (order == end)

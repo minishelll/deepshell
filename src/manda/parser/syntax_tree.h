@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:05:51 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:20:00 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:28:29 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_redi
 {
 	t_redi_type	type;
 	char		*file;
-	t_redi		*next;
+	//mat_redi		*next;
 }				t_redi;
 
 /* ********************************* COMMAND ******************************** */

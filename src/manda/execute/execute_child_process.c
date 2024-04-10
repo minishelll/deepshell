@@ -6,11 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 14:03:39 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:32:15 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include "execute.h"
 
@@ -41,12 +42,12 @@ int	wait_process(int last_child, int *pipe_fd)
 	return (exit_code);
 }
 
-void	start_process(char **cmds, int *pipe_fd, int cnt, int *redi/*, char **env, char **path*/)
+void	start_process(char **cmds, int *pipe_fd, int cnt, int *redi)
 {
 	//char	*program;
 	int		*backpipe;
 
-	backpipe = pipe_fd[(cnt - 2) * 2];
+	backpipe = &pipe_fd[(cnt - 2) * 2];
 	close_rest_pipe(pipe_fd, cnt);
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)
@@ -68,8 +69,8 @@ void	mid_process(char **cmds, int *pipe_fd, int cnt, int *redi)
 	int		*frontpipe;
 	int		*backpipe;
 
-	frontpipe = pipe_fd[(cnt - 1) * 2];
-	backpipe = pipe_fd[cnt * 2];
+	frontpipe = &pipe_fd[(cnt - 1) * 2];
+	backpipe = &pipe_fd[cnt * 2];
 	close_rest_pipe(pipe_fd, cnt);
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)
@@ -93,7 +94,7 @@ void	end_process(char **cmds, int *pipe_fd, int *redi)
 	//char	*program;
 	int		*frontpipe;
 
-	frontpipe = pipe_fd[0];
+	frontpipe = &pipe_fd[0];
 	close_rest_pipe(pipe_fd, 1);
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)

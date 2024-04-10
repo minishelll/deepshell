@@ -12,6 +12,7 @@ SRCS := main_syntax_analyzer_print.c \
 DIRS := ft_error \
 		insert_data \
 		parser \
+		execute \
 
 SUBS := $(addsuffix .a,$(DIRS))
 

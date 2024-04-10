@@ -1,10 +1,11 @@
-#define INPUT "(A | B && C) < infile"
+#define INPUT "/bin/echo A"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
 #include "parser/syntax_analyzer.h"
 #include "parser/syntax_tree.h"
 #include "parser/semantic_analyzer.h"
+#include "execute/execute.h"
 
 #define RED      "\x1b[31m"
 #define RED      "\x1b[31m"
@@ -212,9 +213,9 @@ int main()
 	//}
 
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
-	print_parse_tree(parse_tree, 0, "└───");
+	//print_parse_tree(parse_tree, 0, "└───");
 	syntax_tree = semantic_analyzer(parse_tree);
-	print_syntax_tree(syntax_tree, 0);
-	printf(RED "FINISH" );
+	//print_syntax_tree(syntax_tree, 0);
+	printf(RED "exit: %d", execute(syntax_tree));
 	printf(RESET "\n" );
 }

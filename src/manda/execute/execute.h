@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 13:56:46 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:36:34 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXECUTE_H
 
 # include "syntax_tree.h"
+# include "libft.h"
 
 # define TMPFILE_IN_HOMEDIR "/Users/taerakim/tmp"
 //# define TMPFILE_IN_HOMEDIR "$(HOME)/tmp"
@@ -36,10 +37,10 @@ int		execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
 void	close_rest_pipe(int *pipe_fd, int order);
 
 int		wait_process(int last_child, int *pipe_fd);
-void	start_process(t_syntax_tree *command, int *pipe_fd, int cnt, int *redi);
-void	mid_process(t_syntax_tree *command, int *pipe_fd, int cnt, int *redi);
-void	end_process(t_syntax_tree *command, int *pipe_fd, int *redi);
+void	start_process(char **cmds, int *pipe_fd, int cnt, int *redi);
+void	mid_process(char **cmds, int *pipe_fd, int cnt, int *redi);
+void	end_process(char **cmds, int *pipe_fd, int *redi);
 
-void	open_file(t_redi *redi_list, int *redi);
+void	open_file(t_list *redi_list, int *redi);
 
 #endif

@@ -6,11 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 13:52:40 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:24:58 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "ft_error.h"
 #include "libft.h"
