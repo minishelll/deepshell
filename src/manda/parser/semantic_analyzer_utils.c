@@ -12,6 +12,7 @@
 
 #include "semantic_analyzer.h"
 
+//make a new node of ast
 t_syntax_tree	*syntax_tree_new(t_termi type)
 {
 	t_syntax_tree	*new_node;
@@ -30,6 +31,7 @@ t_syntax_tree	*syntax_tree_new(t_termi type)
 	return (new_node);
 }
 
+//make cmd node with child[L] : cmd_list, child[R] : redi_list
 void	make_cmd_node(t_syntax_tree *node, t_parse_tree *parse_tree)
 {
 	char	**cmds;
@@ -53,10 +55,11 @@ void	make_cmd_node(t_syntax_tree *node, t_parse_tree *parse_tree)
 		cmd_list = cmd_list->next;
 		free(tmp);
 	}
-	node->child[0] = (void *)cmds;
-	node->child[1] = redi_list;
+	node->child[L] = (void *)cmds;
+	node->child[R] = redi_list;
 }
 
+//makes new redirection node
 void	*make_redi_node(t_parse_tree *parse_tree)
 {
 	t_parse_tree	*io;
@@ -78,6 +81,7 @@ void	*make_redi_node(t_parse_tree *parse_tree)
 	return (redi_node);
 }
 
+//if parse_tree->child[LEFT] == lparen, return 1
 bool	is_subshell(t_parse_tree *parse_tree)
 {
 	t_parse_tree	*child;
@@ -89,6 +93,7 @@ bool	is_subshell(t_parse_tree *parse_tree)
 		return (false);
 }
 
+//makes subshell_node with child[L] = syntax_tree, child[R] = redi_list
 t_syntax_tree	*make_subshell_node(t_parse_tree *parse_tree)
 {
 	t_syntax_tree	*new_node;

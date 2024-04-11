@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include "semantic_analyzer.h"
 
+//make syntax tree recursively
 t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 {
 	t_syntax_tree	*new_node;
@@ -42,6 +43,7 @@ t_syntax_tree	*make_syntax_tree(t_parse_tree *parse_tree)
 	return (NULL);
 }
 
+//make redirection list recursively
 void	make_redi_list(t_list **redi_list, t_parse_tree *parse_tree)
 {
 	if (parse_tree->type == io_redirect)
@@ -54,6 +56,7 @@ void	make_redi_list(t_list **redi_list, t_parse_tree *parse_tree)
 		make_redi_list(redi_list, parse_tree->child[MID]);
 }
 
+//when meets simple_command, returns a node with L : cmd_list, R : redi_list
 void	make_word_list(t_list **cmd, t_list **redi, t_parse_tree *parse_tree)
 {
 	t_list	*new_node;
@@ -80,6 +83,7 @@ void	make_word_list(t_list **cmd, t_list **redi, t_parse_tree *parse_tree)
 		make_word_list(cmd, redi, parse_tree->child[1]);
 }
 
+//free parse tree recursively
 void	free_parse_tree(t_parse_tree *parse_tree)
 {
 	int	idx;
@@ -97,6 +101,7 @@ void	free_parse_tree(t_parse_tree *parse_tree)
 	return ;
 }
 
+//semantic_anaylzer_main
 t_syntax_tree	*semantic_analyzer(t_parse_tree *parse_tree)
 {
 	t_syntax_tree	*syntax_tree;
