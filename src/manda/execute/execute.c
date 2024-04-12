@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 16:53:11 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/12 15:04:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,45 +33,6 @@ static int	*_pipe_join(int *org, int *new, int pipe_cnt)
 	return (res);
 }
 
-static int	_handle_subshell(t_syntax_tree *curr, int *left_pipe, int *right_pipe)
-{
-	int	result;
-	int	tmp[2];
-	int	redi[2];
-
-	open_file(curr->child[R], redi);
-	tmp[READ] = dup(STDIN_FILENO);
-	tmp[WRITE] = dup(STDOUT_FILENO);
-	if (redi[INFILE] != INIT)
-		dup2(redi[INFILE], STDIN_FILENO);
-	else if (left_pipe != NULL)
-	{
-		close(left_pipe[WRITE]);
-		dup2(left_pipe[READ], STDIN_FILENO);
-	}
-	if (redi[OUTFILE] != INIT)
-		dup2(redi[OUTFILE], STDOUT_FILENO);
-	else if (right_pipe != NULL)
-	{
-		close(right_pipe[READ]);
-		dup2(right_pipe[WRITE], STDOUT_FILENO);
-	}
-	result = execute(curr->child[L]);
-	if (left_pipe != NULL)
-		close(left_pipe[READ]);
-	if (right_pipe != NULL)
-		close(right_pipe[WRITE]);
-	dup2(tmp[READ], STDIN_FILENO);
-	dup2(tmp[WRITE], STDOUT_FILENO);
-	close(tmp[READ]);
-	close(tmp[WRITE]);
-	if (redi[INFILE] != INIT)
-		close(redi[INFILE]);
-	if (redi[OUTFILE] != INIT)
-		close(redi[OUTFILE]);
-	return (result);
-}
-
 int	execute_pipe(t_syntax_tree *curr, int **pipe_fd, int pipe_cnt)
 {
 	int	curr_pipe[2];
@@ -85,7 +46,7 @@ int	execute_pipe(t_syntax_tree *curr, int **pipe_fd, int pipe_cnt)
 	else if (((t_syntax_tree *)curr->child[L])->type == sym_pipe)
 		result = execute_pipe(curr->child[L], pipe_fd, pipe_cnt + 1);
 	else if (((t_syntax_tree *)curr->child[L])->type == sym_subshell)
-		result = _handle_subshell(curr->child[L], NULL, curr_pipe);
+		result = execute_subshell(curr->child[L], NULL, curr_pipe);
 	if (((t_syntax_tree *)curr->child[R])->type == sym_command \
 		&& pipe_cnt == 1)
 		result = execute_command(curr->child[R], *pipe_fd, pipe_cnt, end);
@@ -94,7 +55,7 @@ int	execute_pipe(t_syntax_tree *curr, int **pipe_fd, int pipe_cnt)
 	else if (((t_syntax_tree *)curr->child[R])->type == sym_pipe)
 		result = execute_pipe(curr->child[R], pipe_fd, pipe_cnt + 1);
 	else if (((t_syntax_tree *)curr->child[R])->type == sym_subshell)
-		result = _handle_subshell(curr->child[R], curr_pipe, NULL);
+		result = execute_subshell(curr->child[R], curr_pipe, NULL);
 	return (result);
 }
 
@@ -109,7 +70,7 @@ int	execute(t_syntax_tree *root)
 	else if (root->type == sym_pipe)
 		result = execute_pipe(root, &pipe_fd, 1);
 	else if (root->type == sym_subshell)
-		result = _handle_subshell(root, NULL, NULL);
+		result = execute_subshell(root, NULL, NULL);
 	else
 	{
  		result = execute(root->child[L]);

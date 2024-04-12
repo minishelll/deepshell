@@ -8,8 +8,9 @@ endif
 NAME := execute.a
 HEAD := execute.h
 SRCS := execute.c \
-		execute_child_process.c \
+		execute_subshell.c \
 		execute_command.c \
+		execute_child_process.c \
 		execute_redirect.c
 
 LDLIBS := -lft

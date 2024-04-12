@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 15:06:31 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/10 20:53:51 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ typedef enum e_error_type
 	error_systemcall = -127,
 	error_syntax,
 	error_access,
-	error_infile,
-	error_outfile,
+	error_redirection,
 	error_built_in
 }	t_error_type;
 
@@ -37,6 +36,6 @@ typedef enum e_error_type
 # define SUCCESS 0
 # define DO_NOTHING 2
 
-void	ft_error(t_error_type errcase, char *target);
+void	ft_error(t_error_type errcase, int errnum, char *target);
 
 #endif

@@ -1,4 +1,5 @@
-#define INPUT "( /bin/echo A && /bin/echo B ) >out | /bin/ls"
+#define INPUT "/bin/cat <in "
+//#define INPUT "( /bin/echo A && /bin/cat -e ) <in "
 
 #include <stdio.h>
 #include "parser/tokenizer.h"

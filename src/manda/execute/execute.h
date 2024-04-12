@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 16:47:33 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/12 15:05:26 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef enum e_pipe_order
 }	t_pipe_order;
 
 int		execute(t_syntax_tree *root);
+
+int		execute_subshell(t_syntax_tree *curr, int *left_pipe, int *right_pipe);
 
 int		execute_only_command(t_syntax_tree *command);
 int		execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
