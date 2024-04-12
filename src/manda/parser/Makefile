@@ -6,8 +6,11 @@ ifndef SRCDIR
 endif
 
 NAME := parser.a
-HEAD := #이후 semantic관련 외부 파일에서 사용할 헤더
-SRCS := tokenizer.c\
+HEAD := parser.h \
+		syntax_tree.h \
+
+SRCS := parser.c \
+		tokenizer.c\
 		tokenizer_quote_parser.c\
 		tokenizer_op_parser.c\
 		tokenizer_utils.c\

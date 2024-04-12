@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   semantic_analyzer.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:07:09 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/10 19:42:56 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:56:55 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,30 +83,11 @@ void	make_word_list(t_list **cmd, t_list **redi, t_parse_tree *parse_tree)
 		make_word_list(cmd, redi, parse_tree->child[1]);
 }
 
-//free parse tree recursively
-void	free_parse_tree(t_parse_tree *parse_tree)
-{
-	int	idx;
-
-	idx = 0;
-	while (idx < 3)
-	{
-		if (parse_tree->child_type[idx] == terminal)
-			free(parse_tree->child[idx]);
-		else if (parse_tree->child_type[idx] == non_terminal)
-			free_parse_tree(parse_tree->child[idx]);
-		idx ++;
-	}
-	free(parse_tree);
-	return ;
-}
-
 //semantic_anaylzer_main
 t_syntax_tree	*semantic_analyzer(t_parse_tree *parse_tree)
 {
 	t_syntax_tree	*syntax_tree;
 
 	syntax_tree = make_syntax_tree(parse_tree);
-	free_parse_tree(parse_tree);
 	return (syntax_tree);
 }

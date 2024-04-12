@@ -6,8 +6,9 @@ ifndef SRCDIR
 endif
 
 NAME := minishell
-SRCS := main_syntax_analyzer_print.c \
-		print.c \
+SRCS := main.c \
+		print_welcome_title.c \
+		_print_parser_result.c \
 
 # SRCS(in SRCDIR) ------
 DIRS := insert_data \
@@ -16,7 +17,7 @@ DIRS := insert_data \
 SUBS := $(addsuffix .a,$(DIRS))
 
 # LIBRARYS -------------
-LDLIBS := -lft
+LDLIBS := -lft -lreadline
 
 include $(TOPDIR)/include_make/Variable.mk
 include $(TOPDIR)/include_make/Link.mk

@@ -14,8 +14,6 @@
 #define CYAN     "\x1b[36m"
 #define RESET    "\x1b[0m"
 
-void	free_parse_tree(t_parse_tree *parse_tree);
-
 void	token_print(t_token *token, int depth, char *arrow)
 {
 	char *termi_str[12] = {"and_if", "or_if", "pipe", "lparen", "rparen", "word", "less", "great", "dgreat", "dless", "dollar_sign", "undefined"};

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_tree.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:05:51 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 15:39:44 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:52:09 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,5 @@ typedef struct s_syntax_tree
 	t_symbol	type;
 	void		*child[2];
 }	t_syntax_tree;
-
-/* ******************************** FUNCTION  ******************************* */
-// parser_main();
 
 #endif
