@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/12 14:16:40 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:53:30 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "minishell.h"
 #include "parser.h"
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	print_header();
+	print_welcome_title();
 	(void)argv;
 	//signal();
 	data = init_data(envp);
