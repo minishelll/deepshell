@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 13:58:06 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/12 14:16:17 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/17 21:02:28 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@ typedef struct s_data
 {
 	t_lr_table	*lr_table;
 	t_grammar	*grammar;
-	char		**env_table;//list?
+	char		**envlist;
 	int			exit_code;
 }				t_data;
 
 //# define PROMPT "deepshell$ "
+
+/* ******************************* FUNCTIONS ******************************** */
+char	**set_envlist(char **envlist, char *add);
+char	**delete_envlist(char **org, char *target);
 
 /* ****************************** PRINT_COLOR ******************************* */
 # define RED      "\x1b[31m"
