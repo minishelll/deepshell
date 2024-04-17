@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 13:58:06 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/17 21:02:28 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/18 00:39:05 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef struct s_data
 //# define PROMPT "deepshell$ "
 
 /* ******************************* FUNCTIONS ******************************** */
-char	**set_envlist(char **envlist, char *add);
+char	**init_envlist(char **envp);
+char	**add_envlist(char **envlist, char *add);
 char	**delete_envlist(char **org, char *target);
 
 /* ****************************** PRINT_COLOR ******************************* */

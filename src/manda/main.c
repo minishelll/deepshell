@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/17 21:02:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/18 02:30:09 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,42 @@
 #include "execute.h"
 #include "libft.h"
 
-void	free_redi(t_redi *redi)
+void	free_redi(void *redi)
 {
-	free(redi->file);
-	free(redi);
+	t_redi	*ptr;
+
+	ptr = (t_redi *)redi;
+	free(ptr->file);
+	free(ptr);
 }
 
 void	free_syntax_tree(t_syntax_tree *curr)
 {
+	t_list	*redi_list;
+
 	if (curr->type == command)
 	{
 		free_words(curr->child[L]);
-		ft_lstclear(curr->child[R], free_redi);
+		if (curr->child[R] != NULL)
+		{
+			redi_list = curr->child[R];
+			ft_lstclear(&redi_list, free_redi);
+		}
+		free(curr);
 		return ;
 	}
 	free_syntax_tree(curr->child[L]);
-	if (curr->type == subshell)
-		ft_lstclear(curr->child[R], free_redi);
-	else
-		free_syntax_tree(curr->child[R]);
+	if (curr->child[R] != NULL)
+	{
+		if (curr->type == subshell)
+		{
+			redi_list = curr->child[R];
+			ft_lstclear(&redi_list, free_redi);
+		}
+		else
+			free_syntax_tree(curr->child[R]);
+	}
+	free(curr);
 }
 
 t_data	*init_data(char **envp)
@@ -47,7 +64,7 @@ t_data	*init_data(char **envp)
 	data = (t_data *)ft_malloc(sizeof(t_data));
 	data->lr_table = insert_lr_table();
 	data->grammar = insert_grammar();
-	data->envlist = set_envlist(envp, NULL);
+	data->envlist = init_envlist(envp);
 	data->exit_code = 0;
 	return (data);
 }
@@ -71,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 		ast = parser(data->lr_table, data->grammar, input/*, data->envlist*/);
 		add_history(input);
 		free(input);
-		data->exit_code = execute(ast/*, data->envlist*/);
+		data->exit_code = execute(ast, data->envlist);
 		free_syntax_tree(ast);
 	}
 }

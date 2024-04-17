@@ -6,36 +6,42 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:15:19 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/17 13:26:13 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/18 07:20:16 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
 #include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include "execute.h"
 
-void	close_rest_pipe(int *pipe_fd, int cnt)
+int	*handle_pipe(t_pipe *pipeinfo, t_pipe_order order)
 {
-	const int	use_pipe = cnt * 2 - 3;
-	int			i;
+	int	use_pipe_idx;
+	int	i;
 
+	if (order == start)
+		use_pipe_idx = pipeinfo->cnt * 2 - 1;
+	else if (order == middle)
+		use_pipe_idx = pipeinfo->cnt * 2 - 3;
+	else
+		use_pipe_idx = 0;
 	i = 0;
-	if (cnt != PIPE_ALL)
+	while (i < use_pipe_idx)
 	{
-		while (i < use_pipe)
-		{
-			close(pipe_fd[i]);
-			i++;
-		}
+		close(pipeinfo->pipelist[i]);
+		i++;
+	}
+	if (order == start || order == end)
+		i += 1;
+	else if (order == middle)
 		i += 2;
-	}
-	if (pipe_fd[use_pipe + 1] != PIPE_ALL)
+	while (pipeinfo->pipelist[i] != PIPE_END)
 	{
-		while (pipe_fd[i] != PIPE_END)
-		{
-			close(pipe_fd[i]);
-			i++;
-		}
+		close(pipeinfo->pipelist[i]);
+		i++;
 	}
+	return (&pipeinfo->pipelist[use_pipe_idx]);
 }
 
 void	close_redirect_file(int *redi)
@@ -44,4 +50,29 @@ void	close_redirect_file(int *redi)
 		close(redi[INFILE]);
 	if (redi[OUTFILE] != INIT)
 		close(redi[OUTFILE]);
+}
+
+int	wait_process(int last_child, t_pipe *pipeinfo)
+{
+	int	statloc;
+	int	exit_code;
+	int	i;
+
+	exit_code = 0;
+	waitpid(last_child, &statloc, WUNTRACED);
+	if (WIFEXITED(statloc))
+		exit_code = WEXITSTATUS(statloc);
+	else if (WIFSIGNALED(statloc))
+		exit_code = WTERMSIG(statloc);
+	if (pipeinfo != NULL && pipeinfo->pipelist != NULL)
+	{
+		i = 0;
+		while (i < pipeinfo->cnt)
+		{
+			wait(0);
+			i++;
+		}
+		free(pipeinfo->pipelist);
+	}
+	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/11 19:56:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/18 02:24:35 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_syntax_tree	*parser(t_lr_table *lr_table, t_grammar *grammar, char *input)
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
 	ast = semantic_analyzer(parse_tree);
 	
-	print_parse_tree(parse_tree, 0, NULL);
-	print_syntax_tree(ast, 0);
+	//print_parse_tree(parse_tree, 0, NULL);
+	//print_syntax_tree(ast, 0);
 	
 	free_parse_tree(parse_tree);
 	return (ast);

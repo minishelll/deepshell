@@ -20,8 +20,8 @@ re:
 	$(MAKE) all
 
 norminette:
-	norminette *.c
-	norminette *.h
+#	norminette *.c
+#	norminette *.h
 	$(foreach dir,$(DIRS),$(MAKE) TOPDIR=$(TOPDIR) SRCDIR=`pwd` -C $(dir) $@;)
 
 .PHONY: all clean fclean re norminette

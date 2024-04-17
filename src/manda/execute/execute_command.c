@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/17 22:22:04 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/18 07:25:12 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@ static char	*_matching_path(char *pathenv, char *cmdname)
 	char	*execute;
 	char	*tmp;
 
-	find[0] = pathenv[5];
+	find[0] = &pathenv[5];
 	find[1] = ft_strchr(find[0], ':');
 	while (find[1] != NULL)
 	{
-		tmp = ft_substr(find[0], 0, find[0] - find[1]);
+		execute = ft_substr(find[0], 0, find[1] - find[0]);
+		tmp = ft_strjoin(execute, "/");
+		free(execute);
 		execute = ft_strjoin(tmp, cmdname);
-		free(tmp);
 		if (access(execute, X_OK) == 0)
 			return (execute);
 		free(execute);
@@ -37,7 +38,7 @@ static char	*_matching_path(char *pathenv, char *cmdname)
 	return (NULL);
 }
 
-char	*is_able_execute(char **envlist, char *cmdname)
+char	*check_program(char **envlist, char *cmdname)
 {
 	char	*pathenv;
 	char	*res;
@@ -57,10 +58,11 @@ char	*is_able_execute(char **envlist, char *cmdname)
 	return (res);
 }
 
-int	execute_only_command(t_syntax_tree *command)
+int	execute_only_command(t_syntax_tree *command, char **envlist)
 {
-	int	pid;
-	int	redi[2];
+	char	*program;
+	int		pid;
+	int		redi[2];
 
 	open_file(command->child[R], redi);
 	pid = fork();
@@ -72,34 +74,41 @@ int	execute_only_command(t_syntax_tree *command)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
 			dup2(redi[OUTFILE], STDOUT_FILENO);
-		execve(((char **)command->child[L])[0], command->child[L], NULL);
-		exit(2);
+		//if (built_in == yes)
+		//	execute_built_in(command->child[L], envlist);
+		//else
+		//{
+			program = check_program(envlist, ((char **)command->child[L])[0]);
+			execve(program, command->child[L], envlist);
+			exit(2);
+		//}
 	}
 	close_redirect_file(redi);
 	return (wait_process(pid, NULL));
 }
 
-int	execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
-														, t_pipe_order order)
+int	execute_command(t_syntax_tree *command, char **envlist
+					, t_pipe *pipeinfo, t_pipe_order order)
 {
-	int	pid;
-	int	redi[2];
+	const t_child_proc	proc[3] = {start_process, mid_process, end_process};
+	int					pid;
+	int					*use_pipe;
+	int					redi[2];
 
 	open_file(command->child[R], redi);
 	pid = fork();
 	if (pid == -1)
 		ft_error(error_systemcall, errno, NULL);
-	if (pid == 0 && order == start)
-		start_process(command->child[L], pipe_fd, cnt, redi);
-	else if (pid == 0 && order == middle)
-		mid_process(command->child[L], pipe_fd, cnt, redi);
-	else if (pid == 0 && order == end)
-		end_process(command->child[L], pipe_fd, redi);
+	if (pid == 0)
+	{
+		use_pipe = handle_pipe(pipeinfo, order);
+		proc[order](command->child[L], envlist, use_pipe, redi);
+	}
 	close_redirect_file(redi);
 	if (order == end)
 	{
-		close_rest_pipe(pipe_fd, PIPE_ALL);
-		return (wait_process(pid, pipe_fd));
+		handle_pipe(pipeinfo, parent);
+		return (wait_process(pid, pipeinfo));
 	}
 	else
 		return (CONTINUE);
