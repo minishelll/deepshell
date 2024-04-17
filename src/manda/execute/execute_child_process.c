@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 16:17:33 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/15 13:36:34 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include "execute.h"
+#include "ft_error.h"
 
 int	wait_process(int last_child, int *pipe_fd)
 {
@@ -52,13 +53,12 @@ void	start_process(char **cmds, int *pipe_fd, int cnt, int *redi)
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)
 	//	ft_error(error_access, cmds[0]);
-	close(backpipe[0]);
 	if (redi[INFILE] != INIT)
 		dup2(redi[INFILE], STDIN_FILENO);
 	if (redi[OUTFILE] != INIT)
 		dup2(redi[OUTFILE], STDOUT_FILENO);
 	else
-		dup2(backpipe[1], STDOUT_FILENO);
+		dup2(backpipe[WRITE], STDOUT_FILENO);
 	execve(cmds[0], cmds, NULL);
 	exit(2);
 }
@@ -70,21 +70,19 @@ void	mid_process(char **cmds, int *pipe_fd, int cnt, int *redi)
 	int		*backpipe;
 
 	frontpipe = &pipe_fd[(cnt - 1) * 2];
-	backpipe = &pipe_fd[cnt * 2];
+	backpipe = &pipe_fd[(cnt - 2) * 2];
 	close_rest_pipe(pipe_fd, cnt);
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)
 	//	ft_error(ACCESS_ERROR, cmds[0]);
-	close(frontpipe[1]);
-	close(backpipe[0]);
 	if (redi[INFILE] != INIT)
 		dup2(redi[INFILE], STDIN_FILENO);
 	else
-		dup2(frontpipe[0], STDIN_FILENO);
+		dup2(frontpipe[READ], STDIN_FILENO);
 	if (redi[OUTFILE] != INIT)
 		dup2(redi[OUTFILE], STDOUT_FILENO);
 	else
-		dup2(backpipe[1], STDOUT_FILENO);
+		dup2(backpipe[WRITE], STDOUT_FILENO);
 	execve(cmds[0], cmds, NULL);
 	exit(2);
 }
@@ -99,14 +97,13 @@ void	end_process(char **cmds, int *pipe_fd, int *redi)
 	//program = matching_path(path, cmds[0]);
 	//if (program == NULL)
 	//	ft_error(ACCESS_ERROR, cmds[0]);
-	
-	//close(frontpipe[1]);
+	close(frontpipe[1]);
 	if (redi[INFILE] != INIT)
 		dup2(redi[INFILE], STDIN_FILENO);
 	if (redi[OUTFILE] != INIT)
 		dup2(redi[OUTFILE], STDOUT_FILENO);
 	else
-		dup2(frontpipe[0], STDIN_FILENO);
+		dup2(frontpipe[READ], STDIN_FILENO);
 	execve(cmds[0], cmds, NULL);
 	exit(2);
 }

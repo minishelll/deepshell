@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   semantic_analyzer_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 06:38:39 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/04/10 19:34:00 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/13 17:57:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ t_syntax_tree	*make_subshell_node(t_parse_tree *parse_tree)
 		new_node = syntax_tree_new(lparen);
 		new_node->child[L] = make_syntax_tree(sub_shell_tree->child[MID]);
 		redi_tree = (t_parse_tree *)parse_tree->child[MID];
-		make_redi_list(&redi_list, redi_tree->child[0]);
+			//make_redi_list(&redi_list, redi_tree->child[0]);
+			make_redi_list(&redi_list, redi_tree);
 		new_node->child[R] = redi_list;
 	}
 	else

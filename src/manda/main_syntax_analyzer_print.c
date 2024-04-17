@@ -1,4 +1,4 @@
-#define INPUT "cat < in"
+#define INPUT "/bin/echo A | (/bin/sleep 3  ) || /bin/sleep 3"
 
 #include <stdio.h>
 #include "parser/tokenizer.h"
@@ -32,9 +32,10 @@ void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow);
 
  	parse_tree = syntax_analyzer(token, grammar, lr_table);
 	//print_parse_tree(parse_tree, 0, "└───");
+
  	syntax_tree = semantic_analyzer(parse_tree);
-	//printf(BLUE "-----------print_syntax_tree\n" );
 	//print_syntax_tree(syntax_tree, 0);
-	printf("-----------exit: %d\n", execute(syntax_tree));
+
+	printf("exit: %d\n", execute(syntax_tree));
  	exit(0);
  }

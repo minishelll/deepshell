@@ -11,7 +11,8 @@ SRCS := execute.c \
 		execute_subshell.c \
 		execute_command.c \
 		execute_child_process.c \
-		execute_redirect.c
+		execute_redirect.c \
+		execute_utils.c \
 
 LDLIBS := -lft
 

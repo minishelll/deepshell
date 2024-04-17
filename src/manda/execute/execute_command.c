@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 20:56:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:26:08 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,6 @@
 //	return (NULL);
 //}
 
-void	close_rest_pipe(int *pipe_fd, int order)
-{
-	const int	use_pipe = order * 2 - 3;
-	int			i;
-
-	i = 0;
-	if (order != PIPE_ALL)
-	{
-		while (i < use_pipe)
-		{
-			close(pipe_fd[i]);
-			i++;
-		}
-		i += 2;
-	}
-	while (pipe_fd[i] != PIPE_END)
-	{
-		close(pipe_fd[i]);
-		i++;
-	}
-}
-
 int	execute_only_command(t_syntax_tree *command)
 {
 	int	pid;
@@ -76,6 +54,7 @@ int	execute_only_command(t_syntax_tree *command)
 		execve(((char **)command->child[L])[0], command->child[L], NULL);
 		exit(2);
 	}
+	close_redirect_file(redi);
 	return (wait_process(pid, NULL));
 }
 
@@ -95,10 +74,7 @@ int	execute_command(t_syntax_tree *command, int *pipe_fd, int cnt
 		mid_process(command->child[L], pipe_fd, cnt, redi);
 	else if (pid == 0 && order == end)
 		end_process(command->child[L], pipe_fd, redi);
-	if (redi[INFILE] != INIT)
-		close(redi[INFILE]);
-	if (redi[OUTFILE] != INIT)
-		close(redi[OUTFILE]);
+	close_redirect_file(redi);
 	if (order == end)
 	{
 		close_rest_pipe(pipe_fd, PIPE_ALL);

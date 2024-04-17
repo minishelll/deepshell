@@ -114,6 +114,8 @@ void print_syntax_tree(t_syntax_tree *node, int level) {
 		
 			for (int i = 0; i < level; ++i) printf("  "); // 레벨에 따른 들여쓰기
 			printf("redi  :");
+		if (redi_list == NULL)
+			printf("none_redi\n");
 		while (redi_list)
 		{
 			redi = (t_redi *)redi_list->content;

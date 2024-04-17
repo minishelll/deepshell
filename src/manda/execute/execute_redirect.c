@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/12 15:35:55 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:31:05 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,54 +41,57 @@
 //	close(tmpfile);
 //}
 
-static void	_update_redi(int *org, int *new)
+static void	_update_redi(int *redi, int *new)
 {
-	if (org[INFILE] != new[INFILE])
+	if (new[INFILE] != INIT)
 	{
-		if (org[INFILE] != INIT)
-			close(org[INFILE]);
-		org[INFILE] = new[INFILE];
+		if (redi[INFILE] != INIT)
+			close(redi[INFILE]);
+		redi[INFILE] = dup(new[INFILE]);
+		close(new[INFILE]);
 	}
-	if (org[OUTFILE] != new[OUTFILE])
+	if (new[OUTFILE] != INIT)
 	{
-		if (org[OUTFILE] != INIT)
-			close(org[OUTFILE]);
-		org[OUTFILE] = new[OUTFILE];
+		if (redi[OUTFILE] != INIT)
+			close(redi[OUTFILE]);
+		redi[OUTFILE] = dup(new[OUTFILE]);
+		close(new[OUTFILE]);
 	}
 }
 
 static int	_handle_open(t_redi *curr, int *redi, bool *error)
 {
-	int	tmp[2];
+	int	new[2];
 
-	errno = 0;
+	new[INFILE] = INIT;
+	new[OUTFILE] = INIT;
 	if (curr->type == input)
-		tmp[INFILE] = open(curr->file, O_RDONLY);
+		new[INFILE] = open(curr->file, O_RDONLY);
 	else if (curr->type == here_doc)
 	{
 		//_here_doc(curr->file);
-		tmp[INFILE] = open(TMPFILE_IN_HOMEDIR, O_RDONLY, 0644);
+		new[INFILE] = open(TMPFILE_IN_HOMEDIR, O_RDONLY, 0644);
 		//heredoc은 즉시 끝낼지 고민된다
 	}
 	else if (error[OUTFILE] == false)
 	{
 		if (curr->type == output)
-			tmp[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			new[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		else if (curr->type == append)
-			tmp[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			new[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
 	if (errno != 0)
 		return (curr->type);
-	_update_redi(redi, tmp);
+	_update_redi(redi, new);
 	return (CONTINUE);
 }
 
 void	open_file(t_list *redi_list, int *redi)
 {
+	int		check;
+	bool	error[2];
 	int		record_errno;
 	char	*record_target;
-	bool	error[2];
-	int		check;
 
 	redi[INFILE] = INIT;
 	redi[OUTFILE] = INIT;
