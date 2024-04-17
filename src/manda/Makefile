@@ -11,8 +11,10 @@ SRCS := main.c \
 		_print_parser_result.c \
 
 # SRCS(in SRCDIR) ------
-DIRS := insert_data \
+DIRS := ft_error \
+		insert_data \
 		parser \
+		execute \
 
 SUBS := $(addsuffix .a,$(DIRS))
 
