@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/17 13:26:08 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/17 22:22:04 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,47 @@
 #include "execute.h"
 #include "ft_error.h"
 
-//static char	*matching_path(char **path, char *cmd)
-//{
-//	char	*execute;
-//	int		i;
+static char	*_matching_path(char *pathenv, char *cmdname)
+{
+	char	*find[2];
+	char	*execute;
+	char	*tmp;
 
-//	if (access(cmd, X_OK) == 0)
-//		return (cmd);
-//	i = 0;
-//	while (path[i] != NULL)
-//	{
-//		execute = ft_strjoin(path[i], cmd);
-//		if (execute == NULL)
-//			ft_error(SYSTEMCALL_FAILURE, NULL);
-//		if (access(execute, X_OK) == 0)
-//			return (execute);
-//		free(execute);
-//		i++;
-//	}
-//	return (NULL);
-//}
+	find[0] = pathenv[5];
+	find[1] = ft_strchr(find[0], ':');
+	while (find[1] != NULL)
+	{
+		tmp = ft_substr(find[0], 0, find[0] - find[1]);
+		execute = ft_strjoin(tmp, cmdname);
+		free(tmp);
+		if (access(execute, X_OK) == 0)
+			return (execute);
+		free(execute);
+		find[0] = find[1] + 1;
+		find[1] = ft_strchr(find[0], ':');
+	}
+	return (NULL);
+}
+
+char	*is_able_execute(char **envlist, char *cmdname)
+{
+	char	*pathenv;
+	char	*res;
+	int		i;
+
+	if (access(cmdname, X_OK) == 0)
+		return (cmdname);
+	i = 0;
+	while (ft_strncmp(envlist[i], "PATH=", 5) != 0)
+		i++;
+	pathenv = envlist[i];
+	//if (pathenv == NULL)
+	//	ft_error(error_nosuchafile, errno, cmdname);
+	res = _matching_path(pathenv, cmdname);
+	//if (res == NULL)
+	//	ft_error(error_nosuchafile, errno, cmdname);
+	return (res);
+}
 
 int	execute_only_command(t_syntax_tree *command)
 {
