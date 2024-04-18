@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 07:25:12 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:20:44 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,30 @@
 
 static char	*_matching_path(char *pathenv, char *cmdname)
 {
-	char	*find[2];
+	char	**splited;
 	char	*execute;
 	char	*tmp;
+	int		i;
 
-	find[0] = &pathenv[5];
-	find[1] = ft_strchr(find[0], ':');
-	while (find[1] != NULL)
+	splited = ft_split(&pathenv[5], ':');
+	i = 0;
+	while (splited[i] != NULL)
 	{
-		execute = ft_substr(find[0], 0, find[1] - find[0]);
-		tmp = ft_strjoin(execute, "/");
-		free(execute);
+		tmp = ft_strjoin(splited[i], "/");
 		execute = ft_strjoin(tmp, cmdname);
+		free(tmp);
 		if (access(execute, X_OK) == 0)
 			return (execute);
 		free(execute);
-		find[0] = find[1] + 1;
-		find[1] = ft_strchr(find[0], ':');
+		i++;
 	}
+	i = 0;
+	while (splited[i] != NULL)
+	{
+		free(splited[i]);
+		i++;
+	}
+	free(splited);
 	return (NULL);
 }
 
@@ -63,13 +69,14 @@ int	execute_only_command(t_syntax_tree *command, char **envlist)
 	char	*program;
 	int		pid;
 	int		redi[2];
+	
 
-	open_file(command->child[R], redi);
 	pid = fork();
 	if (pid == -1)
 		ft_error(error_systemcall, errno, NULL);
 	if (pid == 0)
 	{
+		open_file(command->child[R], redi);
 		if (redi[INFILE] != INIT)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
@@ -83,7 +90,6 @@ int	execute_only_command(t_syntax_tree *command, char **envlist)
 			exit(2);
 		//}
 	}
-	close_redirect_file(redi);
 	return (wait_process(pid, NULL));
 }
 
@@ -95,16 +101,15 @@ int	execute_command(t_syntax_tree *command, char **envlist
 	int					*use_pipe;
 	int					redi[2];
 
-	open_file(command->child[R], redi);
 	pid = fork();
 	if (pid == -1)
 		ft_error(error_systemcall, errno, NULL);
 	if (pid == 0)
 	{
+		open_file(command->child[R], redi);
 		use_pipe = handle_pipe(pipeinfo, order);
 		proc[order](command->child[L], envlist, use_pipe, redi);
 	}
-	close_redirect_file(redi);
 	if (order == end)
 	{
 		handle_pipe(pipeinfo, parent);
