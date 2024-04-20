@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 09:20:44 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:40:36 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "execute.h"
+#include "built_in.h"
 #include "ft_error.h"
 
 static char	*_matching_path(char *pathenv, char *cmdname)
@@ -66,10 +67,10 @@ char	*check_program(char **envlist, char *cmdname)
 
 int	execute_only_command(t_syntax_tree *command, char **envlist)
 {
-	char	*program;
-	int		pid;
-	int		redi[2];
-	
+	const t_bi_type	bi_type = is_built_in(((char **)command->child[L])[0]);
+	char			*program;
+	int				pid;
+	int				redi[2];
 
 	pid = fork();
 	if (pid == -1)
@@ -81,14 +82,14 @@ int	execute_only_command(t_syntax_tree *command, char **envlist)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
 			dup2(redi[OUTFILE], STDOUT_FILENO);
-		//if (built_in == yes)
-		//	execute_built_in(command->child[L], envlist);
-		//else
-		//{
+		if (bi_type != none)
+			execute_built_in(command->child[L], envlist, bi_type);
+		else
+		{
 			program = check_program(envlist, ((char **)command->child[L])[0]);
 			execve(program, command->child[L], envlist);
 			exit(2);
-		//}
+		}
 	}
 	return (wait_process(pid, NULL));
 }
