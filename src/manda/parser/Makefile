@@ -19,7 +19,8 @@ SRCS := parser.c \
 		syntax_lr_stack.c \
 		semantic_analyzer.c	\
 		semantic_analyzer_utils.c \
-		
+		wildcard.c \
+
 LDLIBS := -lft
 
 include $(TOPDIR)/include_make/Variable.mk

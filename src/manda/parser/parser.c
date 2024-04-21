@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 02:24:35 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:19:12 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	free_parse_tree(t_parse_tree *parse_tree)
 void	parse_tree_print(t_parse_tree *parse_tree, int depth, char *arrow);
 void	print_syntax_tree(t_syntax_tree *node, int level);
 void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow);
+void	wildcard(t_list **token);
 /* DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE */
 
 t_syntax_tree	*parser(t_lr_table *lr_table, t_grammar *grammar, char *input)
@@ -44,6 +45,7 @@ t_syntax_tree	*parser(t_lr_table *lr_table, t_grammar *grammar, char *input)
 	t_syntax_tree	*ast;
 
 	token = tokenizer(input);
+	wildcard(&token);
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
 	ast = semantic_analyzer(parse_tree);
 	
