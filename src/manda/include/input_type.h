@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_type.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/05 16:41:23 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:39:26 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef enum e_terminal
 {
 	and_if = 0,
 	or_if,
-	pipe,
+	pipe_term,
 	lparen,
 	rparen,
 	word,

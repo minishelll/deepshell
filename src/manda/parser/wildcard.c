@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 21:04:51 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/21 21:28:06 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:03:52 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_list	*get_dir_lst(void)
 		//printf("%s\n", entry->d_name);
 		entry = readdir(dp);
 	}
+	closedir(dp);
 	return (lst);
 }
 
@@ -104,13 +105,17 @@ void	wildcard(t_list **token)
 	matched = NULL;
 	while (*token)
 	{
-		word = ((t_token *)(*token)->content)->word;
+		word = ((t_token *)((*token)->content))->word;
+		if (word == NULL)
+			break ;
 		if (ft_strchr(word, '*'))
 		{
 			while (dir_cur)
 			{
 				if (check_word(word, dir_cur->content))
-					ft_lstadd_back(&matched, ft_lstnew(dir_cur->content));
+				{
+					//token_add_back(&matched, dir_cur->content);
+				}
 				dir_cur = dir_cur->next;
 			}
 		}

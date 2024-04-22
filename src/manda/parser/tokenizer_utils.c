@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/05 16:37:56 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:39:20 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_termi	get_token_type(char *str, int len)
 		else if (*str == '>')
 			return (great);
 		else if (*str == '|')
-			return (pipe);
+			return (pipe_term);
 		else if (*str == '(')
 			return (lparen);
 		else if (*str == ')')
