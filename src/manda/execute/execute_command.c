@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/20 13:40:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:48:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ char	*check_program(char **envlist, char *cmdname)
 	while (ft_strncmp(envlist[i], "PATH=", 5) != 0)
 		i++;
 	pathenv = envlist[i];
-	//if (pathenv == NULL)
-	//	ft_error(error_nosuchafile, errno, cmdname);
+	if (pathenv == NULL)
+		return (NULL);
 	res = _matching_path(pathenv, cmdname);
-	//if (res == NULL)
-	//	ft_error(error_nosuchafile, errno, cmdname);
+	if (res == NULL)
+		ft_error(error_access, errno, cmdname);
 	return (res);
 }
 
@@ -83,7 +83,7 @@ int	execute_only_command(t_syntax_tree *command, char **envlist)
 		if (redi[OUTFILE] != INIT)
 			dup2(redi[OUTFILE], STDOUT_FILENO);
 		if (bi_type != none)
-			execute_built_in(command->child[L], envlist, bi_type);
+			return (execute_built_in(command->child[L], envlist, bi_type));
 		else
 		{
 			program = check_program(envlist, ((char **)command->child[L])[0]);

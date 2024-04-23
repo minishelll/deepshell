@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/20 13:47:37 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:39:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_bi_type	is_built_in(char *cmdname)
 	const int	len = ft_strlen(cmdname);
 	char		*functlist[7] = {"echo", "cd", "pwd", "export" \
 								, "unset", "env", "exit"};
-
 
 	i = 0;
 	while (i < 7)

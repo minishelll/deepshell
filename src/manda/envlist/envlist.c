@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:43:28 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/20 13:45:44 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:13:15 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,50 +41,69 @@ char	**init_envlist(char **envp)
 	return (new);
 }
 
-char	**add_envlist(char **envlist, char *add)
+static int	_find_empty_space(char **envlist)
 {
-	char		**newlist;
-	const int	size = _get_size(envlist);
-	int			i;
+	int	i;
 
-	newlist = (char **)ft_malloc(sizeof(char *) * (size + 2));
 	i = 0;
 	while (envlist[i] != NULL)
 	{
-		newlist[i] = envlist[i];
+		if (envlist[i][0] == '\0')
+			return (i);
 		i++;
 	}
-	newlist[i] = add;
-	newlist[i + 1] = NULL;
-	free(envlist);
-	return (newlist);
+	return (-1);
 }
 
-char	**delete_envlist(char **envlist, char *target)
+char	**add_envlist(char **envlist, char *add)
 {
 	char		**newlist;
+	const int	empty = _find_empty_space(envlist);
 	const int	size = _get_size(envlist);
-	const int	len = ft_strlen(target);
-	int			find;
 	int			i;
 
-	find = 0;
-	while (envlist[find] != NULL)
+	if (empty != -1)
 	{
-		if (ft_strncmp(target, envlist[find], len) == 0 \
-		&& envlist[find][len] == '=')
-		{
-			newlist = (char **)ft_malloc(sizeof(char *) * size);
-			i = -1;
-			while (++i < find)
-				newlist[i] = envlist[i];
-			while (++i < size)
-				newlist[i - 1] = envlist[i];
-			newlist[i] = NULL;
-		}
-		find++;
+		ft_putendl_fd("empty...", 2);
+		ft_putnbr_fd(empty, 2);
+		envlist[empty] = add;
+		return (envlist);
 	}
-	return (NULL);
+	else
+	{
+		ft_putendl_fd("realloc!!!", 2);
+		newlist = (char **)ft_malloc(sizeof(char *) * (size + 2));
+		i = 0;
+		while (envlist[i] != NULL)
+		{
+			newlist[i] = envlist[i];
+			i++;
+		}
+		newlist[i] = add;
+		newlist[i + 1] = NULL;
+		free(envlist);
+		return (newlist);
+	}
+}
+
+bool	delete_envlist(char **envlist, char *target)
+{
+	const int	len = ft_strlen(target);
+	int			i;
+
+	i = 0;
+	while (envlist[i] != NULL)
+	{
+		if (ft_strncmp(target, envlist[i], len) == 0 \
+		&& envlist[i][len] == '=')
+		{
+			free(envlist[i]);
+			envlist[i] = "";
+			return (true);
+		}
+		i++;
+	}
+	return (false);
 }
 
 bool	update_envlist(char **envlist, char *target, char *data)

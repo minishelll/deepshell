@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/20 13:40:12 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:35:19 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	start_process(char **cmds, char **envlist, int *use_pipe, int *redi)
 	else
 		dup2(use_pipe[0], STDOUT_FILENO);
 	if (bi_type != none)
-		execute_built_in(cmds, envlist, bi_type);
+		exit(execute_built_in(cmds, envlist, bi_type));
 	else
 	{
 		program = check_program(envlist, cmds[0]);
@@ -51,7 +51,7 @@ void	mid_process(char **cmds, char **envlist, int *use_pipe, int *redi)
 	else
 		dup2(use_pipe[0], STDOUT_FILENO);
 	if (bi_type != none)
-		execute_built_in(cmds, envlist, bi_type);
+		exit(execute_built_in(cmds, envlist, bi_type));
 	else
 	{
 		program = check_program(envlist, cmds[0]);
@@ -72,7 +72,7 @@ void	end_process(char **cmds, char **envlist, int *use_pipe, int *redi)
 	if (redi[OUTFILE] != INIT)
 		dup2(redi[OUTFILE], STDOUT_FILENO);
 	if (bi_type != none)
-		execute_built_in(cmds, envlist, bi_type);
+		exit(execute_built_in(cmds, envlist, bi_type));
 	else
 	{
 		program = check_program(envlist, cmds[0]);
