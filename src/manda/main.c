@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul. kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 02:30:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:51:59 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "minishell.h"
+#include "envlist.h"
 #include "parser.h"
 #include "execute.h"
 #include "libft.h"
@@ -60,12 +61,18 @@ void	free_syntax_tree(t_syntax_tree *curr)
 t_data	*init_data(char **envp)
 {
 	t_data	*data;
+	char	*update;
 
 	data = (t_data *)ft_malloc(sizeof(t_data));
 	data->lr_table = insert_lr_table();
 	data->grammar = insert_grammar();
 	data->envlist = init_envlist(envp);
 	data->exit_code = 0;
+	update = ft_itoa(ft_atoi(find_env(data->envlist, "SHLVL")) + 1);
+	update_envlist(data->envlist, "SHLVL", update);
+	free(update);
+	update = find_env(data->envlist, "PWD");
+	update_envlist(data->envlist, "SHELL", update);
 	return (data);
 }
 
