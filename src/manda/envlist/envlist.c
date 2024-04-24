@@ -6,14 +6,13 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:43:28 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 19:15:24 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:15:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include "libft.h"
-#include    <stdio.h>
 
 static int	_get_size(char **envlist)
 {

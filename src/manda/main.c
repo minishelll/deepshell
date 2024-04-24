@@ -73,6 +73,9 @@ t_data	*init_data(char **envp)
 	free(update);
 	update = find_env(data->env->envlist, "PWD");
 	update_envlist(data->env->envlist, "SHELL", update);
+	update = find_env(data->env->envlist, "OLDPWD");
+	if (update != NULL)
+		delete_envlist(data->env->envlist, "OLDPWD");
 	return (data);
 }
 

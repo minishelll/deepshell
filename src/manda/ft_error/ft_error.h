@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 21:17:19 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:53:45 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ typedef enum e_error_type
 
 typedef enum e_bi_error
 {
-	invalid_option,//2
-	invalid_identifier,//1
+	no_such_file,//1
+	permission_denied,//1
 	too_many_argu,//1
+	invalid_identifier,//1
+	invalid_option,//2
 	required_numeric,//255
 	not_support_option,//??
 	not_support_argument,//??
@@ -60,15 +62,16 @@ typedef enum e_bi_error
 
 /* ***************************** ERROR_MESSAGE ****************************** */
 /* based on bash */
-# define INVALID_OPT "invalid option"
-# define INVALID_ID "not a valid identifier"
+# define NO_SUCH_FILE "No such file or directory"
+# define PERMISSION_DENIED "Permission denied"
 # define TOO_MANY_ARG "too many arguments"
+# define INVALID_ID "not a valid identifier"
+# define INVALID_OPT "invalid option"
 # define REQUIRED_NUMERIC "numeric argument required"
 /* deepshell define */
 # define NOT_SUPPORT_OPT "option is not support"
 # define NOT_SUPPORT_AGU "argument is not support"
 # define NEED_ASSIGNMENT "value is required (name=value)"
-
 int	ft_error(t_error_type errcase, int errnum, char *target);
 
 #endif

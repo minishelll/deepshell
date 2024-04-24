@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 21:18:25 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:53:44 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ static int	_print_bi_error(t_error_type errcase, t_bi_error type, char *target)
 {
 	const char	*bi_list[7] = {"echo: ", "cd: ", "pwd: ", "export: " \
 								, "unset: ", "env: ", "exit: "};
-	const char	*msglist[7] = {INVALID_OPT, INVALID_ID
-								, TOO_MANY_ARG, REQUIRED_NUMERIC \
+	const char	*msglist[9] = {NO_SUCH_FILE, PERMISSION_DENIED, TOO_MANY_ARG \
+								, INVALID_ID, INVALID_OPT \
+								, REQUIRED_NUMERIC \
 								, NOT_SUPPORT_OPT, NOT_SUPPORT_AGU \
 								, NEED_ASSIGNMENT};
 
