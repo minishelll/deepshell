@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 07:19:29 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:15:47 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define EXECUTE_H
 
 # include "syntax_tree.h"
+# include "envlist.h"
 # include "libft.h"
-#include<stdio.h>
 
 /* ******************************** DEFINE ********************************** */
 # define TMPFILE_IN_HOMEDIR "/Users/taerakim/tmp"
@@ -41,23 +41,23 @@ typedef struct s_pipe
 
 /* ******************************* FUNCTIONS ******************************** */
 
-int		execute(t_syntax_tree *root, char **envlist);
+int		execute(t_syntax_tree *root, t_env *env);
 
-int		execute_pipe(t_syntax_tree *curr, char **envlist, t_pipe *pipeinfo);
+int		execute_pipe(t_syntax_tree *curr, t_env *env, t_pipe *pipeinfo);
 
-int		execute_subshell(t_syntax_tree *curr, char **envlist \
+int		execute_subshell(t_syntax_tree *curr, t_env *env \
 						, t_pipe *pipeinfo, t_pipe_order order);
 
-int		execute_only_command(t_syntax_tree *command, char **envlist);
-int		execute_command(t_syntax_tree *command, char **envlist \
+int		execute_only_command(t_syntax_tree *command, t_env *env);
+int		execute_command(t_syntax_tree *command, t_env *env \
 						, t_pipe *pipeinfo, t_pipe_order order);
 
 
-typedef void (*t_child_proc)(char **, char **, int *, int*);
+typedef void (*t_child_proc)(char **, t_env *, int *, int*);
 
-void	start_process(char **cmds, char **envlist, int *use_pipe, int *redi);
-void	mid_process(char **cmds, char **envlist, int *use_pipe, int *redi);
-void	end_process(char **cmds, char **envlist, int *use_pipe, int *redi);
+void	start_process(char **cmds, t_env *env, int *use_pipe, int *redi);
+void	mid_process(char **cmds, t_env *env, int *use_pipe, int *redi);
+void	end_process(char **cmds, t_env *env, int *use_pipe, int *redi);
 
 void	open_file(t_list *redi_list, int *redi);
 char	*check_program(char **envlist, char *cmdname);

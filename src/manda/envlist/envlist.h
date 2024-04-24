@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:55:39 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 11:34:51 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:58:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 # define DEFINE_H
 
 # include <stdbool.h>
+
+typedef struct s_env
+{
+	char	**envlist;
+	int		exit_code;
+}			t_env;
 
 /* ******************************* FUNCTIONS ******************************** */
 char	**init_envlist(char **envp);

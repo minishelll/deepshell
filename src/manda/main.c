@@ -15,7 +15,6 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "minishell.h"
-#include "envlist.h"
 #include "parser.h"
 #include "execute.h"
 #include "libft.h"
@@ -66,13 +65,14 @@ t_data	*init_data(char **envp)
 	data = (t_data *)ft_malloc(sizeof(t_data));
 	data->lr_table = insert_lr_table();
 	data->grammar = insert_grammar();
-	data->envlist = init_envlist(envp);
-	data->exit_code = 0;
-	update = ft_itoa(ft_atoi(find_env(data->envlist, "SHLVL")) + 1);
-	update_envlist(data->envlist, "SHLVL", update);
+	data->env = (t_env *)ft_malloc(sizeof(t_env));
+	data->env->envlist = init_envlist(envp);
+	data->env->exit_code = 0;
+	update = ft_itoa(ft_atoi(find_env(data->env->envlist, "SHLVL")) + 1);
+	update_envlist(data->env->envlist, "SHLVL", update);
 	free(update);
-	update = find_env(data->envlist, "PWD");
-	update_envlist(data->envlist, "SHELL", update);
+	update = find_env(data->env->envlist, "PWD");
+	update_envlist(data->env->envlist, "SHELL", update);
 	return (data);
 }
 
@@ -92,10 +92,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
-		ast = parser(data->lr_table, data->grammar, input/*, data->envlist*/);
+		ast = parser(data->lr_table, data->grammar, input/*, data->env->envlist*/);
 		add_history(input);
 		free(input);
-		data->exit_code = execute(ast, data->envlist);
+		data->env->exit_code = execute(ast, data->env);
 		free_syntax_tree(ast);
 	}
 }

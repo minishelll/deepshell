@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:43:28 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/21 20:13:15 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:15:24 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include "libft.h"
+#include    <stdio.h>
 
 static int	_get_size(char **envlist)
 {
@@ -64,14 +65,11 @@ char	**add_envlist(char **envlist, char *add)
 
 	if (empty != -1)
 	{
-		ft_putendl_fd("empty...", 2);
-		ft_putnbr_fd(empty, 2);
 		envlist[empty] = add;
 		return (envlist);
 	}
 	else
 	{
-		ft_putendl_fd("realloc!!!", 2);
 		newlist = (char **)ft_malloc(sizeof(char *) * (size + 2));
 		i = 0;
 		while (envlist[i] != NULL)

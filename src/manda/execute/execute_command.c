@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 11:48:43 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:15:09 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,15 @@ char	*check_program(char **envlist, char *cmdname)
 	return (res);
 }
 
-int	execute_only_command(t_syntax_tree *command, char **envlist)
+int	execute_only_command(t_syntax_tree *command, t_env *env)
 {
 	const t_bi_type	bi_type = is_built_in(((char **)command->child[L])[0]);
 	char			*program;
 	int				pid;
 	int				redi[2];
 
+	if (bi_type != none)
+		return (execute_built_in(command->child[L], env, bi_type));
 	pid = fork();
 	if (pid == -1)
 		ft_error(error_systemcall, errno, NULL);
@@ -82,19 +84,14 @@ int	execute_only_command(t_syntax_tree *command, char **envlist)
 			dup2(redi[INFILE], STDIN_FILENO);
 		if (redi[OUTFILE] != INIT)
 			dup2(redi[OUTFILE], STDOUT_FILENO);
-		if (bi_type != none)
-			return (execute_built_in(command->child[L], envlist, bi_type));
-		else
-		{
-			program = check_program(envlist, ((char **)command->child[L])[0]);
-			execve(program, command->child[L], envlist);
-			exit(2);
-		}
+		program = check_program(env->envlist, ((char **)command->child[L])[0]);
+		execve(program, command->child[L], env->envlist);
+		exit(2);
 	}
 	return (wait_process(pid, NULL));
 }
 
-int	execute_command(t_syntax_tree *command, char **envlist
+int	execute_command(t_syntax_tree *command, t_env *env
 					, t_pipe *pipeinfo, t_pipe_order order)
 {
 	const t_child_proc	proc[3] = {start_process, mid_process, end_process};
@@ -109,7 +106,7 @@ int	execute_command(t_syntax_tree *command, char **envlist
 	{
 		open_file(command->child[R], redi);
 		use_pipe = handle_pipe(pipeinfo, order);
-		proc[order](command->child[L], envlist, use_pipe, redi);
+		proc[order](command->child[L], env, use_pipe, redi);
 	}
 	if (order == end)
 	{

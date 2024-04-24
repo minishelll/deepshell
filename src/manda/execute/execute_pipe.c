@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:00:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 07:19:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:13:18 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "execute.h"
+#include "envlist.h"
 #include "ft_error.h"
 
 static int	*_pipe_join(int *org, int *new, int cnt)
@@ -34,21 +35,21 @@ static int	*_pipe_join(int *org, int *new, int cnt)
 	return (res);
 }
 
-static int	handle_left(t_syntax_tree *left, char **envlist, t_pipe *pipeinfo)
+static int	handle_left(t_syntax_tree *left, t_env *env, t_pipe *pipeinfo)
 {
 	int	result;
 
 	result = INIT;
 	if (left->type == sym_command)
-		result = execute_command(left, envlist, pipeinfo, start);
+		result = execute_command(left, env, pipeinfo, start);
 	else if (left->type == sym_pipe)
-		result = execute_pipe(left, envlist, pipeinfo);
+		result = execute_pipe(left, env, pipeinfo);
 	else if (left->type == sym_subshell)
-		result = execute_subshell(left, envlist, pipeinfo, start);
+		result = execute_subshell(left, env, pipeinfo, start);
 	return (result);
 }
 
-static int	handle_right(t_syntax_tree *right, char **envlist, t_pipe *pipeinfo)
+static int	handle_right(t_syntax_tree *right, t_env *env, t_pipe *pipeinfo)
 {
 	int	result;
 
@@ -56,23 +57,23 @@ static int	handle_right(t_syntax_tree *right, char **envlist, t_pipe *pipeinfo)
 	if (right->type == sym_command)
 	{
 		if (pipeinfo->cnt == 1)
-			result = execute_command(right, envlist, pipeinfo, end);
+			result = execute_command(right, env, pipeinfo, end);
 		else
-			result = execute_command(right, envlist, pipeinfo, middle);
+			result = execute_command(right, env, pipeinfo, middle);
 	}
 	else if (right->type == sym_pipe)
-		result = execute_pipe(right, envlist, pipeinfo);
+		result = execute_pipe(right, env, pipeinfo);
 	else if (right->type == sym_subshell)
 	{
 		if (pipeinfo->cnt == 1)
-			result = execute_subshell(right, envlist, pipeinfo, end);
+			result = execute_subshell(right, env, pipeinfo, end);
 		else
-			result = execute_subshell(right, envlist, pipeinfo, middle);
+			result = execute_subshell(right, env, pipeinfo, middle);
 	}
 	return (result);
 }
 
-int	execute_pipe(t_syntax_tree *curr, char **envlist, t_pipe *pipeinfo)
+int	execute_pipe(t_syntax_tree *curr, t_env *env, t_pipe *pipeinfo)
 {
 	int	curr_pipe[2];
 	int	result;
@@ -84,8 +85,8 @@ int	execute_pipe(t_syntax_tree *curr, char **envlist, t_pipe *pipeinfo)
 	pipeinfo->pipelist = _pipe_join(pipeinfo->pipelist \
 									, curr_pipe, pipeinfo->cnt);
 	now_cnt = pipeinfo->cnt;
-	result = handle_left(curr->child[L], envlist, pipeinfo);
+	result = handle_left(curr->child[L], env, pipeinfo);
 	pipeinfo->cnt = now_cnt;
-	result = handle_right(curr->child[R], envlist, pipeinfo);
+	result = handle_right(curr->child[R], env, pipeinfo);
 	return (result);
 }

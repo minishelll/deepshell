@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 11:49:59 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:17:19 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,60 @@
 
 # include <errno.h>
 
+/* ******************************* ERROR_TYPE ******************************* */
 typedef enum e_error_type
 {
 	error_systemcall = -127,
 	error_syntax,
 	error_access,
 	error_redirection,
-	error_built_in
+	error_built_in = -1,
+	error_echo,
+	error_cd,
+	error_pwd,
+	error_export,
+	error_unset,
+	error_env,
+	error_exit
 }	t_error_type;
 
-void	ft_error(t_error_type errcase, int errnum, char *target);
+typedef enum e_bi_error
+{
+	invalid_option,//2
+	invalid_identifier,//1
+	too_many_argu,//1
+	required_numeric,//255
+	not_support_option,//??
+	not_support_argument,//??
+	need_assignment//??
+}	t_bi_error;
+
+/* ******************************* EXIT_CODE ******************************** */
+# define EXIT_BASIC_ERROR 1
+# define EXIT_BUILT_IN_ERROR 2
+# define EXIT_DEEPSHELL_ERROR 255
+/*
+0		성공
+1		일반적인 에러
+2		builtin shell command 에러
+126		command가 존재하지만 실행 불가
+127		command 존재 x
+128		not used on shell
+128+N	signal N 으로 종료된 경우
+255		범위 밖인 경우
+*/
+
+/* ***************************** ERROR_MESSAGE ****************************** */
+/* based on bash */
+# define INVALID_OPT "invalid option"
+# define INVALID_ID "not a valid identifier"
+# define TOO_MANY_ARG "too many arguments"
+# define REQUIRED_NUMERIC "numeric argument required"
+/* deepshell define */
+# define NOT_SUPPORT_OPT "option is not support"
+# define NOT_SUPPORT_AGU "argument is not support"
+# define NEED_ASSIGNMENT "value is required (name=value)"
+
+int	ft_error(t_error_type errcase, int errnum, char *target);
 
 #endif

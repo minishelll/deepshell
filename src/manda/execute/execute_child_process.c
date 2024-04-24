@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 11:35:19 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:10:11 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "built_in.h"
 #include "ft_error.h"
 
-void	start_process(char **cmds, char **envlist, int *use_pipe, int *redi)
+void	start_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 {
 	const t_bi_type	bi_type = is_built_in(cmds[0]);
 	char			*program;
@@ -28,16 +28,16 @@ void	start_process(char **cmds, char **envlist, int *use_pipe, int *redi)
 	else
 		dup2(use_pipe[0], STDOUT_FILENO);
 	if (bi_type != none)
-		exit(execute_built_in(cmds, envlist, bi_type));
+		exit(execute_built_in(cmds, env, bi_type));
 	else
 	{
-		program = check_program(envlist, cmds[0]);
+		program = check_program(env->envlist, cmds[0]);
 		execve(program, cmds, NULL);
 		exit(2);
 	}
 }
 
-void	mid_process(char **cmds, char **envlist, int *use_pipe, int *redi)
+void	mid_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 {
 	const t_bi_type	bi_type = is_built_in(cmds[0]);
 	char			*program;
@@ -51,16 +51,16 @@ void	mid_process(char **cmds, char **envlist, int *use_pipe, int *redi)
 	else
 		dup2(use_pipe[0], STDOUT_FILENO);
 	if (bi_type != none)
-		exit(execute_built_in(cmds, envlist, bi_type));
+		exit(execute_built_in(cmds, env, bi_type));
 	else
 	{
-		program = check_program(envlist, cmds[0]);
+		program = check_program(env->envlist, cmds[0]);
 		execve(program, cmds, NULL);
 		exit(2);
 	}
 }
 
-void	end_process(char **cmds, char **envlist, int *use_pipe, int *redi)
+void	end_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 {
 	const t_bi_type	bi_type = is_built_in(cmds[0]);
 	char			*program;
@@ -72,10 +72,10 @@ void	end_process(char **cmds, char **envlist, int *use_pipe, int *redi)
 	if (redi[OUTFILE] != INIT)
 		dup2(redi[OUTFILE], STDOUT_FILENO);
 	if (bi_type != none)
-		exit(execute_built_in(cmds, envlist, bi_type));
+		exit(execute_built_in(cmds, env, bi_type));
 	else
 	{
-		program = check_program(envlist, cmds[0]);
+		program = check_program(env->envlist, cmds[0]);
 		execve(program, cmds, NULL);
 		exit(2);
 	}
