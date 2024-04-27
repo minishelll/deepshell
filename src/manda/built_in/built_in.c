@@ -6,11 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/24 16:14:00 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/27 02:39:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
+#include <unistd.h>
 #include "libft.h"
 #include "ft_error.h"
 #include "built_in.h"
@@ -18,10 +18,13 @@
 t_bi_type	is_built_in(char *cmdname)
 {
 	int			i;
-	const int	len = ft_strlen(cmdname);
+	int			len;
 	const char	*functlist[7] = {"echo", "cd", "pwd", "export" \
 								, "unset", "env", "exit"};
 
+	if (cmdname == NULL)
+		return (none);
+	len = ft_strlen(cmdname);
 	i = 0;
 	while (i < 7)
 	{
@@ -32,10 +35,25 @@ t_bi_type	is_built_in(char *cmdname)
 	return (none);
 }
 
-int	execute_built_in(char **cmds, t_env *env, t_bi_type type)
+int	execute_built_in(char **cmds, t_env *env, t_bi_type type, int *redi)
 {
+	int					keep[2];
+	int					result;
 	const t_built_in	built_in_funct[7] = {ft_echo, ft_cd, ft_pwd, ft_export \
 											, ft_unset, ft_env, ft_exit};
 
-	return (built_in_funct[type](cmds, env));
+	keep[STDIN_FILENO] = dup(STDIN_FILENO);
+	keep[STDOUT_FILENO] = dup(STDOUT_FILENO);
+	if (redi[0] != -1)
+		dup2(redi[0], STDIN_FILENO);
+	if (redi[1] != -1)
+		dup2(redi[1], STDOUT_FILENO);
+	result = built_in_funct[type](cmds, env);
+	if (redi[0] != -1)
+		dup2(keep[STDIN_FILENO], STDIN_FILENO);
+	if (redi[1] != -1)
+		dup2(keep[STDOUT_FILENO], STDOUT_FILENO);
+	close(keep[STDIN_FILENO]);
+	close(keep[STDOUT_FILENO]);
+	return (result);
 }

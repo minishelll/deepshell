@@ -14,9 +14,11 @@ SRCS := parser.c \
 		tokenizer_quote_parser.c\
 		tokenizer_op_parser.c\
 		tokenizer_utils.c\
+		expand.c \
 		syntax_analyzer.c \
 		syntax_action.c \
 		syntax_lr_stack.c \
+		syntax_analyzer_util.c \
 		semantic_analyzer.c	\
 		semantic_analyzer_utils.c \
 		

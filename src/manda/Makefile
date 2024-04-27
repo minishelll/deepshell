@@ -13,8 +13,8 @@ SRCS := main.c \
 # SRCS(in SRCDIR) ------
 DIRS := ft_error \
 		insert_data \
-		parser \
 		envlist \
+		parser \
 		built_in \
 		execute \
 

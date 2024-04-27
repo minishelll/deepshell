@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/24 15:53:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:22:22 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef enum e_error_type
 
 typedef enum e_bi_error
 {
+	use_errno = -1,
 	no_such_file,//1
 	permission_denied,//1
 	too_many_argu,//1

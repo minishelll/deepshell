@@ -8,6 +8,7 @@ endif
 NAME := envlist.a
 HEAD := envlist.h
 SRCS := envlist.c \
+		envlist_util.c \
 
 LDLIBS := -lft
 

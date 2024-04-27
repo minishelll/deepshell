@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 06:51:44 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:58:28 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int	_handle_open(t_redi *curr, int *redi, bool *error)
 {
 	int	new[2];
 
+	errno = 0;
 	new[INFILE] = INIT;
 	new[OUTFILE] = INIT;
 	if (curr->type == input)

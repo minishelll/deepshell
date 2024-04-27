@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 16:59:11 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 21:01:46 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:38:19 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef enum e_atol_res
 }	t_atol_res;
 
 /* ******************************* FUNCTIONS ******************************** */
-int			execute_built_in(char **cmds, t_env *env, t_bi_type type);
+int	execute_built_in(char **cmds, t_env *env, t_bi_type type, int *redi);
 t_bi_type	is_built_in(char *cmdname);
 
 typedef int (*t_built_in)(char **, t_env *);

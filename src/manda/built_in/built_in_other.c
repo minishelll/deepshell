@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/24 16:30:33 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/27 10:31:51 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,52 @@
 #include "ft_error.h"
 #include "libft.h"
 
+static int	_find_argument_start(char **cmds)
+{
+	const char	opt = 'n';
+	int			cnt;
+	int			i;
+
+	i = 1;
+	while (cmds[i] != NULL)
+	{
+		if (cmds[i][0] == '-')
+		{
+			cnt = 1;
+			while (cmds[i][cnt] == opt)
+				cnt++;
+			if (cmds[i][cnt] != '\0')
+				return (i);
+		}
+		else
+			return (i);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_echo(char **cmds, t_env *env)
 {
-	int	opt;
+	int	arg_idx;
 	int	i;
 
-	if (cmds[1] == NULL)
-		opt = 1;
-	else
-		opt = ft_strncmp("-n", cmds[1], 3);
-	i = 1;
-	if (opt == 0)
-		i = 2;
+	arg_idx = _find_argument_start(cmds);
+	i = arg_idx;
 	while (cmds[i] != NULL)
 	{
 					//환경변수 임시 출력 <- expand 로직 필요
-					char *env_tmp = find_env(env->envlist, &cmds[1][1]);
-					if (env_tmp != NULL)
-						ft_putstr_fd(env_tmp, 1);
-					else
+					//char *env_tmp = find_env(env->envlist, &cmds[1][1]);
+					//if (env_tmp != NULL)
+					//	ft_putstr_fd(env_tmp, 1);
+					//else
 			ft_putstr_fd(cmds[i], 1);
 		if (cmds[i + 1] != NULL)
 			ft_putstr_fd(" ", 1);
 		i++;
 	}
-	if (opt != 0)
+	if (arg_idx == 1)
 		ft_putstr_fd("\n", 1);
+	(void)env;
 	return (0);
 }
 
@@ -55,9 +75,12 @@ int	ft_cd(char **cmds, t_env *env)
 
 	if (cmds[1][0] == '-' && cmds[1][1] == '\0')
 		return (ft_error(error_cd, not_support_option, cmds[1]));
-	record_cwd = find_env(env->envlist, "PWD");
-	if (record_cwd == NULL)
+	//record_cwd = find_env(env->envlist, "PWD");
+	//if (record_cwd == NULL)
+			errno = 0;
 		record_cwd = getcwd(NULL, 0);
+			if (errno != 0)
+				return (ft_error(error_cd, use_errno, cmds[1]));
 	if (access(cmds[1], F_OK) == -1)
 		return (ft_error(error_cd, no_such_file, cmds[1]));
 	if (access(cmds[1], X_OK) == -1)
@@ -79,10 +102,16 @@ int	ft_pwd(char **cmds, t_env *env)
 
 	if (cmds[1] != NULL && cmds[1][0] == '-')
 		return (ft_error(error_pwd, not_support_option, cmds[1]));
-	cwd = getcwd(NULL, 0);
-	ft_putendl_fd(cwd, 1);
-	free(cwd);
-	(void)env;
+	cwd = find_env(env->envlist, "PWD");
+	if (cwd == NULL)
+	{
+		cwd = getcwd(NULL, 0);
+		if (cwd != NULL)
+			ft_putendl_fd(cwd, 1);
+		free(cwd);
+	}
+	else
+		ft_putendl_fd(cwd, 1);
 	return (0);
 }
 
@@ -131,8 +160,7 @@ int	ft_exit(char **cmds, t_env *env)
 			return (ft_error(error_exit, required_numeric, cmds[1]));
 	}
 	else
-		exitnum = 0;
+		exitnum = env->exit_code;
 	exitnum %= 256;
-	(void)env;
 	exit(exitnum);//CTRL+D처럼 처리해야되는거 아닌가?
 }

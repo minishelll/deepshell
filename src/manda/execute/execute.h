@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 16:15:47 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:45:16 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int		execute_command(t_syntax_tree *command, t_env *env \
 
 typedef void (*t_child_proc)(char **, t_env *, int *, int*);
 
+void	single_process(char **cmds, t_env *env, int *redi);
 void	start_process(char **cmds, t_env *env, int *use_pipe, int *redi);
 void	mid_process(char **cmds, t_env *env, int *use_pipe, int *redi);
 void	end_process(char **cmds, t_env *env, int *use_pipe, int *redi);

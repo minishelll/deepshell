@@ -6,23 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:43:28 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/24 16:15:43 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/27 10:18:03 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include "envlist.h"
 #include "libft.h"
-
-static int	_get_size(char **envlist)
-{
-	int	i;
-
-	i = 0;
-	while (envlist[i] != NULL)
-		i++;
-	return (i);
-}
 
 char	**init_envlist(char **envp)
 {
@@ -30,29 +21,23 @@ char	**init_envlist(char **envp)
 	const int	size = _get_size(envp);
 	int			i;
 
-	new = (char **)ft_malloc(sizeof(char *) * (size + 1));
+	if (size == 0)
+		new = (char **)ft_malloc(sizeof(char *) * 2);
+	else
+		new = (char **)ft_malloc(sizeof(char *) * (size + 1));
 	i = 0;
-	while (envp[i] != NULL)
+	while (envp != NULL && envp[i] != NULL)
 	{
 		new[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	new[i] = NULL;
-	return (new);
-}
-
-static int	_find_empty_space(char **envlist)
-{
-	int	i;
-
-	i = 0;
-	while (envlist[i] != NULL)
+	if (size == 0)
 	{
-		if (envlist[i][0] == '\0')
-			return (i);
-		i++;
+		new[0] = ft_strdup("");
+		new[1] = NULL;
 	}
-	return (-1);
+	return (new);
 }
 
 char	**add_envlist(char **envlist, char *add)

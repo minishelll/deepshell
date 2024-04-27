@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/24 15:53:44 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/26 19:46:05 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ static int	_print_bi_error(t_error_type errcase, t_bi_error type, char *target)
 	if (type == invalid_identifier)
 		ft_putstr_fd("'", 2);
 	ft_putstr_fd(": ", 2);
-	ft_putstr_fd((char *)msglist[type], 2);
+	if (type == use_errno)
+		ft_putstr_fd(strerror(errno), 2);
+	else
+		ft_putstr_fd((char *)msglist[type], 2);
 	ft_putstr_fd("\n", 2);
 	if (type == invalid_identifier)
 		return (EXIT_BUILT_IN_ERROR);
@@ -51,9 +54,20 @@ static void	_print_error(t_error_type errcase, int errnum, char *target)
 		message = strerror(errnum);
 	else if (errcase == error_access)
 		message = "command not found";
-	ft_putstr_fd(target, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(message, 2);
+	else if (errcase == error_syntax)
+		message = "syntax error near unexpected token `";
+	if (errcase == error_syntax)
+	{
+		ft_putstr_fd(message, 2);
+		ft_putstr_fd(target, 2);
+		ft_putstr_fd("'", 2);
+	}
+	else
+	{
+		ft_putstr_fd(target, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(message, 2);
+	}
 	ft_putstr_fd("\n", 2);
 }
 
@@ -70,7 +84,7 @@ int	ft_error(t_error_type errcase, int errnum, char *target)
 	_print_error(errcase, errnum, target);
 	if (errcase == error_redirection)
 		exit(EXIT_FAILURE);
-	if (errcase == error_access)
+	if (errcase == error_redirection)
 		exit(127);
 	return (0);
 }

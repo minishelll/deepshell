@@ -57,10 +57,33 @@ void	free_syntax_tree(t_syntax_tree *curr)
 	free(curr);
 }
 
+static void	_set_basic_env(t_env *env)
+{
+	char	*update;
+
+	update = find_env(env->envlist, "SHLVL");
+	if (update == NULL)
+		update = ft_itoa(0);
+	else
+		update = ft_itoa(ft_atoi(update) + 1);
+	if (update_envlist(env->envlist, "SHLVL", update) == false)
+		env->envlist = add_envlist(env->envlist, \
+									ft_strjoin("SHLVL=", update));
+	free(update);
+	update = find_env(env->envlist, "PWD");
+	if (update == NULL)
+		update = "";
+	if (update_envlist(env->envlist, "SHELL", update) == false)
+		env->envlist = add_envlist(env->envlist, \
+									ft_strjoin("SHELL=", update));
+	update = find_env(env->envlist, "OLDPWD");
+	if (update != NULL)
+		update_envlist(env->envlist, "OLDPWD", "");
+}
+
 t_data	*init_data(char **envp)
 {
 	t_data	*data;
-	char	*update;
 
 	data = (t_data *)ft_malloc(sizeof(t_data));
 	data->lr_table = insert_lr_table();
@@ -68,14 +91,7 @@ t_data	*init_data(char **envp)
 	data->env = (t_env *)ft_malloc(sizeof(t_env));
 	data->env->envlist = init_envlist(envp);
 	data->env->exit_code = 0;
-	update = ft_itoa(ft_atoi(find_env(data->env->envlist, "SHLVL")) + 1);
-	update_envlist(data->env->envlist, "SHLVL", update);
-	free(update);
-	update = find_env(data->env->envlist, "PWD");
-	update_envlist(data->env->envlist, "SHELL", update);
-	update = find_env(data->env->envlist, "OLDPWD");
-	if (update != NULL)
-		delete_envlist(data->env->envlist, "OLDPWD");
+	_set_basic_env(data->env);
 	return (data);
 }
 
@@ -95,8 +111,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
-		ast = parser(data->lr_table, data->grammar, input/*, data->env->envlist*/);
+		ast = parser(data, input);
 		add_history(input);
+		if (ast == NULL)
+			continue ;
 		free(input);
 		data->env->exit_code = execute(ast, data->env);
 		free_syntax_tree(ast);

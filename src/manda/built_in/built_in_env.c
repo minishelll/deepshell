@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:31:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/24 12:53:54 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:22:16 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,6 @@
 #include "built_in.h"
 #include "ft_error.h"
 #include "libft.h"
-
-static int	_include_specific_char(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
-			return (SPECIFIC_CHAR_O);
-		i++;
-	}
-	return (SPECIFIC_CHAR_X);
-}
 
 int	ft_export(char **cmds, t_env *env)
 {
@@ -47,7 +33,7 @@ int	ft_export(char **cmds, t_env *env)
 		if (find == NULL)
 			return (ft_error(error_export, need_assignment, cmds[i]));
 		name = ft_substr(cmds[i], 0, find - cmds[i]);
-		if (_include_specific_char(name) == SPECIFIC_CHAR_O)
+		if (_find_specific_char(name) != NO_SPECIFIC_CHAR)
 			return (ft_error(error_export, invalid_identifier, cmds[i]));
 		if (update_envlist(env->envlist, name, \
 						&cmds[i][find - cmds[i] + 1]) == false)
@@ -71,7 +57,7 @@ int	ft_unset(char **cmds, t_env *env)
 				return (ft_error(error_unset, not_support_option, cmds[i]));
 			return (ft_error(error_unset, invalid_identifier, cmds[i]));
 		}
-		if (_include_specific_char(cmds[i]) == SPECIFIC_CHAR_O)
+		if (_find_specific_char(cmds[i]) != NO_SPECIFIC_CHAR)
 			return (ft_error(error_unset, invalid_identifier, cmds[i]));
 		if (find_env(env->envlist, cmds[i]) != NULL)
 			delete_envlist(env->envlist, cmds[i]);
@@ -94,7 +80,13 @@ int	ft_env(char **cmds, t_env *env)
 	while (env->envlist[i] != NULL)
 	{
 		if (env->envlist[i][0] != '\0')
+		{
+			ft_putstr_fd("[", 1);
+			ft_putnbr_fd(i, 1);
+			ft_putstr_fd("] ", 1);
 			ft_putendl_fd(env->envlist[i], 1);
+
+		}
 		i++;
 	}
 	return (0);
