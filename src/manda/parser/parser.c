@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 21:49:35 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/28 04:01:15 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,21 @@ static void	free_parse_tree(t_parse_tree *parse_tree)
 void	parse_tree_print(t_parse_tree *parse_tree, int depth, char *arrow);
 void	print_syntax_tree(t_syntax_tree *node, int level);
 void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow);
-void	wildcard(t_list **token);
+t_list	*wildcard(t_list *token);
 /* DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE */
 
 t_syntax_tree	*parser(t_lr_table *lr_table, t_grammar *grammar, char *input)
 {
 	t_list			*token;
+	t_list			*wildcard_expand;
 	t_parse_tree	*parse_tree;
 	t_syntax_tree	*ast;
 
 	token = tokenizer(input);
 	if (token == NULL)
 		return (0);
-	//wildcard(&token);
-	parse_tree = syntax_analyzer(token, grammar, lr_table);
+	wildcard_expand = wildcard(token);
+	parse_tree = syntax_analyzer(wildcard_expand, grammar, lr_table);
 	ast = semantic_analyzer(parse_tree);
 	
 	//print_parse_tree(parse_tree, 0, NULL);

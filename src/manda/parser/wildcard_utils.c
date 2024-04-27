@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:21:10 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/27 21:49:11 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/28 02:03:19 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_list	*get_dir_lst(void)
 	dp = opendir(cur_path);
 	if (dp == NULL)
 	{
-		printf("%s를 열 수 없습니다.",cur_path);
+		printf("%s를 열 수 없습니다.", cur_path);
 		exit(1);
 	}
 	entry = readdir(dp);
@@ -92,4 +92,23 @@ bool	**make_word_table(char *str1, char *str2)
 		i++;
 	}
 	return (arr);
+}
+
+bool	match_and_collect(char *word, t_list *dir_lst, t_list **matched)
+{
+	t_list	*dir_cur;
+	bool	flag;
+
+	dir_cur = dir_lst;
+	flag = false;
+	while (dir_cur)
+	{
+		if (check_word(word, (char *)(dir_cur->content)))
+		{
+			wildcard_add_back(matched, dir_cur->content);
+			flag = true;
+		}
+		dir_cur = dir_cur->next;
+	}
+	return (flag);
 }

@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/25 23:00:12 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/28 03:39:42 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,18 @@ t_data	*init_data(char **envp)
 	return (data);
 }
 
+void	leaks(void)
+{
+	system("leaks minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data			*data;
 	t_syntax_tree	*ast;
 	char			*input;
 
+	atexit(leaks);
 	if (argc != 1)
 		exit(EXIT_FAILURE);
 	print_welcome_title();
@@ -83,7 +89,6 @@ int	main(int argc, char **argv, char **envp)
 	data = init_data(envp);
 	while (1)
 	{
-		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
 		ast = parser(data->lr_table, data->grammar, input/*, data->envlist*/);
 		if (ast == NULL)
@@ -92,5 +97,7 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 		data->exit_code = execute(ast, data->envlist);
 		free_syntax_tree(ast);
+		break;
 	}
+	exit(1);
 }
