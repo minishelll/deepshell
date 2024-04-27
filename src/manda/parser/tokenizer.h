@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/05 16:40:37 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/28 04:51:25 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ t_termi	get_token_type(char *str, int len);
 void	add_end_token(t_list *parsed_list);
 void	free_token(t_token *token);
 t_token	*new_token(char *word, t_termi type);
-
+int		is_white_space(char c);
 #endif

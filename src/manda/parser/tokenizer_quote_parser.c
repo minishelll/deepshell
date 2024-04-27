@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_quote_parser.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/05 16:37:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/28 04:47:04 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	token_add_back(t_list **token_list, char *str)
 	token = (t_token *)ft_malloc(sizeof(t_token));
 	if (*str == '\'' || *str == '\"')
 		token->type = word;
-	token->word = ft_strtrim(str, " ");
+	token->word = ft_strdup(str);
 	if (*(token->word) != '\0')
 		ft_lstadd_back(token_list, ft_lstnew(token));
 	else
