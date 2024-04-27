@@ -20,6 +20,7 @@ SRCS := parser.c \
 		semantic_analyzer.c	\
 		semantic_analyzer_utils.c \
 		wildcard.c \
+		wildcard_utils.c \
 
 LDLIBS := -lft
 
