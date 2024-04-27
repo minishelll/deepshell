@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 02:30:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/25 23:00:12 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ int	main(int argc, char **argv, char **envp)
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
 		ast = parser(data->lr_table, data->grammar, input/*, data->envlist*/);
+		if (ast == NULL)
+			continue ;
 		add_history(input);
 		free(input);
 		data->exit_code = execute(ast, data->envlist);

@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/22 16:04:02 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/27 21:49:35 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ t_syntax_tree	*parser(t_lr_table *lr_table, t_grammar *grammar, char *input)
 	t_syntax_tree	*ast;
 
 	token = tokenizer(input);
+	if (token == NULL)
+		return (0);
 	//wildcard(&token);
 	parse_tree = syntax_analyzer(token, grammar, lr_table);
 	ast = semantic_analyzer(parse_tree);
