@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 15:45:16 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:16:24 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 # include "libft.h"
 
 /* ******************************** DEFINE ********************************** */
-# define TMPFILE_IN_HOMEDIR "/Users/taerakim/tmp"
-//# define TMPFILE_IN_HOMEDIR "$(HOME)/tmp"
+# define TMPFILE "/tmp/tmp"
 # define CONTINUE -1
 # define PIPE_END -1
 # define PIPE_ALL -1
@@ -66,5 +65,7 @@ char	*check_program(char **envlist, char *cmdname);
 int		wait_process(int last_child, t_pipe *pipeinfo);
 int		*handle_pipe(t_pipe *pipeinfo, t_pipe_order order);
 void	close_redirect_file(int *redi);
+
+void	execute_heredoc(t_syntax_tree *root, int *cnt);
 
 #endif

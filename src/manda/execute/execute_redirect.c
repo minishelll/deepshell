@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 14:58:28 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:28:17 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,6 @@
 #include <stdbool.h>
 #include "execute.h"
 #include "ft_error.h"
-
-//static void	_here_doc(char *delimiter)
-//{
-//	const int	len = ft_strlen(delimiter);
-//	char		*in;
-//	int			tmpfile;
-
-//	tmpfile = open(TMPFILE_IN_HOMEDIR, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-//	if (tmpfile == ERROR)
-//		ft_error(error_file, TMPFILE_IN_HOMEDIR);
-//	while (1)
-//	{
-//		//in = readline("> ");
-//		//if (in == NULL)
-//		//	break ;
-//		if (ft_strncmp(delimiter, in, len) == 0 && in[len] == '\n')
-//		{
-//			free(in);
-//			break ;
-//		}
-//		write(tmpfile, in, ft_strlen(in));
-//		free(in);
-//	}
-//	close(tmpfile);
-//}
 
 static void	_update_redi(int *redi, int *new)
 {
@@ -69,11 +44,7 @@ static int	_handle_open(t_redi *curr, int *redi, bool *error)
 	if (curr->type == input)
 		new[INFILE] = open(curr->file, O_RDONLY);
 	else if (curr->type == here_doc)
-	{
-		//_here_doc(curr->file);
-		new[INFILE] = open(TMPFILE_IN_HOMEDIR, O_RDONLY, 0644);
-		//heredoc은 즉시 끝낼지 고민된다
-	}
+		new[INFILE] = open(curr->file, O_RDONLY);
 	else if (error[OUTFILE] == false)
 	{
 		if (curr->type == output)

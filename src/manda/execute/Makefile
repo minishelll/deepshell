@@ -14,8 +14,9 @@ SRCS := execute.c \
 		execute_child_process.c \
 		execute_redirect.c \
 		execute_utils.c \
+		heredoc.c \
 
-LDLIBS := -lft
+LDLIBS := -lft -lreadline
 
 include $(TOPDIR)/include_make/Variable.mk
 include $(TOPDIR)/include_make/Link.mk

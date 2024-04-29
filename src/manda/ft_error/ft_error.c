@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 19:46:05 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 22:55:10 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,37 +54,38 @@ static void	_print_error(t_error_type errcase, int errnum, char *target)
 		message = strerror(errnum);
 	else if (errcase == error_access)
 		message = "command not found";
+	else if (errcase == error_max_heredoc)
+		message = "maximum here-document count exceeded";
 	else if (errcase == error_syntax)
 		message = "syntax error near unexpected token `";
-	if (errcase == error_syntax)
-	{
-		ft_putstr_fd(message, 2);
-		ft_putstr_fd(target, 2);
-		ft_putstr_fd("'", 2);
-	}
-	else
+	if (errcase != error_syntax && errcase != error_max_heredoc)
 	{
 		ft_putstr_fd(target, 2);
 		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(message, 2);
+	}
+	ft_putstr_fd(message, 2);
+	if (errcase == error_syntax)
+	{
+		ft_putstr_fd(target, 2);
+		ft_putstr_fd("'", 2);
 	}
 	ft_putstr_fd("\n", 2);
 }
 
 int	ft_error(t_error_type errcase, int errnum, char *target)
 {
+	ft_putstr_fd("deepshell: ", 2);
 	if (errcase == error_systemcall)
 	{
 		perror("error");
 		exit(EXIT_FAILURE);
 	}
-	ft_putstr_fd("deepshell: ", 2);
 	if (errcase > error_built_in)
 		return (_print_bi_error(errcase, errnum, target));
 	_print_error(errcase, errnum, target);
 	if (errcase == error_redirection)
 		exit(EXIT_FAILURE);
-	if (errcase == error_redirection)
-		exit(127);
-	return (0);
+	if (errcase == error_max_heredoc)
+		exit(2);
+	return (1);
 }
