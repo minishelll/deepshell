@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 16:22:22 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 22:34:58 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef enum e_error_type
 	error_syntax,
 	error_access,
 	error_redirection,
+	error_file,
+	error_max_heredoc,
 	error_built_in = -1,
 	error_echo,
 	error_cd,

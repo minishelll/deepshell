@@ -14,7 +14,7 @@ ifdef DEPS
 	CPPFLAGS += -MMD -MP
 endif
 ifdef DEBUG
-	CPPFLAGS += -g
+	CPPFLAGS += -g3
 endif
 ifdef SANI
 	CPPFLAGS += -fsanitize=address

@@ -101,6 +101,7 @@ int	main(int argc, char **argv, char **envp)
 	t_data			*data;
 	t_syntax_tree	*ast;
 	char			*input;
+	int				heredoc;
 
 	if (argc != 1)
 		exit(EXIT_FAILURE);
@@ -127,6 +128,8 @@ int	main(int argc, char **argv, char **envp)
 		if (ast == NULL)
 			continue ;
 		free(input);
+		heredoc = 0;
+		execute_heredoc(ast, &heredoc);
 		data->env->exit_code = execute(ast, data->env);
 		free_syntax_tree(ast);
 	}
