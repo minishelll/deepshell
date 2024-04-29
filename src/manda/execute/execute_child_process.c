@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_child_process.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 15:23:11 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:03:37 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "execute.h"
 #include "built_in.h"
 #include "ft_error.h"
+#include "mini_signal.h"
 
 void	single_process(char **cmds, t_env *env, int *redi)
 {
@@ -27,6 +28,7 @@ void	single_process(char **cmds, t_env *env, int *redi)
 	if (cmds[0] == NULL)
 		exit(0);
 	program = check_program(env->envlist, cmds[0]);
+	set_child_signal();
 	execve(program, cmds, env->envlist);
 	exit(2);
 }

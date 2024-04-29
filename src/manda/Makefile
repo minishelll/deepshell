@@ -14,6 +14,7 @@ SRCS := main.c \
 DIRS := ft_error \
 		insert_data \
 		envlist \
+		signal \
 		parser \
 		built_in \
 		execute \

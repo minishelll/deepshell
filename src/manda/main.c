@@ -18,6 +18,7 @@
 #include "parser.h"
 #include "execute.h"
 #include "libft.h"
+#include "mini_signal.h"
 
 void	free_redi(void *redi)
 {
@@ -106,12 +107,22 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	print_welcome_title();
 	(void)argv;
-	//signal();
 	data = init_data(envp);
 	while (1)
 	{
+		set_parent_signal();
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
+		if (g_signal == SIGINT)
+		{
+			data->env->exit_code = 1;
+			g_signal = 0;
+		}
+		if (input == NULL)
+			do_sig_term(SIGTERM, data->env->exit_code);
+		if (*input == '\0')
+			continue ;
+		set_signal_ignore();
 		ast = parser(data, input);
 		add_history(input);
 		if (ast == NULL)
