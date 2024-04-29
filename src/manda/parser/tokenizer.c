@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:10:43 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/04/27 22:06:32 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:57:20 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,18 @@ t_list	*tokenizer(char *command, t_env *env)
 		else
 			printf("\n");
 	}
+	printf("─────────────\n");
 	expand(op_parsed_list, env);
 	merge_word_nodes(&op_parsed_list);
+	for(curr = op_parsed_list; ((t_token *)curr->content)->type != dollar_sign; curr = curr->next)
+	{
+		printf("merge[%d]: ", ((t_token *)curr->content)->type);
+		if (((t_token *)curr->content)->type == word)
+			printf("%s\n", ((t_token *)curr->content)->word);
+		else
+			printf("\n");
+	}
+	printf("─────────────\n");
 	free(quote_parsed_list);
 	return (op_parsed_list);
 }

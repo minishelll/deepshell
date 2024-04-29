@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/28 04:51:16 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:54:05 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ void	add_end_token(t_list *parsed_list)
 }
 
 //t_token을 free합니다.
-void	free_token(t_token *token)
+void	free_token(void *token)
 {
-	if (token->word)
-		free(token->word);
-	free(token);
+	t_token	*dst;
+
+	dst = token;
+	if (dst->word)
+		free(dst->word);
+	free(dst);
 }
 
 //t_token을 초기화합니다.

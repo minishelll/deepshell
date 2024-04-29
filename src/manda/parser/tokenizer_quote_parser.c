@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_quote_parser.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerankim <taerankim@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/28 06:21:37 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:55:26 by taerankim        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	merge_word_nodes(t_list **list)
 //t_token 구조체의 word를 join하는 함수
 void	join_token(t_list **node)
 {
+	/*
 	t_token	*cur_token;
 	t_token	*next_token;
 	t_token	*new_token;
@@ -91,6 +92,13 @@ void	join_token(t_list **node)
 	free_token(next_token);
 	free((*node)->next);
 	(*node)->next = (*node)->next->next;
+	*/
+	t_list	*tmp;
+
+	tmp = (*node)->next;
+	(*node)->next = ft_lstnew(new_token(ft_strdup(""), word));
+	(*node)->next->next = tmp;
+	*node = (*node)->next->next;
 }
 
 //quote를 기준으로 문자열을 잘라 리스트를 만들어 반환
