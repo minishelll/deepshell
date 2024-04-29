@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/28 03:39:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:32:54 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,5 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 		data->exit_code = execute(ast, data->envlist);
 		free_syntax_tree(ast);
-		break;
 	}
-	exit(1);
 }

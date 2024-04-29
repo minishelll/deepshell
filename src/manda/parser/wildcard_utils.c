@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:21:10 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/28 02:03:19 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:44:22 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,29 @@ t_list	*get_dir_lst(void)
 	DIR				*dp;
 	t_list			*lst;
 	struct dirent	*entry;
-	char			cur_path[PATH_MAX];
+	char			*cur_path;
 
 	lst = NULL;
-	if (getcwd(cur_path, PATH_MAX) == NULL)
+	cur_path = getcwd(NULL, PATH_MAX);
+	if (cur_path == NULL)
 		exit(1);
 	dp = opendir(cur_path);
 	if (dp == NULL)
 	{
 		printf("%s를 열 수 없습니다.", cur_path);
+		free(cur_path);
 		exit(1);
 	}
-	entry = readdir(dp);
-	while (entry != NULL)
+	//entry = readdir(dp);
+	while (1)
 	{
-		ft_lstadd_back(&lst, ft_lstnew(entry->d_name));
 		entry = readdir(dp);
+		if (entry == NULL)
+			break ;
+		ft_lstadd_back(&lst, ft_lstnew(ft_strdup(entry->d_name)));
 	}
 	closedir(dp);
+	free(cur_path);
 	return (lst);
 }
 

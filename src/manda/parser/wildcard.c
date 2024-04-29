@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 21:04:51 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/28 03:39:59 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:28:18 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ t_list	*wildcard(t_list *token)
 	attach_head_node(&token);
 	dir_lst = get_dir_lst();
 	process_wildcard_tokens(token, dir_lst);
+	ft_lstclear(&dir_lst, free);
 	return (token);
 }
