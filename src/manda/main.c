@@ -112,6 +112,11 @@ int	main(int argc, char **argv, char **envp)
 		set_parent_signal();
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
+		if (g_signal == SIGINT)
+		{
+			data->env->exit_code = 1;
+			g_signal = 0;
+		}
 		if (input == NULL)
 			do_sig_term(SIGTERM, data->env->exit_code);
 		if (*input == '\0')
