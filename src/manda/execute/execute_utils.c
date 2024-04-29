@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:15:19 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 10:31:54 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:15:33 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,21 @@ int	wait_process(int last_child, t_pipe *pipeinfo)
 	if (WIFEXITED(statloc))
 		exit_code = WEXITSTATUS(statloc);
 	else if (WIFSIGNALED(statloc))
-		exit_code = WTERMSIG(statloc);
+	{
+		exit_code = WTERMSIG(statloc) + 128;
+		if (exit_code == 130)
+			write(1, "\n", 1);
+		else if (exit_code == 131)
+			ft_putstr_fd("Quit: 3", 1);
+	}
 	if (pipeinfo != NULL && pipeinfo->pipelist != NULL)
 	{
 		pipe_cnt = 0;
 		while (pipeinfo->pipelist[pipe_cnt] != PIPE_END)
 			pipe_cnt++;
 		i = 0;
-		while (i < pipe_cnt / 2)
-		{
+		while (i++ < pipe_cnt / 2)
 			wait(0);
-			i++;
-		}
 		free(pipeinfo->pipelist);
 	}
 	return (exit_code);
