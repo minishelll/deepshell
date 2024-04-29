@@ -1,13 +1,3 @@
-# User
-# (1)program
-minishell
-include/*
-
-# (2)etc.
-test*
-.DS_Store
-.vscode/
-
 # Prerequisites
 *.d
 
