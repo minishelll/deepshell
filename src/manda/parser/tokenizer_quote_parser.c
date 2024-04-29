@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_quote_parser.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/05 16:37:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/28 06:21:37 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	token_add_back(t_list **token_list, char *str)
 	token = (t_token *)ft_malloc(sizeof(t_token));
 	if (*str == '\'' || *str == '\"')
 		token->type = word;
-	token->word = ft_strtrim(str, " ");
+	token->word = ft_strdup(str);
 	if (*(token->word) != '\0')
 		ft_lstadd_back(token_list, ft_lstnew(token));
 	else
@@ -50,8 +50,6 @@ static void	token_add_back(t_list **token_list, char *str)
 //quote구문이 연속되어 있다면 t_token을 합치는 함수
 void	merge_word_nodes(t_list **list)
 {
-	t_token	*cur_token;
-	t_token	*next_token;
 	t_list	*cur;
 	t_list	*temp;
 
@@ -60,14 +58,13 @@ void	merge_word_nodes(t_list **list)
 		return ;
 	while (cur->next)
 	{
-		cur_token = cur->content;
-		next_token = (cur->next)->content;
-		if ((cur_token->type == word) && (next_token->type == word))
+		if ((((t_token *)cur->content)->type == word) \
+		&& (((t_token *)cur->next->content)->type == word))
 		{
 			join_token(&cur);
 			continue ;
 		}
-		else if (next_token->type == undefined)
+		while (((t_token *)cur->next->content)->type == undefined)
 		{
 			temp = cur -> next;
 			cur->next = cur->next->next;

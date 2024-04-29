@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/05 16:37:56 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/28 04:51:16 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,13 @@ t_token	*new_token(char *word, t_termi type)
 	new_token -> word = word;
 	new_token -> type = type;
 	return (new_token);
+}
+
+int	is_white_space(char c)
+{
+	if (9 <= c && c <= 13)
+		return (1);
+	if (c == 32)
+		return (1);
+	return (0);
 }

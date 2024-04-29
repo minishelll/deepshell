@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_op_parser.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/05 16:37:50 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/28 04:53:14 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-static void	parse_token(t_list **list, char *str);
-static void	token_add_back(t_list **token_list, char *str);
-static void	split_token(t_list **list, char *str);
+static void				parse_token(t_list **list, char *str);
+static void				token_add_back(t_list **token_list, char *str);
+static void				split_token(t_list **list, char *str);
 
 //parsed_token_list를 기존 리스트에 붙여주는 함수
 void	link_list(t_list **prev, t_list **cur, t_list **parsed_token_list)
@@ -67,16 +67,31 @@ static void	split_token(t_list **list, char *str)
 	char	**temp;
 	int		idx;
 	t_token	*dummy_token;
-
+	
 	idx = -1;
 	words = ft_split(str, ' ');
 	temp = words;
-	while (words && *words)
+	if (is_white_space(str[0]))
 	{
-		parse_token(list, *(words));
 		dummy_token = new_token(ft_strdup(" "), undefined);
 		ft_lstadd_back(list, ft_lstnew(dummy_token));
+	}
+	if (words && *words)
+	{
+		parse_token(list, *(words));
 		words++;
+	}
+	while (words && *words)
+	{
+		dummy_token = new_token(ft_strdup(" "), undefined);
+		ft_lstadd_back(list, ft_lstnew(dummy_token));
+		parse_token(list, *(words));
+		words++;
+	}
+	if (is_white_space(str[ft_strlen(str) - 1]))
+	{
+		dummy_token = new_token(ft_strdup(" "), undefined);
+		ft_lstadd_back(list, ft_lstnew(dummy_token));
 	}
 	while (temp && temp[++idx] != NULL)
 		free(temp[idx]);
