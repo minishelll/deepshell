@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:45:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 07:26:12 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:12:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "execute.h"
+#include "envlist.h"
 #include "ft_error.h"
 
 static void	_handle_io(int *redi, t_pipe *pipeinfo, t_pipe_order order)
@@ -42,7 +43,7 @@ static void	_handle_io(int *redi, t_pipe *pipeinfo, t_pipe_order order)
 	}
 }
 
-int	execute_subshell(t_syntax_tree *curr, char **envlist
+int	execute_subshell(t_syntax_tree *curr, t_env *env
 						, t_pipe *pipeinfo, t_pipe_order order)
 {
 	int	pid;
@@ -56,7 +57,7 @@ int	execute_subshell(t_syntax_tree *curr, char **envlist
 	if (pid == 0)
 	{
 		_handle_io(redi, pipeinfo, order);
-		result = execute(curr->child[L], envlist);
+		result = execute(curr->child[L], env);
 		close_redirect_file(redi);
 		exit(result);
 	}

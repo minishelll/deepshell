@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:15:19 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 07:20:16 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/27 10:31:54 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	wait_process(int last_child, t_pipe *pipeinfo)
 {
 	int	statloc;
 	int	exit_code;
+	int	pipe_cnt;
 	int	i;
 
 	exit_code = 0;
@@ -66,8 +67,11 @@ int	wait_process(int last_child, t_pipe *pipeinfo)
 		exit_code = WTERMSIG(statloc);
 	if (pipeinfo != NULL && pipeinfo->pipelist != NULL)
 	{
+		pipe_cnt = 0;
+		while (pipeinfo->pipelist[pipe_cnt] != PIPE_END)
+			pipe_cnt++;
 		i = 0;
-		while (i < pipeinfo->cnt)
+		while (i < pipe_cnt / 2)
 		{
 			wait(0);
 			i++;

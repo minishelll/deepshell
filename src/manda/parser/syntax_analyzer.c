@@ -3,86 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_analyzer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 18:35:49 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/27 10:30:46 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax_analyzer.h"
+#include "input_type.h"
+#include "ft_error.h"
 
-static int	_get_child_cnt(t_grammar grammar)
+static int	_handle_syntax_error(t_token *token)
 {
-	int	child_cnt;
-
-	child_cnt = 0;
-	while (child_cnt < 3 && grammar.after[child_cnt][KIND] != none)
-		child_cnt++;
-	return (child_cnt);
+	if (token->type == and_if)
+		ft_error(error_syntax, 0, S_AND_IF);
+	else if (token->type == or_if)
+		ft_error(error_syntax, 0, S_OR_IF);
+	else if (token->type == pipe)
+		ft_error(error_syntax, 0, S_PIPE);
+	else if (token->type == lparen)
+		ft_error(error_syntax, 0, S_LPAREN);
+	else if (token->type == rparen)
+		ft_error(error_syntax, 0, S_RPAREN);
+	else if (token->type == less)
+		ft_error(error_syntax, 0, S_LESS);
+	else if (token->type == great)
+		ft_error(error_syntax, 0, S_GREAT);
+	else if (token->type == dgreat)
+		ft_error(error_syntax, 0, S_DGREAT);
+	else if (token->type == dless)
+		ft_error(error_syntax, 0, S_DLESS);
+	else if (token->type == dollar_sign)
+		ft_error(error_syntax, 0, "newline");
+	else if (token->type == word)
+		ft_error(error_syntax, 0, token->word);
+	return (SYNTAX_ERRNUM);
 }
 
-t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar)
+t_status	_action_once(t_data *data, t_list **lr_stack, t_list **curr)
 {
-	const int		child_cnt = _get_child_cnt(grammar);
-	t_parse_tree	*new;
-	t_stack			*tmp[3];
-	int				i;
+	t_action	key;
 
-	new = (t_parse_tree *)ft_calloc(sizeof(t_parse_tree), 1);
-	new->type = grammar.before;
-	i = -1;
-	while (++i < 3)
+	key = get_key_action(data->lr_table->action \
+				, get_state(*lr_stack), ((t_token *)(*curr)->content)->type);
+	if (key.act == shift)
+		act_shift(lr_stack, curr, key);
+	else if (key.act == reduce)
+		act_reduce(lr_stack, key, data->grammar, data->lr_table);
+	else if (key.act == accept)
+		return (complete);
+	else if (key.act == init)
 	{
-		if (i < child_cnt)
-		{
-			free(pop(lr_stack));
-			tmp[i] = pop(lr_stack);
-			new->child_type[child_cnt - 1 - i] = tmp[i]->kind;
-			new->child[child_cnt - 1 - i] = tmp[i]->ptr;
-		}
-		else
-			new->child_type[i] = none;
+		data->env->exit_code = _handle_syntax_error((*curr)->content);
+		return (syntax_error);
 	}
-	i = -1;
-	while (++i < child_cnt)
-		free(tmp[i]);
-	return (new);
+	return (none_status);
 }
 
-void	free_stack(t_stack *stack)
-{
-	if (stack->ptr)
-		free_stack(stack->ptr);
-	free(stack);
-}
-
-t_parse_tree	*syntax_analyzer(t_list *input
-								, t_grammar *grammar, t_lr_table *lr_table)
+t_parse_tree	*syntax_analyzer(t_data *data, t_list *input)
 {
 	t_parse_tree	*parse_tree;
 	t_list			*lr_stack;
-	t_action		key;
+	t_status		status;
 
+	status = none_status;
+	parse_tree = NULL;
 	lr_stack = NULL;
 	push(&lr_stack, state, create_state(0));
-	while (1)
+	while (status == none_status)
+		status = _action_once(data, &lr_stack, &input);
+	if (status == complete)
 	{
-		key = get_key_action(lr_table->action \
-				, get_state(lr_stack), ((t_token *)input->content)->type);
-		if (key.act == shift)
-			act_shift(&lr_stack, &input, key);
-		else if (key.act == reduce)
-			act_reduce(&lr_stack, key, grammar, lr_table);
-		else if (key.act == accept)
-		{
-			parse_tree = create_parse_tree(&lr_stack, grammar[0]);
-			break ;
-		}
-		// else if (key.act == init)
-		// 	ft_error(error_syntax, input->word);
+		parse_tree = create_parse_tree(&lr_stack, data->grammar[0]);
+		ft_lstdelone(input, free);
+		ft_lstdelone(lr_stack, free);
 	}
-	ft_lstdelone(input, free);
-	ft_lstdelone(lr_stack, free);
+	else if (status == syntax_error)
+	{
+		parse_tree = NULL;
+		ft_lstclear(&input, free_token);
+		free_lr_stack(lr_stack);
+	}
 	return (parse_tree);
 }

@@ -16,3 +16,7 @@ endif
 ifdef DEBUG
 	CPPFLAGS += -g
 endif
+ifdef SANI
+	CPPFLAGS += -fsanitize=address
+	LDFLAGS += -fsanitize=address
+endif

@@ -8,13 +8,14 @@ endif
 NAME := minishell
 SRCS := main.c \
 		print_welcome_title.c \
-		envlist.c \
 		_print_parser_result.c \
 
 # SRCS(in SRCDIR) ------
 DIRS := ft_error \
 		insert_data \
+		envlist \
 		parser \
+		built_in \
 		execute \
 
 SUBS := $(addsuffix .a,$(DIRS))

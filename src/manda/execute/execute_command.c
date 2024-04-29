@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 09:20:44 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/28 06:35:56 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "execute.h"
+#include "built_in.h"
 #include "ft_error.h"
 
 static char	*_matching_path(char *pathenv, char *cmdname)
@@ -48,52 +49,40 @@ char	*check_program(char **envlist, char *cmdname)
 {
 	char	*pathenv;
 	char	*res;
-	int		i;
 
 	if (access(cmdname, X_OK) == 0)
 		return (cmdname);
-	i = 0;
-	while (ft_strncmp(envlist[i], "PATH=", 5) != 0)
-		i++;
-	pathenv = envlist[i];
-	//if (pathenv == NULL)
-	//	ft_error(error_nosuchafile, errno, cmdname);
+	pathenv = find_env(envlist, "PATH");
+	if (pathenv == NULL)
+		return (NULL);
 	res = _matching_path(pathenv, cmdname);
-	//if (res == NULL)
-	//	ft_error(error_nosuchafile, errno, cmdname);
+	if (res == NULL)
+		ft_error(error_access, errno, cmdname);
 	return (res);
 }
 
-int	execute_only_command(t_syntax_tree *command, char **envlist)
+int	execute_only_command(t_syntax_tree *command, t_env *env)
 {
-	char	*program;
-	int		pid;
-	int		redi[2];
-	
+	t_bi_type	bi_type;
+	int			pid;
+	int			redi[2];
 
-	pid = fork();
-	if (pid == -1)
-		ft_error(error_systemcall, errno, NULL);
-	if (pid == 0)
+	open_file(command->child[R], redi);
+	bi_type = is_built_in(((char **)command->child[L])[0]);
+	if (bi_type != none)
+		return (execute_built_in(command->child[L], env, bi_type, redi));
+	else
 	{
-		open_file(command->child[R], redi);
-		if (redi[INFILE] != INIT)
-			dup2(redi[INFILE], STDIN_FILENO);
-		if (redi[OUTFILE] != INIT)
-			dup2(redi[OUTFILE], STDOUT_FILENO);
-		//if (built_in == yes)
-		//	execute_built_in(command->child[L], envlist);
-		//else
-		//{
-			program = check_program(envlist, ((char **)command->child[L])[0]);
-			execve(program, command->child[L], envlist);
-			exit(2);
-		//}
+		pid = fork();
+		if (pid == -1)
+			ft_error(error_systemcall, errno, NULL);
+		if (pid == 0)
+			single_process(command->child[L], env, redi);
+		return (wait_process(pid, NULL));
 	}
-	return (wait_process(pid, NULL));
 }
 
-int	execute_command(t_syntax_tree *command, char **envlist
+int	execute_command(t_syntax_tree *command, t_env *env
 					, t_pipe *pipeinfo, t_pipe_order order)
 {
 	const t_child_proc	proc[3] = {start_process, mid_process, end_process};
@@ -108,7 +97,7 @@ int	execute_command(t_syntax_tree *command, char **envlist
 	{
 		open_file(command->child[R], redi);
 		use_pipe = handle_pipe(pipeinfo, order);
-		proc[order](command->child[L], envlist, use_pipe, redi);
+		proc[order](command->child[L], env, use_pipe, redi);
 	}
 	if (order == end)
 	{

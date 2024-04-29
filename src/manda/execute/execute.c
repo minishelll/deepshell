@@ -6,33 +6,34 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/18 06:38:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:01:26 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
+#include "envlist.h"
 #include "execute.h"
 #include "ft_error.h"
 
-int	execute(t_syntax_tree *root, char **envlist)
+int	execute(t_syntax_tree *root, t_env *env)
 {
 	t_pipe	pipeinfo;
 	int		result;
 
 	ft_memset(&pipeinfo, 0, sizeof(t_pipe));
 	if (root->type == sym_command)
-		result = execute_only_command(root, envlist);
+		result = execute_only_command(root, env);
 	else if (root->type == sym_pipe)
-		result = execute_pipe(root, envlist, &pipeinfo);
+		result = execute_pipe(root, env, &pipeinfo);
 	else if (root->type == sym_subshell)
-		result = execute_subshell(root, envlist, NULL, parent);
+		result = execute_subshell(root, env, NULL, parent);
 	else
 	{
-		result = execute(root->child[L], envlist);
+		result = execute(root->child[L], env);
 		if ((root->type == sym_and && result == 0) \
 		|| (root->type == sym_or && result != 0))
-			result = execute(root->child[R], envlist);
+			result = execute(root->child[R], env);
 	}
 	return (result);
 }
