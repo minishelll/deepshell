@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:15:19 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/30 00:05:46 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/04/30 06:02:39 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,17 @@ void	close_redirect_file(int *redi)
 		close(redi[OUTFILE]);
 }
 
+static int	_finish_pipe(int *pipelist)
+{
+	int	cnt;
+
+	cnt = 0;
+	while (pipelist[cnt] != PIPE_END)
+		cnt++;
+	free(pipelist);
+	return (cnt);
+}
+
 int	wait_process(int last_child, t_pipe *pipeinfo)
 {
 	int	statloc;
@@ -73,13 +84,10 @@ int	wait_process(int last_child, t_pipe *pipeinfo)
 	}
 	if (pipeinfo != NULL && pipeinfo->pipelist != NULL)
 	{
-		pipe_cnt = 0;
-		while (pipeinfo->pipelist[pipe_cnt] != PIPE_END)
-			pipe_cnt++;
+		pipe_cnt = _finish_pipe(pipeinfo->pipelist);
 		i = 0;
 		while (i++ < pipe_cnt / 2)
 			wait(0);
-		free(pipeinfo->pipelist);
 	}
 	return (exit_code);
 }

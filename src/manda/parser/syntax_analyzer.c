@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 10:30:46 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:34:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	_handle_syntax_error(t_token *token)
 		ft_error(error_syntax, 0, S_AND_IF);
 	else if (token->type == or_if)
 		ft_error(error_syntax, 0, S_OR_IF);
-	else if (token->type == pipe)
+	else if (token->type == pipe_term)
 		ft_error(error_syntax, 0, S_PIPE);
 	else if (token->type == lparen)
 		ft_error(error_syntax, 0, S_LPAREN);

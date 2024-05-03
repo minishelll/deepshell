@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/29 22:55:10 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:51:09 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	_print_error(t_error_type errcase, int errnum, char *target)
 		message = "maximum here-document count exceeded";
 	else if (errcase == error_syntax)
 		message = "syntax error near unexpected token `";
+	else if (errcase == error_ambiguous_redirection)
+		message = "ambiguous redirect";
 	if (errcase != error_syntax && errcase != error_max_heredoc)
 	{
 		ft_putstr_fd(target, 2);

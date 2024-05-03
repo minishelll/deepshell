@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 02:39:43 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:34:21 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_bi_type	is_built_in(char *cmdname)
 								, "unset", "env", "exit"};
 
 	if (cmdname == NULL)
-		return (none);
+		return (bi_none);
 	len = ft_strlen(cmdname);
 	i = 0;
 	while (i < 7)
@@ -32,7 +32,7 @@ t_bi_type	is_built_in(char *cmdname)
 			return (i);
 		i++;
 	}
-	return (none);
+	return (bi_none);
 }
 
 int	execute_built_in(char **cmds, t_env *env, t_bi_type type, int *redi)
@@ -55,5 +55,9 @@ int	execute_built_in(char **cmds, t_env *env, t_bi_type type, int *redi)
 		dup2(keep[STDOUT_FILENO], STDOUT_FILENO);
 	close(keep[STDIN_FILENO]);
 	close(keep[STDOUT_FILENO]);
+	if (redi[0] != -1)
+		close(redi[0]);
+	if (redi[1] != -1)
+		close(redi[1]);
 	return (result);
 }

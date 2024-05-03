@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/29 19:15:29 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:34:09 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_termi	get_token_type(char *str, int len)
 		else if (*str == '>')
 			return (great);
 		else if (*str == '|')
-			return (pipe);
+			return (pipe_term);
 		else if (*str == '(')
 			return (lparen);
 		else if (*str == ')')

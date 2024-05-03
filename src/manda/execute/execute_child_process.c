@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_child_process.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/29 20:03:37 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:24:50 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	start_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 		dup2(use_pipe[0], STDOUT_FILENO);
 	if (cmds[0] == NULL)
 		exit(0);
-	else if (bi_type != none)
+	else if (bi_type != bi_none)
 		exit(execute_built_in(cmds, env, bi_type, redi));
 	else
 	{
@@ -71,7 +71,7 @@ void	mid_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 		dup2(use_pipe[0], STDOUT_FILENO);
 	if (cmds[0] == NULL)
 		exit(0);
-	else if (bi_type != none)
+	else if (bi_type != bi_none)
 		exit(execute_built_in(cmds, env, bi_type, redi));
 	else
 	{
@@ -94,7 +94,7 @@ void	end_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 		dup2(redi[OUTFILE], STDOUT_FILENO);
 	if (cmds[0] == NULL)
 		exit(0);
-	else if (bi_type != none)
+	else if (bi_type != bi_none)
 		exit(execute_built_in(cmds, env, bi_type, redi));
 	else
 	{

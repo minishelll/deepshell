@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   mini_signal.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:29:16 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/29 21:05:31 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:36:06 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <unistd.h>
 #include <signal.h>
 #include <termios.h>
 #include <stdlib.h>
 #include "mini_signal.h"
 #include "libft.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
 void	do_sig_int(int signum)
 {

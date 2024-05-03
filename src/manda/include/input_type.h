@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/05 16:41:23 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:33:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef enum e_terminal
 {
 	and_if = 0,
 	or_if,
-	pipe,
+	pipe_term,
 	lparen,
 	rparen,
 	word,

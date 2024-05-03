@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/28 07:21:02 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:20:36 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_token
 }			t_token;
 
 /* ******************************** FUNCTION ******************************** */
-t_list	*tokenizer(char *command, t_env *env);
+t_list	*tokenizer(char *command);
 t_list	*parse_quote(char *command);
 t_list	*parse_op(t_list *quote_parsed_list);
 void	merge_word_nodes(t_list **list);
@@ -47,7 +47,5 @@ void	add_end_token(t_list *parsed_list);
 void	free_token(void *token);
 t_token	*new_token(char *word, t_termi type);
 int		is_white_space(char c);
-/* expand */
-void	expand(t_list *token, t_env *env);
 
 #endif

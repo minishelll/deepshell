@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 10:31:51 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:29:02 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	ft_pwd(char **cmds, t_env *env)
 	if (cmds[1] != NULL && cmds[1][0] == '-')
 		return (ft_error(error_pwd, not_support_option, cmds[1]));
 	cwd = find_env(env->envlist, "PWD");
-	if (cwd == NULL)
+	if (cwd[0] == '\0')
 	{
 		cwd = getcwd(NULL, 0);
 		if (cwd != NULL)

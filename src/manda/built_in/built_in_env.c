@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:31:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 12:22:16 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:43:30 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_unset(char **cmds, t_env *env)
 		}
 		if (_find_specific_char(cmds[i]) != NO_SPECIFIC_CHAR)
 			return (ft_error(error_unset, invalid_identifier, cmds[i]));
-		if (find_env(env->envlist, cmds[i]) != NULL)
+		if (find_env(env->envlist, cmds[i])[0] != '\0')
 			delete_envlist(env->envlist, cmds[i]);
 		i++;
 	}

@@ -16,6 +16,7 @@ DIRS := ft_error \
 		envlist \
 		signal \
 		parser \
+		expand \
 		built_in \
 		execute \
 
@@ -27,3 +28,4 @@ LDLIBS := -lft -lreadline
 include $(TOPDIR)/include_make/Variable.mk
 include $(TOPDIR)/include_make/Link.mk
 include $(TOPDIR)/include_make/Recipe_src.mk
+

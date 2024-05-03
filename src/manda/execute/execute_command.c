@@ -6,13 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/28 06:35:56 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:54:02 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "execute.h"
+#include "expand.h"
 #include "built_in.h"
 #include "ft_error.h"
 
@@ -53,7 +54,7 @@ char	*check_program(char **envlist, char *cmdname)
 	if (access(cmdname, X_OK) == 0)
 		return (cmdname);
 	pathenv = find_env(envlist, "PATH");
-	if (pathenv == NULL)
+	if (pathenv[0] == '\0')
 		return (NULL);
 	res = _matching_path(pathenv, cmdname);
 	if (res == NULL)
@@ -67,9 +68,11 @@ int	execute_only_command(t_syntax_tree *command, t_env *env)
 	int			pid;
 	int			redi[2];
 
+	if (expand(command, env) == 1)
+		return (1);
 	open_file(command->child[R], redi);
 	bi_type = is_built_in(((char **)command->child[L])[0]);
-	if (bi_type != none)
+	if (bi_type != bi_none)
 		return (execute_built_in(command->child[L], env, bi_type, redi));
 	else
 	{
@@ -95,6 +98,8 @@ int	execute_command(t_syntax_tree *command, t_env *env
 		ft_error(error_systemcall, errno, NULL);
 	if (pid == 0)
 	{
+		if (expand(command, env) == 1)
+			exit(1);
 		open_file(command->child[R], redi);
 		use_pipe = handle_pipe(pipeinfo, order);
 		proc[order](command->child[L], env, use_pipe, redi);

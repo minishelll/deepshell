@@ -8,13 +8,13 @@ endif
 NAME := parser.a
 HEAD := parser.h \
 		syntax_tree.h \
+		tokenizer.h \
 
 SRCS := parser.c \
 		tokenizer.c\
 		tokenizer_quote_parser.c\
 		tokenizer_op_parser.c\
 		tokenizer_utils.c\
-		expand.c \
 		syntax_analyzer.c \
 		syntax_action.c \
 		syntax_lr_stack.c \

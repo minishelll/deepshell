@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/29 23:12:41 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:21:24 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_syntax_tree	*parser(t_data *data, char *input)
 	t_syntax_tree	*ast;
 	int				heredoc;
 
-	token = tokenizer(input, data->env);
+	token = tokenizer(input);
 	heredoc = _count_heredoc(token);
 	parse_tree = syntax_analyzer(data, token);
 	if (parse_tree == NULL)

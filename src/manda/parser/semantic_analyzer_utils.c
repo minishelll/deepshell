@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   semantic_analyzer_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 06:38:39 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/04/10 19:34:00 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/02 22:34:42 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_syntax_tree	*syntax_tree_new(t_termi type)
 		new_node->type = sym_and;
 	else if (type == or_if)
 		new_node->type = sym_or;
-	else if (type == pipe)
+	else if (type == pipe_term)
 		new_node->type = sym_pipe;
 	else if (type == lparen)
 		new_node->type = sym_subshell;

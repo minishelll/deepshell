@@ -63,7 +63,7 @@ static void	_set_basic_env(t_env *env)
 	char	*update;
 
 	update = find_env(env->envlist, "SHLVL");
-	if (update == NULL)
+	if (update[0] == '\0')
 		update = ft_itoa(0);
 	else
 		update = ft_itoa(ft_atoi(update) + 1);
@@ -72,13 +72,13 @@ static void	_set_basic_env(t_env *env)
 									ft_strjoin("SHLVL=", update));
 	free(update);
 	update = find_env(env->envlist, "PWD");
-	if (update == NULL)
+	if (update[0] == '\0')
 		update = "";
 	if (update_envlist(env->envlist, "SHELL", update) == false)
 		env->envlist = add_envlist(env->envlist, \
 									ft_strjoin("SHELL=", update));
 	update = find_env(env->envlist, "OLDPWD");
-	if (update != NULL)
+	if (update[0] != '\0')
 		update_envlist(env->envlist, "OLDPWD", "");
 }
 
