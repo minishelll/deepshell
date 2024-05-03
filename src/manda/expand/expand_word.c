@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_word.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:23:18 by taerankim         #+#    #+#             */
-/*   Updated: 2024/05/03 19:23:35 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:47:55 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "expand.h"
+#include "wildcard.h"
 
 static int	_more_split(t_list *token)
 {
@@ -102,9 +103,9 @@ t_list	*expand_one_word(char *str, t_env *env)
 		quote = _is_quote(token);
 		if (quote != q_single && ft_strchr(token->word, '$') != NULL)
 			expand_variable(token, env);
-		//if (quote == q_not && ft_strchr(token->word, '*') != NULL)
-		//	wild_card(curr);
-		if (quote == q_not)
+		if (quote == q_not && ft_strchr(token->word, '*') != NULL)
+			expand_wildcard(&head, &curr);
+		else if (quote == q_not)
 			_skip_lst(&curr, _more_split(curr));
 		else
 			token->word = ft_substr(token->word, 1, ft_strlen(token->word) - 2);
