@@ -6,10 +6,14 @@ ifndef SRCDIR
 endif
 
 NAME := expand.a
-HEAD := expand.h
+HEAD := expand.h \
+		wildcard.h \
+		
 SRCS := expand.c \
 		expand_word.c \
 		expand_variable.c \
+		wildcard.c \
+		wildcard_utils.c \
 
 LDLIBS := -lft
 
