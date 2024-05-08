@@ -108,9 +108,10 @@ int	main(int argc, char **argv, char **envp)
 	print_welcome_title();
 	(void)argv;
 	data = init_data(envp);
+	//init_signal();
 	while (1)
 	{
-		set_parent_signal();
+		set_rl_signal();
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
 		if (g_signal == SIGINT)
@@ -129,7 +130,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		free(input);
 		heredoc = 0;
-		execute_heredoc(ast, &heredoc);
+		execute_heredoc(ast, &heredoc, data->env);
 		data->env->exit_code = execute(ast, data->env);
 		free_syntax_tree(ast);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:19:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/29 23:27:50 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:18:58 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "execute.h"
 #include "ft_error.h"
+#include "mini_signal.h"
 
 static char	*_get_tmpfilename(int order)
 {
@@ -35,14 +36,15 @@ static void	_input_heredoc(t_redi *redi, char *tmpfile)
 	char		*in;
 	int			fd;
 
+	set_heredoc_signal();
 	fd = open(tmpfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		ft_error(error_systemcall, errno, NULL);
 	while (1)
 	{
 		in = readline("> ");
-		if (in == NULL)
-			break ;
+		if (g_signal == SIGINT)
+			exit(1) ;
 		if (ft_strncmp(redi->file, in, len + 1) == 0)
 		{
 			free(in);
@@ -53,6 +55,7 @@ static void	_input_heredoc(t_redi *redi, char *tmpfile)
 	}
 	free(redi->file);
 	close(fd);
+	set_signal_print_on();
 }
 
 void	heredoc_process(t_redi *redi, int order)
@@ -83,6 +86,8 @@ int	_find_heredoc(t_list *redilist, int cnt)
 	{
 		if (((t_redi *)redilist->content)->type == here_doc)
 		{
+			if (g_signal == SIGINT)
+				return (-1);
 			heredoc_process(redilist->content, cnt + cntadd);
 			cntadd++;
 		}
@@ -91,16 +96,20 @@ int	_find_heredoc(t_list *redilist, int cnt)
 	return (cntadd);
 }
 
-void	execute_heredoc(t_syntax_tree *root, int *cnt)
+void	execute_heredoc(t_syntax_tree *root, int *cnt, t_env *env)
 {
 	int	cntadd;
+	int	sig;
 
 	if (root->type == sym_command || root->type == sym_subshell)
 	{
-		cntadd = _find_heredoc(root->child[R], *cnt);
+		sig = _find_heredoc(root->child[R], *cnt);
+		if (sig == -1)
+			return ;
+		cntadd = sig;
 		*cnt += cntadd;
 		return ;
 	}
-	execute_heredoc(root->child[L], cnt);
-	execute_heredoc(root->child[R], cnt);
+	execute_heredoc(root->child[L], cnt, env);
+	execute_heredoc(root->child[R], cnt, env);
 }
