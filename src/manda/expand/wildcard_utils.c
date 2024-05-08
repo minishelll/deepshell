@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:21:10 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/03 21:50:03 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:39:04 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,6 @@
 
 #define PATH_MAX	4096
 
-void	attach_head_node(t_list **token)
-{
-	t_list	*head;
-
-	head = ft_lstnew(NULL);
-	head->next = *token;
-	token = &head;
-}
-
 t_list	*get_dir_lst(void)
 {
 	DIR				*dp;
@@ -43,12 +34,7 @@ t_list	*get_dir_lst(void)
 		exit(1);
 	dp = opendir(cur_path);
 	if (dp == NULL)
-	{
-		printf("%s를 열 수 없습니다.", cur_path);
-		free(cur_path);
 		exit(1);
-	}
-	//entry = readdir(dp);
 	while (1)
 	{
 		entry = readdir(dp);
@@ -58,6 +44,7 @@ t_list	*get_dir_lst(void)
 	}
 	closedir(dp);
 	free(cur_path);
+	ft_lstsort(&lst, &ft_strncmp);
 	return (lst);
 }
 
@@ -109,43 +96,36 @@ void	dummy_add_back(t_list **token_list)
 	ft_lstadd_back(token_list, ft_lstnew(token));
 }
 
-bool	match_and_collect(char *word, t_list *dir_lst, t_list **matched, bool dot_flag)
+void ft_lstswap(t_list *a, t_list *b)
 {
-	t_list	*dir_cur;
-	bool	flag;
+    void *temp = a->content;
+    a->content = b->content;
+    b->content = temp;
+}
 
-	dir_cur = dir_lst;
-	flag = false;
-	while (dir_cur)
+void ft_lstsort(t_list **lst, int (*sort)(const char *, const char *, size_t n))
+{
+	bool	swapped;
+	t_list	*ptr;
+	t_list	*end_ptr;
+
+	swapped = true;
+	end_ptr = NULL;
+	if (lst == NULL || *lst == NULL || (*lst)->next == NULL)
+		return ;
+	while (swapped != false)
 	{
-		if (!dot_flag && *word == '.')
+		swapped = false;
+		ptr = *lst;
+		while (ptr->next != end_ptr)
 		{
-			dir_cur = dir_cur->next;
-			continue;
+			if (sort(ptr->content, ptr->next->content, PATH_MAX) > 0)
+			{
+				ft_lstswap(ptr, ptr->next);
+				swapped = true;
+			}
+			ptr = ptr->next;
 		}
-		if (check_word(word, (char *)(dir_cur->content)))
-		{
-			wildcard_add_back(matched, dir_cur->content);
-			flag = true;
-			break ;
-		}
-		dir_cur = dir_cur->next;
+		end_ptr = ptr;
 	}
-	dir_cur = dir_cur->next;
-	while (dir_cur)
-	{
-		if (dot_flag && *word == '.')
-		{
-			dir_cur = dir_cur->next;
-			continue;
-		}
-		if (check_word(word, (char *)(dir_cur->content)))
-		{
-			dummy_add_back(matched);
-			wildcard_add_back(matched, dir_cur->content);
-			flag = true;
-		}
-		dir_cur = dir_cur->next;
-	}
-	return (flag);
 }

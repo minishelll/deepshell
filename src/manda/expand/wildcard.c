@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 21:04:51 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/03 20:32:59 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:38:20 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,35 @@
 #include <stdlib.h>
 #include "tokenizer.h"
 #include "wildcard.h"
+
+void	match_word(char *word, t_list *dir_lst, t_list **matched, bool dot_flag)
+{
+	t_list	*dir_cur;
+
+	dir_cur = dir_lst;
+	while (dir_cur)
+	{
+		if (!(!dot_flag && *(char *)(dir_cur->content) == '.') && \
+			check_word(word, (char *)(dir_cur->content)))
+		{
+			wildcard_add_back(matched, dir_cur->content);
+			break ;
+		}
+		dir_cur = dir_cur->next;
+	}
+	if (dir_cur == NULL)
+		return ;
+	while (dir_cur ->next)
+	{
+		dir_cur = dir_cur->next;
+		if (!(!dot_flag && *(char *)(dir_cur->content) == '.') && \
+			check_word(word, (char *)(dir_cur->content)))
+		{
+			dummy_add_back(matched);
+			wildcard_add_back(matched, dir_cur->content);
+		}
+	}
+}
 
 bool	check_char(char *str1, int len1, int len2, bool **arr)
 {
@@ -49,62 +78,21 @@ bool	check_word(char *str1, char *str2)
 	return (result);
 }
 
-// void	process_wildcard_tokens(t_list *token, t_list *dir_lst)
-// {
-// 	t_list	*token_prev;
-// 	t_list	*token_cur;
-
-// 	token_prev = token;
-// 	token_cur = token_prev->next;
-// 	while (token_cur)
-// 	{
-// 		if (!match_wildcard(token_prev, &token_cur, dir_lst))
-// 			token_prev = token_cur;
-// 		token_cur = token_cur->next;
-// 	}
-// }
-
-// bool	match_wildcard(t_list *token_prev, t_list **token_cur, t_list *dir_lst)
-// {
-// 	char	*word;
-// 	char	*temp;
-// 	t_list	*matched;
-// 	t_list	*next;
-
-// 	word = ((t_token *)(*token_cur)->content)->word;
-// 	matched = NULL;
-// 	if (word == NULL)
-// 		return (false);
-// 	temp = ft_strchr(word, '*');
-// 	if (temp)
-// 	{
-// 		if (match_and_collect(word, dir_lst, &matched))
-// 		{
-// 			next = (*token_cur)->next;
-// 			token_prev->next = matched;
-// 			ft_lstlast(matched)->next = next;
-// 			ft_lstdelone(*token_cur, (void *)free_token);
-// 			*token_cur = next;
-// 			return (true);
-// 		}
-// 	}
-// 	free(temp);
-// 	return (false);
-// }
-
 t_list	*wildcard(t_token *token)
 {
 	t_list	*dir_lst;
 	t_list	*ret_lst;
 
 	ret_lst = NULL;
-	//attach_head_node(&token);
 	dir_lst = get_dir_lst();
 	if (*(token->word) == '.')
-		match_and_collect(token->word, dir_lst, &ret_lst, true);
+		match_word(token->word, dir_lst, &ret_lst, true);
 	else
-		match_and_collect(token->word, dir_lst, &ret_lst, false);
-	free_token(token);
+		match_word(token->word, dir_lst, &ret_lst, false);
+	if (ret_lst == NULL)
+		ft_lstadd_back(&ret_lst, ft_lstnew(token));
+	else
+		free_token(token);
 	//match_wildcard(token, dir_lst)
 	//process_wildcard_tokens(token, dir_lst);
 	//ft_lstclear(&dir_lst, free);
