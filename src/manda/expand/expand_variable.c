@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:12:36 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/09 14:59:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:59:13 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,12 @@ void	expand_variable(t_token *token, t_env *env)
 
 	pivot[1] = 0;
 	i = -1;
-	while (token->word[i + 1] != '\0')
+	while (token->word[i + 1] != '\0')//word자체가 바뀌면서 segfault
 	{
 		i++;
 		status = _set_two_pivot(token->word, pivot, i);
 		if (status == find || status == finish)
-			i += _handle_dollar_sign(&token->word, pivot, env) - 1;
+			i += _handle_dollar_sign(&token->word, pivot, env);
 		if (status == not_more || status == finish)
 			break ;
 	}
