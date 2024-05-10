@@ -6,15 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:23:18 by taerankim         #+#    #+#             */
-/*   Updated: 2024/05/10 18:23:01 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:23:35 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "expand.h"
-#include "wildcard.h"
 
-int	_more_split(t_list *token)
+static int	_more_split(t_list *token)
 {
 	t_list	*orgnext;
 	t_list	*curr;
@@ -40,7 +39,19 @@ int	_more_split(t_list *token)
 	curr->next->next = ft_lstnew(new_token(split[i], word));
 	curr->next->next->next = orgnext;
 	free(split);
-	return (i + 1);
+	return (i);
+}
+
+static void	_skip_lst(t_list **curr, int cnt)
+{
+	int	i;
+
+	i = 0;
+	while (i < cnt)
+	{
+		*curr = (*curr)->next;
+		i++;
+	}
 }
 
 static t_quote	_is_quote(t_token *token)
@@ -76,54 +87,27 @@ static t_list	*_init_list(char *str)
 	return (head);
 }
 
-void	_remove_quote(t_token *token)
-{
-	const int	orglen = ft_strlen(token->word);
-	char		*tmp;
-
-	tmp = token->word;
-	token->word = ft_substr(token->word, 1, orglen - 2);
-	free(tmp);
-}
-
-void	_expand_pipeline(t_list **head, t_list **curr, t_env *env, t_wildcard *info)
-{
-	t_token	*token;
-
-	token = (*curr)->content;
-	if (info->quote != q_single && ft_strchr(token->word, '$') != NULL \
-	&& info->keepflag == 0)
-	{
-		expand_variable(token, env);
-		if (info->quote == q_double)
-			_remove_quote(token);
-		info->keepflag = _more_split(*curr) + 1;
-	}
-	if (info->quote == q_not && ft_strchr(token->word, '*') != NULL)
-		expand_wildcard(head, curr);
-	if (info->quote != q_not && info->keepflag == 0)
-		_remove_quote(token);
-	if (info->keepflag != 0)
-		info->keepflag -= 1;
-}
-
 t_list	*expand_one_word(char *str, t_env *env)
 {
-	t_list		*head;
-	t_list		*curr;
-	t_token		*token;
-	t_wildcard	info;
+	t_list	*head;
+	t_list	*curr;
+	t_token	*token;
+	t_quote	quote;
 
 	head = _init_list(str);
 	curr = head;
-	info.keepflag = 0;
 	while (curr != NULL)
 	{
 		token = curr->content;
-		if (info.keepflag == 0)
-			info.quote = _is_quote(token);
-		if (token->type == word)
-			_expand_pipeline(&head, &curr, env, &info);
+		quote = _is_quote(token);
+		if (quote != q_single && ft_strchr(token->word, '$') != NULL)
+			expand_variable(token, env);
+		//if (quote == q_not && ft_strchr(token->word, '*') != NULL)
+		//	wild_card(curr);
+		if (quote == q_not)
+			_skip_lst(&curr, _more_split(curr));
+		else
+			token->word = ft_substr(token->word, 1, ft_strlen(token->word) - 2);
 		curr = curr->next;
 	}
 	merge_word_nodes(&head);
