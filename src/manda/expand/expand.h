@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/03 14:02:38 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:53:49 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,14 @@ typedef enum e_quote
 	q_double
 }	t_quote;
 
+typedef struct s_wildcard
+{
+	t_quote	quote;
+	int		keepflag;
+}			t_wildcard;
+
 int		expand(t_syntax_tree *command, t_env *env);
 t_list	*expand_one_word(char *str, t_env *env);
 void	expand_variable(t_token *token, t_env *env);
-void	_set_type_word(t_list *token);
 
 #endif
