@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:19:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/10 14:46:08 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:27:02 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*_get_tmpfilename(int order)
 	char	*num;
 	char	*res;
 
-	num = ft_itoa(order + 1);
+	num = ft_itoa(order);
 	res = ft_strjoin(TMPFILE, num);
 	free(num);
 	return (res);
@@ -42,9 +42,13 @@ static void	_input_heredoc(t_redi *redi, char *tmpfile)
 		ft_error(error_systemcall, errno, NULL);
 	while (1)
 	{
-		in = readline("> ");
+		in = readline("> \033[s");
 		if (in == NULL)
+		{
+    		printf("\033[u\033[1B\033[1A");
 			break ;
+		}
+
 		if (g_signal == SIGINT)
 			do_heredoc(SIGINT);
 		if (ft_strncmp(redi->file, in, len + 1) == 0)
@@ -102,7 +106,10 @@ int	_find_heredoc(t_list *redilist, int cnt)
 			free(((t_redi *)redilist->content)->file);
 			((t_redi *)redilist->content)->file = tmpfile;
 			if (result == 1)
+			{
+				g_signal = 0;
 				return (1);
+			}
 		}
 		redilist = redilist->next;
 	}

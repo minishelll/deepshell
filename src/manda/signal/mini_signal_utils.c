@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_signal_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 18:53:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/10 14:46:20 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:57:40 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

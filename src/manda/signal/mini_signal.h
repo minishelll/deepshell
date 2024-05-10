@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:30:27 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/03 17:39:41 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:39:46 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	init_signal(void);
 void	set_heredoc_signal(void);
 void	do_heredoc(int signum);
 
-void    set_signal_print_off(void);
 void    set_signal_print_on(void);
+void	set_signal_ctrl_print_off(void);
+void	set_signal_ctrl_print_on(void);
+
 #endif

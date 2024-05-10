@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:29:16 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/08 17:56:38 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:28:05 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	rl_sig_handler(void)
 
 void	set_rl_signal(void)
 {
-	set_signal_print_off();
+	set_signal_ctrl_print_off();
 	signal(SIGINT, sig_handler);
 	signal(SIGTERM, sig_handler);
 	signal(SIGQUIT, sig_handler);
@@ -62,6 +62,7 @@ void	set_signal_ignore(void)
 
 void	set_child_signal(void)
 {
+	set_signal_ctrl_print_on();
 	signal(SIGINT, SIG_DFL);
 	signal(SIGTERM, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -80,8 +81,6 @@ void	init_signal(void)
 
 void	set_heredoc_signal(void)
 {
-	if (g_signal == SIGINT)
-		exit(1);
 	signal(SIGINT, sig_handler);
 	rl_signal_event_hook = heredoc_sig_handler;
 }
