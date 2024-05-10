@@ -9,6 +9,7 @@ NAME := signal.a
 HEAD := mini_signal.h
 SRCS := mini_signal.c \
 		mini_terminal.c \
+		mini_signal_utils.c \
 
 LDLIBS := -lft
 

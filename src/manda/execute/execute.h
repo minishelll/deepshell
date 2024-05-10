@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/29 23:16:24 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:09:31 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ int		wait_process(int last_child, t_pipe *pipeinfo);
 int		*handle_pipe(t_pipe *pipeinfo, t_pipe_order order);
 void	close_redirect_file(int *redi);
 
-void	execute_heredoc(t_syntax_tree *root, int *cnt);
+int		execute_heredoc(t_syntax_tree *root, t_env *env);
 
 #endif

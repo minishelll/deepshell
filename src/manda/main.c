@@ -19,6 +19,7 @@
 #include "execute.h"
 #include "libft.h"
 #include "mini_signal.h"
+#include "ft_error.h"
 
 void	free_redi(void *redi)
 {
@@ -108,9 +109,10 @@ int	main(int argc, char **argv, char **envp)
 	print_welcome_title();
 	(void)argv;
 	data = init_data(envp);
+	//init_signal();
 	while (1)
 	{
-		set_parent_signal();
+		set_rl_signal();
 		//system("leaks minishell");
 		input = readline(BLUE "deepshell" CYAN "$ " RESET);
 		if (g_signal == SIGINT)
@@ -128,9 +130,12 @@ int	main(int argc, char **argv, char **envp)
 		if (ast == NULL)
 			continue ;
 		free(input);
-		heredoc = 0;
-		execute_heredoc(ast, &heredoc);
-		data->env->exit_code = execute(ast, data->env);
+		heredoc = execute_heredoc(ast, data->env);
+		if (heredoc != 1)
+			data->env->exit_code = execute(ast, data->env);
+		else
+			data->env->exit_code = 1;
+		unlink_all_tmpfile();
 		free_syntax_tree(ast);
 	}
 }

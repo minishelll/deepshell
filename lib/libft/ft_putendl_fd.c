@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:59:45 by taerakim          #+#    #+#             */
-/*   Updated: 2024/02/08 19:47:02 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:21:05 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

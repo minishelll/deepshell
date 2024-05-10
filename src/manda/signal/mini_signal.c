@@ -3,123 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   mini_signal.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:29:16 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/02 22:36:06 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:28:05 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <unistd.h>
 #include <signal.h>
 #include <termios.h>
 #include <stdlib.h>
 #include "mini_signal.h"
 #include "libft.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-void	do_sig_int(int signum)
+void	sig_handler(int signo)
 {
-	g_signal = SIGINT;
-	(void)signum;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	do_sig_term(int signum, int exit_code)
-{
-	(void)signum;
-	ft_putstr_fd("\033[1A", 2);
-	ft_putstr_fd("\033[11C", 2);
-	ft_putstr_fd("exit\n", 2);
-	exit(exit_code);
-}
-
-void	do_sig_quit(int signum)
-{
-	(void)signum;
-}
-
-void	sig_handler(int signo, siginfo_t *info, void *context)
-{
-	(void)context;
-	(void)info;
-
 	if (signo == SIGINT)
 		g_signal = SIGINT;
 	else if (signo == SIGTERM)
 		g_signal = SIGTERM;
 	else if (signo == SIGQUIT)
 		g_signal = SIGQUIT;
-	return ;
 }
 
-int	my_sig_handler(void)
+int	rl_sig_handler(void)
 {
 	if (g_signal == SIGINT)
-		do_sig_int(SIGINT);// Readline에게 입력 줄을 다시 그리도록 요청
-	else if(g_signal == SIGTERM)
-		printf("SIGTERM");
-	else
-		return (0);
+		do_sig_int(SIGINT);
 	return (0);
 }
 
-void	set_parent_signal(void)
+void	set_rl_signal(void)
 {
-	struct sigaction	s_sigact;
+	set_signal_ctrl_print_off();
+	signal(SIGINT, sig_handler);
+	signal(SIGTERM, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	rl_signal_event_hook = rl_sig_handler;
+}
 
-	s_sigact.sa_flags = SA_SIGINFO;
-	set_signal_print_off();
-	sigfillset(&s_sigact.sa_mask);
-	sigdelset(&s_sigact.sa_mask, SIGINT);
-	sigdelset(&s_sigact.sa_mask, SIGTERM);
-	sigdelset(&s_sigact.sa_mask, SIGQUIT);
-	s_sigact.sa_flags = SA_RESTART;
-	s_sigact.sa_sigaction = &sig_handler;
-	sigaction(SIGINT, &s_sigact, NULL);
-	sigaction(SIGTERM, &s_sigact, NULL);
-	sigaction(SIGQUIT, &s_sigact, NULL);
-	rl_signal_event_hook = my_sig_handler;
+int	heredoc_sig_handler(void)
+{
+	if (g_signal == SIGINT)
+		do_heredoc(SIGINT);
+	return (0);
 }
 
 void	set_signal_ignore(void)
 {
-	struct sigaction	s_sigact;
-
-	s_sigact.sa_flags = SA_SIGINFO;
-	set_signal_print_on();
-	sigemptyset(&s_sigact.sa_mask);
-	sigdelset(&s_sigact.sa_mask, SIGINT);
-	sigdelset(&s_sigact.sa_mask, SIGTERM);
-	sigdelset(&s_sigact.sa_mask, SIGQUIT);
-	s_sigact.sa_flags = SA_RESTART;
-	s_sigact.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &s_sigact, NULL);
-	sigaction(SIGTERM, &s_sigact, NULL);
-	sigaction(SIGQUIT, &s_sigact, NULL);
-	rl_signal_event_hook = my_sig_handler;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTERM, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	set_child_signal(void)
 {
-	struct sigaction	s_sigact;
-
-	s_sigact.sa_flags = SA_SIGINFO;
-	set_signal_print_on();
-	sigemptyset(&s_sigact.sa_mask);
-	sigdelset(&s_sigact.sa_mask, SIGINT);
-	sigdelset(&s_sigact.sa_mask, SIGTERM);
-	sigdelset(&s_sigact.sa_mask, SIGQUIT);
-	s_sigact.sa_flags = SA_RESTART;
-	s_sigact.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &s_sigact, NULL);
-	sigaction(SIGTERM, &s_sigact, NULL);
-	sigaction(SIGQUIT, &s_sigact, NULL);
+	set_signal_ctrl_print_on();
+	signal(SIGINT, SIG_DFL);
+	signal(SIGTERM, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
+void	init_signal(void)
+{
+	int	i = 1;
+	while (i < NSIG)
+	{
+		if (i != SIGKILL && i != SIGSTOP)
+			signal(i, SIG_IGN);
+		i++;
+	}
+}
 
+void	set_heredoc_signal(void)
+{
+	signal(SIGINT, sig_handler);
+	rl_signal_event_hook = heredoc_sig_handler;
+}
