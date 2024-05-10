@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/01 14:14:27 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:09:24 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ typedef enum e_bi_error
 # define NOT_SUPPORT_OPT "option is not support"
 # define NOT_SUPPORT_AGU "argument is not support"
 # define NEED_ASSIGNMENT "value is required (name=value)"
-int	ft_error(t_error_type errcase, int errnum, char *target);
+
+/* ******************************* FUNCTIONS ******************************** */
+int		ft_error(t_error_type errcase, int errnum, char *target);
+void	unlink_all_tmpfile(void);
 
 #endif

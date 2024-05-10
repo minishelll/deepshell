@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:19:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/08 18:18:58 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/10 14:46:08 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ static void	_input_heredoc(t_redi *redi, char *tmpfile)
 	while (1)
 	{
 		in = readline("> ");
+		if (in == NULL)
+			break ;
 		if (g_signal == SIGINT)
-			exit(1) ;
+			do_heredoc(SIGINT);
 		if (ft_strncmp(redi->file, in, len + 1) == 0)
 		{
 			free(in);
@@ -55,61 +57,88 @@ static void	_input_heredoc(t_redi *redi, char *tmpfile)
 	}
 	free(redi->file);
 	close(fd);
-	set_signal_print_on();
+	exit(0);
 }
 
-void	heredoc_process(t_redi *redi, int order)
-{
-	char	*tmpfile;
-	int		pid;
+//int	heredoc_process(t_redi *redi, int order)
+//{
+//	char	*tmpfile;
+//	int		result;
+//	int		pid;
 
-	tmpfile = _get_tmpfilename(order);
-	pid = fork();
-	if (pid == -1)
-		ft_error(error_systemcall, errno, NULL);
-	if (pid == 0)
-	{
-		_input_heredoc(redi, tmpfile);
-		exit(0);//??
-	}
-	wait_process(pid, NULL);
-	free(redi->file);
-	redi->file = tmpfile;
-}
+//	tmpfile = _get_tmpfilename(order);
+//	pid = fork();
+//	if (pid == -1)
+//		ft_error(error_systemcall, errno, NULL);
+//	if (pid == 0)
+//	{
+//		_input_heredoc(redi, tmpfile);
+//		exit(0);//??
+//	}
+//	result = wait_process(pid, NULL);
+//	free(redi->file);
+//	redi->file = tmpfile;
+//	return (result);
+//}
 
 int	_find_heredoc(t_list *redilist, int cnt)
 {
-	int	cntadd;
+	char	*tmpfile;
+	int		result;
+	int		pid;
 
-	cntadd = 0;
 	while (redilist != NULL)
 	{
 		if (((t_redi *)redilist->content)->type == here_doc)
 		{
-			if (g_signal == SIGINT)
-				return (-1);
-			heredoc_process(redilist->content, cnt + cntadd);
-			cntadd++;
+			cnt += 1;
+			tmpfile = _get_tmpfilename(cnt);
+			pid = fork();
+			if (pid == -1)
+				ft_error(error_systemcall, errno, NULL);
+			if (pid == 0)
+				_input_heredoc(redilist->content, tmpfile);
+			result = wait_process(pid, NULL);
+			free(((t_redi *)redilist->content)->file);
+			((t_redi *)redilist->content)->file = tmpfile;
+			if (result == 1)
+				return (1);
 		}
 		redilist = redilist->next;
 	}
-	return (cntadd);
+	return (0);
 }
 
-void	execute_heredoc(t_syntax_tree *root, int *cnt, t_env *env)
+void	_recursive_heredoc(t_syntax_tree *curr, t_env *env, int *cnt, int *sig)
 {
-	int	cntadd;
-	int	sig;
+	int	result;
 
-	if (root->type == sym_command || root->type == sym_subshell)
+	if (*sig == 1)
+		return ;
+	if (curr->type == sym_command || curr->type == sym_subshell)
 	{
-		sig = _find_heredoc(root->child[R], *cnt);
-		if (sig == -1)
+		result = _find_heredoc(curr->child[R], *cnt);
+		if (result == 1)
+		{
+			*sig = 1;
 			return ;
-		cntadd = sig;
-		*cnt += cntadd;
+		}
+		*cnt += result;
 		return ;
 	}
-	execute_heredoc(root->child[L], cnt, env);
-	execute_heredoc(root->child[R], cnt, env);
+	_recursive_heredoc(curr->child[L], env, cnt, sig);
+	_recursive_heredoc(curr->child[R], env, cnt, sig);
+}
+
+int	execute_heredoc(t_syntax_tree *root, t_env *env)
+{
+	int	sig;
+	int	cnt;
+
+	sig = 0;
+	cnt = 0;
+	_recursive_heredoc(root, env, &cnt, &sig);
+	if (sig == 1)
+		return (1);
+	return (0);
 }

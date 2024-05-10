@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/03 11:51:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:08:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	_print_error(t_error_type errcase, int errnum, char *target)
 
 int	ft_error(t_error_type errcase, int errnum, char *target)
 {
+	unlink_all_tmpfile();
 	ft_putstr_fd("deepshell: ", 2);
 	if (errcase == error_systemcall)
 	{

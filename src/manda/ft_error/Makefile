@@ -6,7 +6,7 @@
 #    By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/23 02:31:44 by taerakim          #+#    #+#              #
-#    Updated: 2024/03/09 14:10:03 by taerakim         ###   ########.fr        #
+#    Updated: 2024/05/10 13:10:03 by taerakim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ endif
 NAME := ft_error.a
 HEAD := ft_error.h
 SRCS := ft_error.c \
+		unlink_all.c \
 
 LDLIBS := -lft
 
