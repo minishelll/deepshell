@@ -3,21 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   set_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 21:39:04 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/12 13:02:44 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:07:55 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <signal.h>
-#include <termios.h>
-#include <stdlib.h>
 #include "mini_signal.h"
 #include <stdio.h>
 #include <readline/readline.h>
-#include <readline/history.h>
 
 void	set_rl_signal(void)
 {

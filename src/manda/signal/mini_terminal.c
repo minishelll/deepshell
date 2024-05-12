@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   mini_terminal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:38:11 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/11 21:41:32 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:07:05 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "unistd.h"
-#include "termios.h"
+#include <unistd.h>
+#include <termios.h>
 
 void	set_signal_ctrl_print_off(void)
 {

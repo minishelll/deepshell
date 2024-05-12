@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:08:31 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 07:35:05 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:18:56 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_action		get_key_action(t_action **dst, int state, t_termi type);
 int				get_key_goto(t_action **dst, int state, t_ntermi type);
 /* util */
 t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar);
-void			free_parse_tree(t_parse_tree *parse_tree);
+void			free_parse_tree(t_parse_tree *parse_tree, void (*del)(void *));
 void			free_lr_stack(t_list *lr_stack);
 
 #endif

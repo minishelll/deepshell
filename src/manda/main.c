@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:50:37 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:21:25 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include "parser.h"
+#include "execute.h"
+#include "mini_signal.h"
+#include "ft_error.h"
+#include "libft.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stdlib.h>
-#include "minishell.h"
-#include "parser.h"
-#include "execute.h"
-#include "libft.h"
-#include "mini_signal.h"
-#include "ft_error.h"
 
 static void	_set_basic_env(t_env *env)
 {
@@ -45,7 +44,7 @@ static void	_set_basic_env(t_env *env)
 		update_envlist(env->envlist, "OLDPWD", "");
 }
 
-t_data	*init_data(char **envp)
+static t_data	*init_data(char **envp)
 {
 	t_data	*data;
 
@@ -59,7 +58,7 @@ t_data	*init_data(char **envp)
 	return (data);
 }
 
-char	*get_input(t_env *env)
+static char	*get_input(t_env *env)
 {
 	char	*input;
 
@@ -78,7 +77,7 @@ char	*get_input(t_env *env)
 	return (input);
 }
 
-t_data	*init_minishell(int argc, char **argv, char **envp)
+static t_data	*init_minishell(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	if (argc != 1)
@@ -102,9 +101,9 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		set_signal_ignore();
 		ast = parser(data, input);
+		free(input);
 		if (ast == NULL)
 			continue ;
-		free(input);
 		heredoc = execute_heredoc(ast, data->env);
 		if (heredoc != 1)
 			data->env->exit_code = execute(ast, data->env);

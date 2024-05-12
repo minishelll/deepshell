@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:44:02 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:20:12 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_type.h"
 #include "semantic_analyzer.h"
 #include "ft_error.h"
-
-/* DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE */
-// void	parse_tree_print(t_parse_tree *parse_tree, int depth, char *arrow);
-// void	print_syntax_tree(t_syntax_tree *node, int level);
-// void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow);
-// #include <stdio.h>
-/* DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE */
 
 static int	_count_heredoc(t_list *token)
 {
@@ -50,7 +43,7 @@ t_syntax_tree	*parser(t_data *data, char *input)
 	if (heredoc > 16)
 		ft_error(error_max_heredoc, 0, NULL);
 	ast = semantic_analyzer(parse_tree);
-	free_parse_tree(parse_tree);
+	free_parse_tree(parse_tree, free);
 	return (ast);
 }
 

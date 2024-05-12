@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:23:21 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:09:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "tokenizer.h"
 # include "syntax_tree.h"
 # include "envlist.h"
-# include "libft.h"
 
+/* ******************************** TYPEDEF ********************************* */
 typedef enum e_ex_status
 {
 	keep_going,
@@ -39,6 +39,7 @@ typedef struct s_wildcard
 	int		keepflag;
 }			t_wildcard;
 
+/* ******************************* FUNCTIONS ******************************** */
 int		expand(t_syntax_tree *command, t_env *env);
 t_list	*expand_one_word(char *str, t_env *env);
 void	expand_variable(t_token *token, t_env *env);

@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 01:30:54 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 02:41:50 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:18:47 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_parse_tree	*create_parse_tree(t_list **lr_stack, t_grammar grammar)
 	return (new);
 }
 
-void	free_parse_tree(t_parse_tree *parse_tree)
+void	free_parse_tree(t_parse_tree *parse_tree, void (*del)(void *))
 {
 	int	idx;
 
@@ -58,9 +58,9 @@ void	free_parse_tree(t_parse_tree *parse_tree)
 	while (idx < 3)
 	{
 		if (parse_tree->child_type[idx] == terminal)
-			free(parse_tree->child[idx]);
+			del(parse_tree->child[idx]);
 		else if (parse_tree->child_type[idx] == non_terminal)
-			free_parse_tree(parse_tree->child[idx]);
+			free_parse_tree(parse_tree->child[idx], del);
 		idx ++;
 	}
 	free(parse_tree);
@@ -73,11 +73,15 @@ void	free_lr_stack(t_list *lr_stack)
 
 	if (lr_stack == NULL)
 		return ;
-	tmp = lr_stack;
-	lr_stack = lr_stack->next;
-	if (((t_stack *)tmp->content)->kind == state)
+	while (lr_stack != NULL)
+	{
+		tmp = lr_stack;
+		lr_stack = lr_stack->next;
+		if (((t_stack *)tmp->content)->kind == terminal)
+			free_token(((t_stack *)tmp->content)->ptr);
+		else if (((t_stack *)tmp->content)->kind == non_terminal)
+			free_parse_tree(((t_stack *)tmp->content)->ptr, free_token);
 		free(tmp->content);
-	else
-		free_parse_tree(tmp->content);
-	free(tmp);
+		free(tmp);
+	}
 }

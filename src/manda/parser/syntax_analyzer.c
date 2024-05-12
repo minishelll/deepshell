@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/02 22:34:33 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:19:02 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ t_parse_tree	*syntax_analyzer(t_data *data, t_list *input)
 	}
 	else if (status == syntax_error)
 	{
-		parse_tree = NULL;
 		ft_lstclear(&input, free_token);
 		free_lr_stack(lr_stack);
 	}
