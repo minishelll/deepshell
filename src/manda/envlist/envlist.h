@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   envlist.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:55:39 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/26 12:34:27 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:16:37 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef ENVLIST_H
+# define ENVLIST_H
 
 # include <stdbool.h>
 

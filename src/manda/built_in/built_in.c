@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/02 22:34:21 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:14:44 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_bi_type	is_built_in(char *cmdname)
 	return (bi_none);
 }
 
-int	execute_built_in(char **cmds, t_env *env, t_bi_type type, int *redi)
+int	execute_builtin(char **cmds, t_env *env, t_bi_type type, int *redi)
 {
 	int					keep[2];
 	int					result;

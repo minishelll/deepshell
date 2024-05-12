@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/10 13:09:31 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:16:58 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ int		execute_only_command(t_syntax_tree *command, t_env *env);
 int		execute_command(t_syntax_tree *command, t_env *env \
 						, t_pipe *pipeinfo, t_pipe_order order);
 
-
-typedef void (*t_child_proc)(char **, t_env *, int *, int*);
+typedef void	(*t_child_proc)(char **, t_env *, int *, int*);
 
 void	single_process(char **cmds, t_env *env, int *redi);
 void	start_process(char **cmds, t_env *env, int *use_pipe, int *redi);

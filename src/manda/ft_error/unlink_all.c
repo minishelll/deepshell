@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unlink_all.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:08:42 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/10 13:09:03 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:05:15 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	unlink_all_tmpfile(void)
 {
-	int	i;
+	int			i;
 	const char	*tmpfile[16] = {"/tmp/tmp1", "/tmp/tmp2", "/tmp/tmp3" \
 						, "/tmp/tmp4", "/tmp/tmp5", "/tmp/tmp6", "/tmp/tmp7" \
 						, "/tmp/tmp8", "/tmp/tmp9", "/tmp/tmp10" \
@@ -25,7 +25,7 @@ void	unlink_all_tmpfile(void)
 	i = 0;
 	while (access(tmpfile[i], F_OK) == 0)
 	{
-		if  (unlink(tmpfile[i]) == -1)
+		if (unlink(tmpfile[i]) == -1)
 			ft_error(error_systemcall, errno, NULL);
 		i++;
 	}

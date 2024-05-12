@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 16:59:11 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/02 22:32:57 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:14:44 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ typedef enum e_atol_res
 }	t_atol_res;
 
 /* ******************************* FUNCTIONS ******************************** */
-int	execute_built_in(char **cmds, t_env *env, t_bi_type type, int *redi);
+int			execute_builtin(char **cmds, t_env *env, t_bi_type type, int *redi);
 t_bi_type	is_built_in(char *cmdname);
 
-typedef int (*t_built_in)(char **, t_env *);
+typedef int	(*t_built_in)(char **, t_env *);
 int			ft_echo(char **cmds, t_env *env);
 int			ft_cd(char **cmds, t_env *env);
 int			ft_pwd(char **cmds, t_env *env);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_signal_utils.c                                :+:      :+:    :+:   */
+/*   do_signal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 18:53:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/10 15:57:40 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:02:59 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ void	do_sig_quit(int signum)
 }
 
 void	do_heredoc(int signum)
-// heredoc에서 crtl+c 시그널 입력시 줄바꿈을 출력하고 1을 반환하며 종료됨
 {
 	(void)signum;
 	set_signal_print_on();
-	ft_putstr_fd("\n", 2); // 줄바꿈을 출력
-	exit (1); // 1 을 반환하며 종료
+	ft_putstr_fd("\n", 2);
+	exit (1);
 }

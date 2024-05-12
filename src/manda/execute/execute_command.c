@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/11 19:42:39 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:14:44 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	execute_only_command(t_syntax_tree *command, t_env *env)
 	open_file(command->child[R], redi);
 	bi_type = is_built_in(((char **)command->child[L])[0]);
 	if (bi_type != bi_none)
-		return (execute_built_in(command->child[L], env, bi_type, redi));
+		return (execute_builtin(command->child[L], env, bi_type, redi));
 	else
 	{
 		pid = fork();

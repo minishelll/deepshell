@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/10 13:09:24 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:05:43 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ typedef enum e_error_type
 typedef enum e_bi_error
 {
 	use_errno = -1,
-	no_such_file,//1
-	permission_denied,//1
-	too_many_argu,//1
-	invalid_identifier,//1
-	invalid_option,//2
-	required_numeric,//255
-	not_support_option,//??
-	not_support_argument,//??
-	need_assignment//??
+	no_such_file,
+	permission_denied,
+	too_many_argu,
+	invalid_identifier,
+	invalid_option,
+	required_numeric,
+	not_support_option,
+	not_support_argument,
+	need_assignment
 }	t_bi_error;
 
 /* ******************************* EXIT_CODE ******************************** */

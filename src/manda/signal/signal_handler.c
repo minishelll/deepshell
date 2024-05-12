@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_signal.c                                      :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:29:16 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/10 16:28:05 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:02:24 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,50 +37,9 @@ int	rl_sig_handler(void)
 	return (0);
 }
 
-void	set_rl_signal(void)
-{
-	set_signal_ctrl_print_off();
-	signal(SIGINT, sig_handler);
-	signal(SIGTERM, sig_handler);
-	signal(SIGQUIT, sig_handler);
-	rl_signal_event_hook = rl_sig_handler;
-}
-
 int	heredoc_sig_handler(void)
 {
 	if (g_signal == SIGINT)
 		do_heredoc(SIGINT);
 	return (0);
-}
-
-void	set_signal_ignore(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGTERM, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	set_child_signal(void)
-{
-	set_signal_ctrl_print_on();
-	signal(SIGINT, SIG_DFL);
-	signal(SIGTERM, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
-
-void	init_signal(void)
-{
-	int	i = 1;
-	while (i < NSIG)
-	{
-		if (i != SIGKILL && i != SIGSTOP)
-			signal(i, SIG_IGN);
-		i++;
-	}
-}
-
-void	set_heredoc_signal(void)
-{
-	signal(SIGINT, sig_handler);
-	rl_signal_event_hook = heredoc_sig_handler;
 }

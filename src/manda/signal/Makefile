@@ -7,9 +7,10 @@ endif
 
 NAME := signal.a
 HEAD := mini_signal.h
-SRCS := mini_signal.c \
+SRCS := signal_handler.c \
 		mini_terminal.c \
-		mini_signal_utils.c \
+		do_signal.c \
+		set_signal.c \
 
 LDLIBS := -lft
 

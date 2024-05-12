@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_other.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/10 19:40:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:15:27 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,7 @@ int	ft_echo(char **cmds, t_env *env)
 	i = arg_idx;
 	while (cmds[i] != NULL)
 	{
-					//환경변수 임시 출력 <- expand 로직 필요
-					//char *env_tmp = find_env(env->envlist, &cmds[1][1]);
-					//if (env_tmp != NULL)
-					//	ft_putstr_fd(env_tmp, 1);
-					//else
-			ft_putstr_fd(cmds[i], 1);
+		ft_putstr_fd(cmds[i], 1);
 		if (cmds[i + 1] != NULL)
 			ft_putstr_fd(" ", 1);
 		i++;
@@ -152,7 +147,7 @@ int	ft_exit(char **cmds, t_env *env)
 		if (numeric == not_numeric)
 		{
 			ft_error(error_exit, required_numeric, cmds[1]);
-			exit(255);//CTRL+D처럼 처리해야되는거 아닌가?
+			exit(255);
 		}
 		if (numeric == success && cmds[2] != NULL)
 			return (ft_error(error_exit, required_numeric, cmds[1]));
@@ -160,5 +155,5 @@ int	ft_exit(char **cmds, t_env *env)
 	else
 		exitnum = env->exit_code;
 	exitnum %= 256;
-	exit(exitnum);//CTRL+D처럼 처리해야되는거 아닌가?
+	exit(exitnum);
 }

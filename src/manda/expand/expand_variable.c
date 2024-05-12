@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:12:36 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/09 14:59:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:10:55 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	_handle_dollar_sign(char **word, int *pivot, t_env *env)
 	return (value_len);
 }
 
-static t_ex_status	_set_two_pivot(char* word, int *pivot, int curr)
+static t_ex_status	_set_two_pivot(char *word, int *pivot, int curr)
 {
 	int	specific;
 

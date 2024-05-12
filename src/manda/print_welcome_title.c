@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_welcome_title.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 13:57:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/27 11:36:45 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:06:25 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	print_welcome_title(void)
 	printf(RESET "o");
 	_more();
 }
-
 
 /* 타이틀 공사중
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -127,7 +126,6 @@ void	print_welcome_title(void)
 //바람 그 wind ,,, ~~ 
 
 */
-
 
 /* 이전 작업
 printf("     _           _     \n");

@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:21:10 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/08 17:39:04 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/11 21:13:39 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,24 @@ t_list	*get_dir_lst(void)
 }
 
 //토큰의 메모리를 할당하고, 타입과 문자열을 초기화하는 함수
-void	wildcard_add_back(t_list **token_list, char *str)
+void	wildcard_add_back(t_list **token_list, char *str, bool isdummy)
 {
 	t_token		*token;
 
-	token = (t_token *)ft_malloc(sizeof(t_token));
-	token->word = ft_strdup(str);
-	token->type = word;
-	ft_lstadd_back(token_list, ft_lstnew(token));
+	if (isdummy)
+	{
+		token = (t_token *)ft_malloc(sizeof(t_token));
+		token->word = ft_strdup(" ");
+		token->type = undefined;
+		ft_lstadd_back(token_list, ft_lstnew(token));
+	}
+	else
+	{
+		token = (t_token *)ft_malloc(sizeof(t_token));
+		token->word = ft_strdup(str);
+		token->type = word;
+		ft_lstadd_back(token_list, ft_lstnew(token));
+	}
 }
 
 bool	**make_word_table(char *str1, char *str2)
@@ -86,24 +96,27 @@ bool	**make_word_table(char *str1, char *str2)
 	return (arr);
 }
 
-void	dummy_add_back(t_list **token_list)
-{
-	t_token		*token;
+// void	dummy_add_back(t_list **token_list)
+// {
+// 	t_token		*token;
 
-	token = (t_token *)ft_malloc(sizeof(t_token));
-	token->word = ft_strdup(" ");
-	token->type = undefined;
-	ft_lstadd_back(token_list, ft_lstnew(token));
+// 	token = (t_token *)ft_malloc(sizeof(t_token));
+// 	token->word = ft_strdup(" ");
+// 	token->type = undefined;
+// 	ft_lstadd_back(token_list, ft_lstnew(token));
+// }
+
+void	ft_lstswap(t_list *a, t_list *b)
+{
+	void	*temp;
+
+	temp = a->content;
+	a->content = b->content;
+	b->content = temp;
 }
 
-void ft_lstswap(t_list *a, t_list *b)
-{
-    void *temp = a->content;
-    a->content = b->content;
-    b->content = temp;
-}
-
-void ft_lstsort(t_list **lst, int (*sort)(const char *, const char *, size_t n))
+void	ft_lstsort(t_list **lst, \
+					int (*sort)(const char *, const char *, size_t n))
 {
 	bool	swapped;
 	t_list	*ptr;

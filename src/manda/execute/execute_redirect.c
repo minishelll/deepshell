@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirect.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/29 23:28:17 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:11:40 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static int	_handle_open(t_redi *curr, int *redi, bool *error)
 		if (curr->type == output)
 			new[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		else if (curr->type == append)
-			new[OUTFILE] = open(curr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			new[OUTFILE] = \
+						open(curr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
 	if (errno != 0)
 		return (curr->type);

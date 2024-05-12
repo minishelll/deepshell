@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_op_parser.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:45:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/02 21:00:47 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:02:38 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,33 +66,21 @@ static void	split_token(t_list **list, char *str)
 	char	**words;
 	char	**temp;
 	int		idx;
-	t_token	*dummy_token;
-	
+
 	idx = -1;
 	words = ft_split(str, ' ');
 	temp = words;
 	if (is_white_space(str[0]))
-	{
-		dummy_token = new_token(ft_strdup(" "), undefined);
-		ft_lstadd_back(list, ft_lstnew(dummy_token));
-	}
+		ft_lstadd_back(list, ft_lstnew(new_token(ft_strdup(" "), undefined)));
 	if (words && *words)
-	{
-		parse_token(list, *(words));
-		words++;
-	}
+		parse_token(list, *(words++));
 	while (words && *words)
 	{
-		dummy_token = new_token(ft_strdup(" "), undefined);
-		ft_lstadd_back(list, ft_lstnew(dummy_token));
-		parse_token(list, *(words));
-		words++;
+		ft_lstadd_back(list, ft_lstnew(new_token(ft_strdup(" "), undefined)));
+		parse_token(list, *(words++));
 	}
 	if (is_white_space(str[ft_strlen(str) - 1]))
-	{
-		dummy_token = new_token(ft_strdup(" "), undefined);
-		ft_lstadd_back(list, ft_lstnew(dummy_token));
-	}
+		ft_lstadd_back(list, ft_lstnew(new_token(ft_strdup(" "), undefined)));
 	while (temp && temp[++idx] != NULL)
 		free(temp[idx]);
 	free(temp);

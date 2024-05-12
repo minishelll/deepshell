@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:31:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/03 14:43:30 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:10:32 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	ft_env(char **cmds, t_env *env)
 			ft_putnbr_fd(i, 1);
 			ft_putstr_fd("] ", 1);
 			ft_putendl_fd(env->envlist[i], 1);
-
 		}
 		i++;
 	}

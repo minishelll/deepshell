@@ -6,7 +6,7 @@
 /*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 21:04:51 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/08 17:38:20 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/11 21:16:20 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	match_word(char *word, t_list *dir_lst, t_list **matched, bool dot_flag)
 		if (!(!dot_flag && *(char *)(dir_cur->content) == '.') && \
 			check_word(word, (char *)(dir_cur->content)))
 		{
-			wildcard_add_back(matched, dir_cur->content);
+			wildcard_add_back(matched, dir_cur->content, false);
 			break ;
 		}
 		dir_cur = dir_cur->next;
@@ -42,8 +42,8 @@ void	match_word(char *word, t_list *dir_lst, t_list **matched, bool dot_flag)
 		if (!(!dot_flag && *(char *)(dir_cur->content) == '.') && \
 			check_word(word, (char *)(dir_cur->content)))
 		{
-			dummy_add_back(matched);
-			wildcard_add_back(matched, dir_cur->content);
+			wildcard_add_back(matched, NULL, true);
+			wildcard_add_back(matched, dir_cur->content, false);
 		}
 	}
 }
@@ -93,9 +93,7 @@ t_list	*wildcard(t_token *token)
 		ft_lstadd_back(&ret_lst, ft_lstnew(token));
 	else
 		free_token(token);
-	//match_wildcard(token, dir_lst)
-	//process_wildcard_tokens(token, dir_lst);
-	//ft_lstclear(&dir_lst, free);
+	ft_lstclear(&dir_lst, free);
 	return (ret_lst);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/02 22:21:24 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:03:19 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include "ft_error.h"
 
 /* DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE */
-void	parse_tree_print(t_parse_tree *parse_tree, int depth, char *arrow);
-void	print_syntax_tree(t_syntax_tree *node, int level);
-void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow);
-#include <stdio.h>
+// void	parse_tree_print(t_parse_tree *parse_tree, int depth, char *arrow);
+// void	print_syntax_tree(t_syntax_tree *node, int level);
+// void	print_parse_tree(t_parse_tree *parse_tree, int depth, char *arrow);
+// #include <stdio.h>
 /* DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE */
 
 static int	_count_heredoc(t_list *token)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 22:20:26 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/03 17:18:38 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:09:42 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ static char	**expand_command(char **cmds, t_env *env)
 	while (cmds[i] != NULL)
 	{
 		if (_check_symbol(cmds[i]) == false)
-			ft_lstadd_back(&total, ft_lstnew( \
-									new_token(ft_strdup(cmds[i]), word)));
+			ft_lstadd_back(&total, \
+							ft_lstnew(new_token(ft_strdup(cmds[i]), word)));
 		else
 		{
 			split = expand_one_word(cmds[i], env);
