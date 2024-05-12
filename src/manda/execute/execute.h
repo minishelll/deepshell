@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 17:53:57 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:16:58 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:39:10 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ int		*handle_pipe(t_pipe *pipeinfo, t_pipe_order order);
 void	close_redirect_file(int *redi);
 
 int		execute_heredoc(t_syntax_tree *root, t_env *env);
+int		heredoc_process(t_redi *redi, int order);
 
 #endif

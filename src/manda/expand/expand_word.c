@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:23:18 by taerankim         #+#    #+#             */
-/*   Updated: 2024/05/10 18:23:01 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:43:22 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "expand.h"
 #include "wildcard.h"
 
-int	_more_split(t_list *token)
+static int	_more_split(t_list *token)
 {
 	t_list	*orgnext;
 	t_list	*curr;
@@ -76,17 +76,8 @@ static t_list	*_init_list(char *str)
 	return (head);
 }
 
-void	_remove_quote(t_token *token)
-{
-	const int	orglen = ft_strlen(token->word);
-	char		*tmp;
-
-	tmp = token->word;
-	token->word = ft_substr(token->word, 1, orglen - 2);
-	free(tmp);
-}
-
-void	_expand_pipeline(t_list **head, t_list **curr, t_env *env, t_wildcard *info)
+static void	_expand_pipeline(t_list **head, t_list **curr
+							, t_env *env, t_wildcard *info)
 {
 	t_token	*token;
 

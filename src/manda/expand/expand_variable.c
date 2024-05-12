@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:12:36 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:10:55 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:24:09 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,14 @@ void	expand_variable(t_token *token, t_env *env)
 		if (status == not_more || status == finish)
 			break ;
 	}
+}
+
+void	_remove_quote(t_token *token)
+{
+	const int	orglen = ft_strlen(token->word);
+	char		*tmp;
+
+	tmp = token->word;
+	token->word = ft_substr(token->word, 1, orglen - 2);
+	free(tmp);
 }

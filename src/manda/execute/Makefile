@@ -16,6 +16,7 @@ SRCS := execute.c \
 		execute_redirect.c \
 		execute_utils.c \
 		heredoc.c \
+		heredoc_process.c \
 
 LDLIBS := -lft -lreadline
 
