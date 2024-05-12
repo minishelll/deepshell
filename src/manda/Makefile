@@ -8,7 +8,6 @@ endif
 NAME := minishell
 SRCS := main.c \
 		print_welcome_title.c \
-		_print_parser_result.c \
 
 # SRCS(in SRCDIR) ------
 DIRS := ft_error \

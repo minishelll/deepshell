@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:15:19 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/30 06:02:39 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:42:36 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	wait_process(int last_child, t_pipe *pipeinfo)
 		if (exit_code == 130)
 			write(1, "\n", 1);
 		else if (exit_code == 131)
-			ft_putstr_fd("Quit: 3", 1);
+			ft_putstr_fd("Quit: 3\n", 1);
 	}
 	if (pipeinfo != NULL && pipeinfo->pipelist != NULL)
 	{

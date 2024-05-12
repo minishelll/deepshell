@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taerakim <taerakim@student.42seoul. kr>     +#+  +:+       +#+        */
+/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/20 13:51:59 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:50:37 by sehwjang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,44 +20,6 @@
 #include "libft.h"
 #include "mini_signal.h"
 #include "ft_error.h"
-
-void	free_redi(void *redi)
-{
-	t_redi	*ptr;
-
-	ptr = (t_redi *)redi;
-	free(ptr->file);
-	free(ptr);
-}
-
-void	free_syntax_tree(t_syntax_tree *curr)
-{
-	t_list	*redi_list;
-
-	if (curr->type == command)
-	{
-		free_words(curr->child[L]);
-		if (curr->child[R] != NULL)
-		{
-			redi_list = curr->child[R];
-			ft_lstclear(&redi_list, free_redi);
-		}
-		free(curr);
-		return ;
-	}
-	free_syntax_tree(curr->child[L]);
-	if (curr->child[R] != NULL)
-	{
-		if (curr->type == subshell)
-		{
-			redi_list = curr->child[R];
-			ft_lstclear(&redi_list, free_redi);
-		}
-		else
-			free_syntax_tree(curr->child[R]);
-	}
-	free(curr);
-}
 
 static void	_set_basic_env(t_env *env)
 {
@@ -97,6 +59,34 @@ t_data	*init_data(char **envp)
 	return (data);
 }
 
+char	*get_input(t_env *env)
+{
+	char	*input;
+
+	set_rl_signal();
+	input = readline(BLUE "deepshell" CYAN "$ " RESET);
+	if (g_signal == SIGINT)
+	{
+		env->exit_code = 1;
+		g_signal = 0;
+	}
+	if (input == NULL)
+		do_sig_term(SIGTERM, env->exit_code);
+	if (*input == '\0')
+		return (NULL);
+	add_history(input);
+	return (input);
+}
+
+t_data	*init_minishell(int argc, char **argv, char **envp)
+{
+	(void)argv;
+	if (argc != 1)
+		exit(EXIT_FAILURE);
+	print_welcome_title();
+	return (init_data(envp));
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data			*data;
@@ -104,29 +94,14 @@ int	main(int argc, char **argv, char **envp)
 	char			*input;
 	int				heredoc;
 
-	if (argc != 1)
-		exit(EXIT_FAILURE);
-	print_welcome_title();
-	(void)argv;
-	data = init_data(envp);
-	//init_signal();
+	data = init_minishell(argc, argv, envp);
 	while (1)
 	{
-		set_rl_signal();
-		//system("leaks minishell");
-		input = readline(BLUE "deepshell" CYAN "$ " RESET);
-		if (g_signal == SIGINT)
-		{
-			data->env->exit_code = 1;
-			g_signal = 0;
-		}
+		input = get_input(data->env);
 		if (input == NULL)
-			do_sig_term(SIGTERM, data->env->exit_code);
-		if (*input == '\0')
 			continue ;
 		set_signal_ignore();
 		ast = parser(data, input);
-		add_history(input);
 		if (ast == NULL)
 			continue ;
 		free(input);
