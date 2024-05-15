@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:12:36 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:24:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:33:11 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ static int	_handle_dollar_sign(char **word, int *pivot, t_env *env)
 	if (name[0] == '?')
 		value = ft_itoa(env->exit_code);
 	else
+	{
 		value = find_env(env->envlist, name);
+		if (value == NULL)
+			value = "";
+	}
 	*word = _replace_to_value(*word, pivot, value);
 	value_len = ft_strlen(value);
 	if (name[0] == '?')

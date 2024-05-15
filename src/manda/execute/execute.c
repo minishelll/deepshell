@@ -6,13 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/10 13:08:47 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:01:45 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include "envlist.h"
 #include "execute.h"
 #include "ft_error.h"
 

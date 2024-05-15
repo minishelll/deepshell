@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 13:28:18 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:39:57 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:01:57 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "execute.h"
-#include "ft_error.h"
 #include "mini_signal.h"
+#include "ft_error.h"
 
 static char	*_get_tmpfilename(int order)
 {

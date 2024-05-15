@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:14:44 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:57:52 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include "libft.h"
-#include "ft_error.h"
 #include "built_in.h"
+#include "ft_error.h"
+#include "libft.h"
 
 t_bi_type	is_built_in(char *cmdname)
 {

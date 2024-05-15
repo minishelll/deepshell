@@ -3,72 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 22:20:26 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:09:42 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:14:32 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include "expand.h"
 #include "ft_error.h"
 
-static bool	_check_symbol(char *word)
+static int	_remove_empty_str(t_list *split)
 {
-	if (ft_strchr(word, '$') != NULL \
-	|| ft_strchr(word, '*') != NULL \
-	|| ft_strchr(word, '\'') != NULL \
-	|| ft_strchr(word, '"') != NULL)
-		return (true);
-	return (false);
-}
+	t_list	*curr;
+	int		i;
 
-static int	expand_redirection(t_list *redilist, t_env *env)
-{
-	t_redi	*curr;
-	t_list	*expand;
-
-	while (redilist != NULL)
+	i = 0;
+	curr = split;
+	while (curr != NULL)
 	{
-		curr = redilist->content;
-		if (_check_symbol(curr->file) == true)
+		if (((t_token *)curr->content)->word[0] == '\0')
 		{
-			expand = expand_one_word(curr->file, env);
-			if (expand->next != NULL)
-			{
-				ft_lstclear(&expand, free_token);
-				return (ft_error(error_ambiguous_redirection, 0, curr->file));
-			}
-			curr->file = ((t_token *)expand->content)->word;
-			ft_lstdelone(expand, free);
+			free_token(curr->content);
+			curr->content = NULL;
 		}
-		redilist = redilist->next;
+		else
+			i++;
+		curr = curr->next;
 	}
-	return (0);
+	return (i);
 }
 
 static char	**_apply_cmds(t_list *split)
 {
-	char	**new;
-	t_list	*tmp;
-	int		i;
+	const int	size = _remove_empty_str(split);
+	char		**new;
+	t_list		*curr;
+	int			i;
 
-	new = (char **)ft_calloc(sizeof(char *), ft_lstsize(split) + 1);
-	i = 0;
-	while (split != NULL)
+	new = NULL;
+	if (size != 0)
 	{
-		if (((t_token *)split->content)->type == undefined)
-			free(((t_token *)split->content)->word);
-		else
+		new = (char **)ft_calloc(sizeof(char *), size + 1);
+		i = 0;
+		curr = split;
+		while (curr != NULL)
 		{
-			new[i] = ((t_token *)split->content)->word;
-			i++;
+			if (curr->content != NULL)
+			{
+				new[i] = ((t_token *)curr->content)->word;
+				i++;
+			}
+			curr = curr->next;
 		}
-		tmp = split;
-		split = split->next;
-		ft_lstdelone(tmp, free);
 	}
+	ft_lstclear(&split, free);
 	return (new);
 }
 
@@ -82,7 +73,8 @@ static char	**expand_command(char **cmds, t_env *env)
 	i = 0;
 	while (cmds[i] != NULL)
 	{
-		if (_check_symbol(cmds[i]) == false)
+		if (ft_strchr(cmds[i], '$') == NULL && ft_strchr(cmds[i], '*') == NULL \
+		&& ft_strchr(cmds[i], '\'') == NULL && ft_strchr(cmds[i], '"') == NULL)
 			ft_lstadd_back(&total, \
 							ft_lstnew(new_token(ft_strdup(cmds[i]), word)));
 		else
@@ -95,6 +87,33 @@ static char	**expand_command(char **cmds, t_env *env)
 	}
 	free(cmds);
 	return (_apply_cmds(total));
+}
+
+static int	expand_redirection(t_list *redilist, t_env *env)
+{
+	t_redi	*curr;
+	t_list	*expand;
+
+	while (redilist != NULL)
+	{
+		curr = redilist->content;
+		if (ft_strchr(curr->file, '$') != NULL \
+		|| ft_strchr(curr->file, '*') != NULL \
+		|| ft_strchr(curr->file, '\'') != NULL \
+		|| ft_strchr(curr->file, '"') != NULL)
+		{
+			expand = expand_one_word(curr->file, env);
+			if (expand->next != NULL)
+			{
+				ft_lstclear(&expand, free_token);
+				return (ft_error(error_ambiguous_redirection, 0, curr->file));
+			}
+			curr->file = ((t_token *)expand->content)->word;
+			ft_lstdelone(expand, free);
+		}
+		redilist = redilist->next;
+	}
+	return (0);
 }
 
 int	expand(t_syntax_tree *command, t_env *env)

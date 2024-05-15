@@ -6,10 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 01:30:54 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 14:18:47 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:50 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "syntax_analyzer.h"
 
 static int	_get_child_cnt(t_grammar grammar)

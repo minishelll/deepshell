@@ -6,10 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:41:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 14:20:12 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:06:04 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "input_type.h"
 #include "semantic_analyzer.h"
 #include "ft_error.h"

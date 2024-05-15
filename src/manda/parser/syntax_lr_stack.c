@@ -6,10 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:43:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/10 18:00:34 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:45 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "syntax_analyzer.h"
 
 t_stack	*pop(t_list **top)

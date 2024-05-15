@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirect.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:01:10 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:11:40 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:01:26 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdbool.h>
 #include "execute.h"
 #include "ft_error.h"
 

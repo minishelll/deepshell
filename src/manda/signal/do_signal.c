@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 18:53:39 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/12 14:06:29 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/15 12:02:19 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	do_sig_int(int signum)
 void	do_sig_term(int signum, int exit_code)
 {
 	ft_putstr_fd("\033[1A", 2);
-	ft_putstr_fd("\033[11C", 2);
+	ft_putstr_fd("\033[9C", 2);
 	ft_putstr_fd("exit\n", 2);
 	exit(exit_code);
 	(void)signum;

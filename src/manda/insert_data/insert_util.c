@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:57:49 by taerankim         #+#    #+#             */
-/*   Updated: 2024/03/28 15:19:25 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:39:47 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	free_words(char **dst)
 {
 	int	i;
 
+	if (dst == NULL)
+		return ;
 	i = 0;
 	while (dst[i] != NULL)
 	{

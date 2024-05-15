@@ -6,14 +6,13 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:45:56 by taerakim          #+#    #+#             */
-/*   Updated: 2024/04/23 16:12:42 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:01:36 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "execute.h"
-#include "envlist.h"
 #include "ft_error.h"
 
 static void	_handle_io(int *redi, t_pipe *pipeinfo, t_pipe_order order)

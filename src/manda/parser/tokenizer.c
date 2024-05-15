@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:10:43 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/05/11 20:03:00 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:00 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "tokenizer.h"
 
 //tokenize를 하는 main 함수

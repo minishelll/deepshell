@@ -6,15 +6,13 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:00:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:25:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:57:37 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <limits.h>
-#include "envlist.h"
 #include "built_in.h"
 #include "ft_error.h"
 #include "libft.h"
@@ -31,7 +29,7 @@ int	ft_cd(char **cmds, t_env *env)
 	if (errno != 0)
 		return (ft_error(error_cd, use_errno, cmds[1]));
 	if (access(cmds[1], F_OK) == -1)
-		return (ft_error(error_cd, no_such_file, cmds[1]));
+		return (ft_error(error_cd, use_errno, cmds[1]));
 	if (access(cmds[1], X_OK) == -1)
 		return (ft_error(error_cd, permission_denied, cmds[1]));
 	if (chdir(cmds[1]) == -1)
@@ -52,7 +50,7 @@ int	ft_pwd(char **cmds, t_env *env)
 	if (cmds[1] != NULL && cmds[1][0] == '-')
 		return (ft_error(error_pwd, not_support_option, cmds[1]));
 	cwd = find_env(env->envlist, "PWD");
-	if (cwd[0] == '\0')
+	if (cwd == NULL)
 	{
 		cwd = getcwd(NULL, 0);
 		if (cwd != NULL)
@@ -106,7 +104,7 @@ int	ft_exit(char **cmds, t_env *env)
 			exit(255);
 		}
 		if (numeric == success && cmds[2] != NULL)
-			return (ft_error(error_exit, required_numeric, cmds[1]));
+			return (ft_error(error_exit, too_many_argu, cmds[1]));
 	}
 	else
 		exitnum = env->exit_code;

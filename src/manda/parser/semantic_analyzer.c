@@ -6,11 +6,10 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:07:09 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/04/11 19:56:55 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:13:56 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "semantic_analyzer.h"
 
 //make syntax tree recursively

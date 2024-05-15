@@ -9,6 +9,7 @@ NAME := built_in.a
 HEAD := built_in.h
 SRCS := built_in.c \
 		built_in_env.c \
+		built_in_envedit.c \
 		built_in_other.c \
 
 LDLIBS := -lft

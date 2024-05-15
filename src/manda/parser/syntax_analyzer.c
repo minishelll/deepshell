@@ -6,12 +6,12 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:34:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 14:19:02 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:14:52 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "syntax_analyzer.h"
-#include "input_type.h"
 #include "ft_error.h"
 
 static int	_handle_syntax_error(t_token *token)

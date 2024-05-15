@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 14:12:32 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 13:14:44 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:00:34 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include "execute.h"
 #include "built_in.h"
 #include "expand.h"
-#include "ft_error.h"
 #include "mini_signal.h"
+#include "ft_error.h"
 
 static char	*_matching_path(char *pathenv, char *cmdname)
 {
@@ -49,17 +50,27 @@ static char	*_matching_path(char *pathenv, char *cmdname)
 
 char	*check_program(char **envlist, char *cmdname)
 {
-	char	*pathenv;
-	char	*res;
+	struct stat	file_info;
+	char		*pathenv;
+	char		*res;
 
-	if (access(cmdname, X_OK) == 0)
-		return (cmdname);
+	if (ft_strchr(cmdname, '/') != NULL)
+	{
+		if (stat(cmdname, &file_info) == 0 && S_ISDIR(file_info.st_mode) != 0)
+			ft_error(error_is_dir, errno, cmdname);
+		if (access(cmdname, F_OK) != 0)
+			ft_error(error_access_f, errno, cmdname);
+		if (access(cmdname, X_OK) == 0)
+			return (cmdname);
+		else
+			ft_error(error_access_x, errno, cmdname);
+	}
+	res = NULL;
 	pathenv = find_env(envlist, "PATH");
-	if (pathenv[0] == '\0')
-		return (NULL);
-	res = _matching_path(pathenv, cmdname);
+	if (pathenv != NULL)
+		res = _matching_path(pathenv, cmdname);
 	if (res == NULL)
-		ft_error(error_access, errno, cmdname);
+		ft_error(error_cmd_not_found, errno, cmdname);
 	return (res);
 }
 
@@ -72,18 +83,21 @@ int	execute_only_command(t_syntax_tree *command, t_env *env)
 	if (expand(command, env) == 1)
 		return (1);
 	open_file(command->child[R], redi);
-	bi_type = is_built_in(((char **)command->child[L])[0]);
-	if (bi_type != bi_none)
-		return (execute_builtin(command->child[L], env, bi_type, redi));
-	else
+	if (command->child[L] != NULL)
 	{
-		pid = fork();
-		if (pid == -1)
-			ft_error(error_systemcall, errno, NULL);
-		if (pid == 0)
-			single_process(command->child[L], env, redi);
-		return (wait_process(pid, NULL));
+		bi_type = is_built_in(((char **)command->child[L])[0]);
+		if (bi_type != bi_none)
+			return (execute_builtin(command->child[L], env, bi_type, redi));
 	}
+	pid = fork();
+	if (pid == -1)
+		ft_error(error_systemcall, errno, NULL);
+	if (pid == 0)
+	{
+		set_child_signal();
+		single_process(command->child[L], env, redi);
+	}
+	return (wait_process(pid, NULL));
 }
 
 int	execute_command(t_syntax_tree *command, t_env *env
@@ -99,9 +113,9 @@ int	execute_command(t_syntax_tree *command, t_env *env
 		ft_error(error_systemcall, errno, NULL);
 	if (pid == 0)
 	{
+		set_child_signal();
 		if (expand(command, env) == 1)
 			return (1);
-		set_child_signal();
 		open_file(command->child[R], redi);
 		use_pipe = handle_pipe(pipeinfo, order);
 		proc[order](command->child[L], env, use_pipe, redi);

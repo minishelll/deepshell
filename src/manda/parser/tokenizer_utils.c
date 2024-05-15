@@ -6,10 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:00:17 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/02 22:34:09 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:31 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "tokenizer.h"
 
 //문자를 비교해서 해당되는 토큰 타입이 있다면 반환하는 함수

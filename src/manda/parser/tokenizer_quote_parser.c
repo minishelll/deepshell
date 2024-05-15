@@ -6,10 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:35:12 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/03 14:37:24 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:13 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "tokenizer.h"
 
 static void	split_quote(t_list **list, char *cmd);

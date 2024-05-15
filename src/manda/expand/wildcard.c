@@ -3,18 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 21:04:51 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/11 21:16:20 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:13:36 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdbool.h>
-#include "libft.h"
-#include <dirent.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include "tokenizer.h"
 #include "wildcard.h"

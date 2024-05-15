@@ -6,26 +6,25 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/12 14:21:25 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/15 12:01:05 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <stdlib.h>
 #include "parser.h"
 #include "execute.h"
 #include "mini_signal.h"
 #include "ft_error.h"
-#include "libft.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
 static void	_set_basic_env(t_env *env)
 {
 	char	*update;
 
 	update = find_env(env->envlist, "SHLVL");
-	if (update[0] == '\0')
+	if (update == NULL)
 		update = ft_itoa(0);
 	else
 		update = ft_itoa(ft_atoi(update) + 1);
@@ -34,13 +33,13 @@ static void	_set_basic_env(t_env *env)
 									ft_strjoin("SHLVL=", update));
 	free(update);
 	update = find_env(env->envlist, "PWD");
-	if (update[0] == '\0')
+	if (update == NULL)
 		update = "";
 	if (update_envlist(env->envlist, "SHELL", update) == false)
 		env->envlist = add_envlist(env->envlist, \
 									ft_strjoin("SHELL=", update));
 	update = find_env(env->envlist, "OLDPWD");
-	if (update[0] != '\0')
+	if (update != NULL)
 		update_envlist(env->envlist, "OLDPWD", "");
 }
 
@@ -63,7 +62,7 @@ static char	*get_input(t_env *env)
 	char	*input;
 
 	set_rl_signal();
-	input = readline(BLUE "deepshell" CYAN "$ " RESET);
+	input = readline(PROMPT);
 	if (g_signal == SIGINT)
 	{
 		env->exit_code = 1;

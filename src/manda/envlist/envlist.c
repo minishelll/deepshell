@@ -6,11 +6,10 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:43:28 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/03 11:27:23 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:58:20 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
 #include <stdlib.h>
 #include "envlist.h"
 #include "libft.h"
@@ -124,5 +123,5 @@ char	*find_env(char **envlist, char *name)
 			return (&envlist[i][len + 1]);
 		i++;
 	}
-	return ("");
+	return (NULL);
 }

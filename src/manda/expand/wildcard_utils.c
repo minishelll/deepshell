@@ -3,23 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sehwjang <sehwjang@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:21:10 by sehwjang          #+#    #+#             */
-/*   Updated: 2024/05/11 21:13:39 by sehwjang         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:13:30 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
-#include "libft.h"
 #include <dirent.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "tokenizer.h"
 #include "wildcard.h"
-
-#define PATH_MAX	4096
 
 t_list	*get_dir_lst(void)
 {
@@ -95,16 +90,6 @@ bool	**make_word_table(char *str1, char *str2)
 	}
 	return (arr);
 }
-
-// void	dummy_add_back(t_list **token_list)
-// {
-// 	t_token		*token;
-
-// 	token = (t_token *)ft_malloc(sizeof(t_token));
-// 	token->word = ft_strdup(" ");
-// 	token->type = undefined;
-// 	ft_lstadd_back(token_list, ft_lstnew(token));
-// }
 
 void	ft_lstswap(t_list *a, t_list *b)
 {

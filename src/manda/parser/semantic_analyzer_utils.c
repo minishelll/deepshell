@@ -6,10 +6,11 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 06:38:39 by sehwanii          #+#    #+#             */
-/*   Updated: 2024/05/02 22:34:42 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:56 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "semantic_analyzer.h"
 
 //make a new node of ast

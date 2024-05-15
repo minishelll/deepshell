@@ -6,16 +6,14 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 14:01:48 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/02 22:20:36 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:09:18 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-# include <stdlib.h>
 # include "input_type.h"
-# include "envlist.h"
 # include "libft.h"
 
 /* ******************************** LITERAL ********************************* */
