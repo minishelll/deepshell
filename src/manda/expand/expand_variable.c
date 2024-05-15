@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:12:36 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/14 11:33:11 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:29:55 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ static int	_handle_dollar_sign(char **word, int *pivot, t_env *env)
 
 static t_ex_status	_set_two_pivot(char *word, int *pivot, int curr)
 {
-	int	specific;
+	char	*dollar;
+	int		specific;
 
-	pivot[0] = ft_strchr(&word[curr], '$') - word;
-	if (pivot[0] < 0)
+	dollar = ft_strchr(&word[curr], '$');
+	if (dollar == NULL)
 		return (not_more);
+	pivot[0] = dollar - word;
 	specific = _find_specific_char(&word[pivot[0] + 1]);
 	if (word[pivot[0] + 1] == '\0' \
 	|| (specific == 0 && word[pivot[0] + 1] != '?'))
