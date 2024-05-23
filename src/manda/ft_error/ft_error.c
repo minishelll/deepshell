@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:16:58 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/15 13:06:51 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:37:33 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ static int	_print_bi_error(t_error_type errcase, t_bi_error type, char *target)
 {
 	const char	*bi_list[7] = {"echo: ", "cd: ", "pwd: ", "export: " \
 								, "unset: ", "env: ", "exit: "};
-	const char	*msglist[8] = {PERMISSION_DENIED, TOO_MANY_ARG \
-						, INVALID_ID, INVALID_OPT, REQUIRED_NUMERIC \
-						, NOT_SUPPORT_OPT, NOT_SUPPORT_AGU, NEED_ASSIGNMENT};
+	const char	*msglist[10] = {PERMISSION_DENIED, TOO_MANY_ARG, INVALID_ID \
+						, INVALID_OPT, OLDPWD_NOT_SET, GETCWD_CHECK \
+						, REQUIRED_NUMERIC, NOT_SUPPORT_OPT \
+						, NOT_SUPPORT_AGU, NEED_ASSIGNMENT};
 
 	ft_putstr_fd((char *)bi_list[errcase], 2);
 	if (type == invalid_identifier)

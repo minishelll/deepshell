@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 13:57:23 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/15 16:30:52 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/23 14:47:56 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	print_welcome_title(void)
 		"                                  │\n│                               "\
 		"                                               │\n│                  "\
 		"            "RESET);
-	printf(TITLE_ART"█▀▀▄ ▄▀█ ▄▀▀ █▄░█                               "RESET);
+	printf(TITLE_ART"█▀▀▄ ▄▀█ ▄▀▀ █▄▄█                               "RESET);
 	printf(OUTLINE"│\n│                  "RESET);
 	printf(CAT"/\\_/\\       "RESET);
-	printf(TITLE_ART"░▄▄▀ █▀█ ▄░█ █░▀█       "RESET);
+	printf(TITLE_ART"░▄▄▀ █▀█ ▄░█ █░ █       "RESET);
 	printf(CAT"/\\_/\\                   "RESET);
 	printf(OUTLINE"│\n│                 "RESET);
 	printf(CAT"( ~.o )             "RESET);

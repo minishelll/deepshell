@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:13:41 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/15 12:01:05 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:36:51 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	_set_basic_env(t_env *env)
 									ft_strjoin("SHELL=", update));
 	update = find_env(env->envlist, "OLDPWD");
 	if (update != NULL)
-		update_envlist(env->envlist, "OLDPWD", "");
+		delete_envlist(env->envlist, "OLDPWD");
 }
 
 static t_data	*init_data(char **envp)

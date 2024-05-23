@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 00:39:03 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/14 15:39:15 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:36:00 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef enum e_bi_error
 	too_many_argu,
 	invalid_identifier,
 	invalid_option,
+	oldpwd_not_set,
+	getcwd_check,
 	required_numeric,
 	not_support_option,
 	not_support_argument,
@@ -62,6 +64,9 @@ typedef enum e_bi_error
 # define TOO_MANY_ARG "too many arguments"
 # define INVALID_ID "not a valid identifier"
 # define INVALID_OPT "invalid option"
+# define OLDPWD_NOT_SET "OLDPWD not set"
+# define GETCWD_CHECK "error retrieving current directory: getcwd: cannot \
+access parent directories: No such file or directory"
 # define REQUIRED_NUMERIC "numeric argument required"
 /* dashell define */
 # define NOT_SUPPORT_OPT "option is not support"
