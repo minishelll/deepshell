@@ -7,7 +7,6 @@ endif
 
 NAME := execute.a
 HEAD := execute.h
-
 SRCS := execute.c \
 		execute_pipe.c \
 		execute_subshell.c \
