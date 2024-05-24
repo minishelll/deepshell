@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:12:36 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/15 16:29:55 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:55:49 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static t_ex_status	_set_two_pivot(char *word, int *pivot, int curr)
 		return (finish);
 	}
 	pivot[1] = pivot[0] + specific + 1;
-	if (word[pivot[1]] == '?')
+	if (word[pivot[1]] == '?' && pivot[1] - pivot[0] == 1)
 		pivot[1] += 1;
 	return (find);
 }

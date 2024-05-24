@@ -6,7 +6,7 @@
 /*   By: taerakim <taerakim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:58:25 by taerakim          #+#    #+#             */
-/*   Updated: 2024/05/14 15:00:37 by taerakim         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:19:43 by taerakim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	start_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 	else
 	{
 		program = check_program(env->envlist, cmds[0]);
-		execve(program, cmds, NULL);
+		execve(program, cmds, env->envlist);
 		exit(2);
 	}
 }
@@ -76,7 +76,7 @@ void	mid_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 	else
 	{
 		program = check_program(env->envlist, cmds[0]);
-		execve(program, cmds, NULL);
+		execve(program, cmds, env->envlist);
 		exit(2);
 	}
 }
@@ -100,7 +100,7 @@ void	end_process(char **cmds, t_env *env, int *use_pipe, int *redi)
 	else
 	{
 		program = check_program(env->envlist, cmds[0]);
-		execve(program, cmds, NULL);
+		execve(program, cmds, env->envlist);
 		exit(2);
 	}
 }
